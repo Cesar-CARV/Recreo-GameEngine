@@ -27,7 +27,24 @@ export default class Sprite{
         this.animationLoop = false;
         this.ofSetCellX = 0;
         this.ofSetCellY = 0;
+        this.repeat = true;
+        this.animationEnds = undefined;
     }
+
+    #resetVals = () => {
+        this.frame = 0;
+        this.frameLimit = 0;
+        this.time = 0;
+        this.cells = [];
+        this.cellWidth = 0;
+        this.cellHeight = 0;
+        this.gridCols = 0;
+        this.gridRows = 0;
+        this.animationLoop = false;
+        this.ofSetCellX = 0;
+        this.ofSetCellY = 0;
+    }
+
 
     setGrid = (cols, rows, cellW, cellH) => {
         this.gridCols = cols;
@@ -45,15 +62,29 @@ export default class Sprite{
         }
     }
 
-    startAnimation = (time = 1000 / 2) => {
-        this.time = time;
-        this.animationLoop = setInterval(() => {
-            this.frame = this.frame >= this.frameLimit ? 0 : this.frame + 1;
-        }, this.time);
+    changeSprite = (url, repeat, time) => {
+        const lastTime = this.time
+        this.#resetVals();
+
+        this.img.src = url;
+        this.repeat = repeat;
+        this.time = !time ? lastTime : time;
     }
 
     stopAnimation = () => {
         clearInterval(this.animationLoop);
+        if (this.animationEnds) this.animationEnds();
+    }
+
+    startAnimation = (time = 1000 / 2, frame) => {
+        this.frame = frame > this.frameLimit ? this.frameLimit : frame;
+        this.time = time;
+        this.animationLoop = setInterval(() => {
+            if (this.repeat) this.frame = this.frame >= this.frameLimit ? 0 : this.frame + 1;
+            else this.frame = this.frame < this.frameLimit ? this.frame + 1 : this.frame;
+
+            if (!this.repeat && this.frame >= this.frameLimit) this.stopAnimation();
+        }, this.time);
     }
 
     draw = (ctx) => {

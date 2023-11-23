@@ -35,11 +35,7 @@ let resetGame = new UIButton(GAME, 0, 220, 140, 40, "Reset Game");
 resetGame.isPauseable = false;
 resetGame.visible = false;
 resetGame.onMouseDown = (e) => {
-    bird.x = GAME.display.w / 2 - 15;
-    bird.y = GAME.display.h / 2 - 15;
-    bird.moveL = false;
-    bird.moveR = false;
-    bird.speedV = 0;
+    bird.restartValues();
     wall.x = GAME.display.w;
     wall.y = 300;
     GAME.pauseGame = false;

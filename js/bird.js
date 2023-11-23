@@ -10,6 +10,7 @@ export default class Bird extends Obj {
         this.jump = -7;
         this.speedLimit = 16;
         this.fall = true;
+        this.hit = false;
         //this.hitBox.show = true;
 
         this.moveL = false;
@@ -17,7 +18,23 @@ export default class Bird extends Obj {
 
         this.sprite.img.src = "./../spriteTest.png";
         this.sprite.setGrid(3, 4, 16, 16);
-        this.sprite.startAnimation(100);
+        this.sprite.startAnimation(100, 0);
+        this.sprite.repeat = true;
+        
+    }
+
+    restartValues = () => {
+        this.x = this.GAME.display.w / 2 - 15;
+        this.y = this.GAME.display.h / 2 - 15;
+        this.moveL = false;
+        this.moveR = false;
+        this.speedV = 0;
+        this.sprite.img.src = "./../spriteTest.png";
+        this.sprite.setGrid(3, 4, 16, 16);
+        this.sprite.startAnimation(100, 0);
+        this.sprite.animationEnds = undefined;
+        this.sprite.repeat = true;
+        this.hit = false;
     }
 
     draw = (ctx) => {
@@ -55,13 +72,20 @@ export default class Bird extends Obj {
                 }
 
                 if (inst.constructor["name"] === "Wall") {
-                    let resetGameButton = this.GAME.findByQuery("UIButton",[{key:"text", value:"Reset Game"}])[0];
+                    this.hit = true;
+                    this.sprite.stopAnimation();
+                    this.sprite.changeSprite("./../spriteTest2.png", false);
+                    this.sprite.setGrid(3, 3, 16, 16);
+                    this.sprite.startAnimation(100, 0);
+                    this.sprite.animationEnds = () => {
+                        let resetGameButton = this.GAME.findByQuery("UIButton",[{key:"text", value:"Reset Game"}])[0];
 
-                    if (!resetGameButton) return;
-    
-                    this.GAME.pauseGame = true;
-                    resetGameButton.visible = true;
-                    resetGameButton.x = this.GAME.display.w / 2 - resetGameButton.hitBox.w / 2;
+                        if (!resetGameButton) return;
+        
+                        this.GAME.pauseGame = true;
+                        resetGameButton.visible = true;
+                        resetGameButton.x = this.GAME.display.w / 2 - resetGameButton.hitBox.w / 2;
+                    }
                 }
             });
         }
@@ -70,6 +94,8 @@ export default class Bird extends Obj {
     }
 
     steps = (ctx) => {
+        if (this.hit) return;
+
         this.collitions(ctx);
 
         // gravedad
