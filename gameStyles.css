@@ -1,0 +1,36 @@
+*{
+    box-sizing: border-box;
+}
+
+#game{
+    position: relative;
+}
+
+#game > *{
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    display: block;
+}
+
+#game__display {
+    top: 0;
+    left: 0;
+    border: solid 1px;
+}
+
+#game__input {
+    top: 0;
+    left: 0;
+    border: solid 1px #000;
+    resize: none;
+    background-color: transparent;
+    color: transparent;
+    cursor: default;
+}
+
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
