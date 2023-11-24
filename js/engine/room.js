@@ -1,3 +1,5 @@
+import TileMap from "./tileMap.js";
+
 export default  class Room {
     constructor(game, w, h){
         this.GAME = game;
@@ -5,6 +7,9 @@ export default  class Room {
         this.h = h;
         this.instances = [];
         this.backgrounds = [];
+        this.tileMapLayer1 = undefined
+        this.tileMapLayer2 = undefined
+        this.tileMapLayer3 = undefined
     }
 
     addBackground = (bg) => {
@@ -24,5 +29,8 @@ export default  class Room {
 
     draw = (ctx) => {
         this.backgrounds.forEach(bg => bg.draw(ctx));
+        if (this.tileMapLayer1) this.tileMapLayer1.draw(ctx);
+        if (this.tileMapLayer2) this.tileMapLayer2.draw(ctx);
+        if (this.tileMapLayer3) this.tileMapLayer3.draw(ctx);
     }
 }
