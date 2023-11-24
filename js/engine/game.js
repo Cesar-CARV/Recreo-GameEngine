@@ -223,7 +223,7 @@ export default class Game {
     }
 
     main = () => {
-        console.warn(`runing game, ${this.tiks} tiks, pause: ${this.pauseGame}, UI = ${this.hoverUI}`)
+        console.info(`runing game, ${this.tiks} tiks, pause: ${this.pauseGame}, UI = ${this.hoverUI}`)
 
         if (!this.pauseGame) {
             this.ctx.clearRect(0, 0, this.display.w, this.display.h);
