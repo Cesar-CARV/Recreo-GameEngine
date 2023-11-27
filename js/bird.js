@@ -37,7 +37,7 @@ export default class Bird extends Obj {
         this.hit = false;
     }
 
-    draw = (ctx) => {
+    draw = (ctx, dX, dY) => {
     }
 
     onMouseDown = (e) => {
@@ -46,8 +46,8 @@ export default class Bird extends Obj {
 
     onKeyDown = (e) => {
         if (e.key === "w") this.speedV = this.jump;
-        if (e.key === "d") this.moveR = true;
-        else if (e.key === "a") this.moveL = true;
+        if (e.key === "d") {this.moveR = true; this.moveL = false;}
+        else if (e.key === "a") {this.moveL = true; this.moveR = false;}
     }
 
     onKeyUp = (e) => {

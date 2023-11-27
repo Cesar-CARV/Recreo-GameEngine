@@ -165,6 +165,8 @@ export default class Game {
         return this.rooms.map(rm => rm.name);
     }
 
+    getRoom = () => this.room;
+
     addRoom = (name, room) => {
         this.rooms.push({name:name, room:room});
     }
@@ -233,12 +235,15 @@ export default class Game {
         
         this.gameInstances.forEach(instance => {
             if (instance.isPauseable === true){
-                if (this.pauseGame === false) instance.main(this.ctx);
-                else instance.draw(this.ctx);
+                if (this.pauseGame === false){
+                    instance.main(this.ctx);
+                }
+                else {
+                    instance.draw(this.ctx);
+                }
             }
-            else {
-                if (instance.UI) instance.main(this.ctx);
-                else instance.main(this.ctx);
+            else if (instance.UI){
+                instance.main(this.ctx);
             }
         });
     }

@@ -1,5 +1,5 @@
 
-export default class Sprite{
+export default class Sprite {
     constructor(parent, x, y, w, h, url){
         this.parent = parent;
         this.x = parent.x + x;
@@ -87,31 +87,32 @@ export default class Sprite{
         }, this.time);
     }
 
-    draw = (ctx) => {
+    draw = (ctx, dX = undefined, dY = undefined) => {
         if (this.canDraw){
             if (this.cellWidth !== 0 && this.cellHeight !== 0 && this.gridCols !== 0 && this.gridRows !== 0) {
-                    ctx.drawImage(
+                ctx.drawImage(
                     this.img, // image
                     this.cells[this.frame].X, // cut x
                     this.cells[this.frame].Y, // cut y
                     this.cellWidth, // cut w
                     this.cellHeight, // cut h
-                    this.x, // image x
-                    this.y, // image y
+                    dX === undefined ? this.x : dX + this.ofSetX, // image x
+                    dY === undefined ? this.y : dY + this.ofSetY, // image y
                     this.w, // image w
                     this.h // image h
                 );
             }
             else {
-                ctx.drawImage(this.img, this.x, this.y, this.w * 2, this.h * 3);
+                ctx.drawImage(this.img, dX === undefined ? this.x : dX + this.ofSetX, dY === undefined ? this.y : dY + this.ofSetY, this.w * 2, this.h * 3);
             }
+            ctx.restore();
         };
     }
 
-    main = (ctx) => {
+    main = (ctx, dX = undefined, dY = undefined) => {
         if (this.img.src === '') return;
 
-        this.draw(ctx);
+        this.draw(ctx, dX, dY);
         this.x = this.parent.x + this.ofSetX;
         this.y = this.parent.y + this.ofSetY;
     }

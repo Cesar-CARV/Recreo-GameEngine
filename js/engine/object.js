@@ -1,3 +1,4 @@
+import Game from "./game.js";
 import HitBox from "./hitBox.js";
 import Sprite from "./sprite.js";
 
@@ -13,13 +14,13 @@ export default  class Obj {
         this.sprite = new Sprite(this, 0, 0, w, h, '');
     }
 
-    draw = (ctx) => {
+    draw = (ctx, dX, dY) => {
         ctx.fillStyle = "#363636";
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        ctx.fillRect(dX, dY, this.w, this.h);
     }
 
     onMouseDown = (e) => {}
-    onMouseUp = (e) => {}
+    onMouseUp =  (e) => {}
     onMouseMove = (e) => {}
     onMouseHover = (e) => {}
     onMouseLeave = (e) => {}
@@ -40,9 +41,14 @@ export default  class Obj {
     steps = (ctx) => {}
     
     main = (ctx) => {
-        this.draw(ctx);
         this.steps(ctx);
-        if (this.sprite) this.sprite.main(ctx);
+        if (!this.GAME.room.room.camara.target) {
+            this.draw(ctx, this.x, this.y);
+            if (this.sprite) this.sprite.main(ctx);
+        }
+        else {
+            this.GAME.room.room.camara.main(ctx, this);
+        }
         if (this.hitBox) this.hitBox.main(ctx);
     }
 }

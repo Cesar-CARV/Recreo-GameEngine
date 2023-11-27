@@ -6,16 +6,16 @@ export default class Wall extends Obj {
         super(game, x, y, w, h);
         this.speed = speed;
         this.flipV = flipV;
-        this.hitBox = new HitBox(this, 0, 0, this.w, this.h, 1, [], true);
+        this.hitBox = new HitBox(this, 0, 0, this.w, this.h, 1, [], false);
     }
 
-    draw = (ctx) => {
+    draw = (ctx, dX, dY) => {
 
         ctx.fillStyle = "#88aa33";
-        ctx.fillRect(this.x + 5, this.y, this.w - 10, this.h);
+        ctx.fillRect(dX + 5, dY, this.w - 10, this.h);
 
-        if (!this.flipV) ctx.fillRect(this.x, this.y, this.w, 30);
-        else ctx.fillRect(this.x, this.y + this.h - 30, this.w, 30);
+        if (!this.flipV) ctx.fillRect(dX, dY, this.w, 30);
+        else ctx.fillRect(dX, dY + this.h - 30, this.w, 30);
     }
 
     collitions = (ctx) => {

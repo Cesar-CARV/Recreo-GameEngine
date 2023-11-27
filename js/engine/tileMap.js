@@ -15,6 +15,10 @@ export default class TileMap extends Obj{
     }
 
     draw = (ctx) => {
+
+        const camaX = this.GAME.room.room.camara ? this.GAME.room.room.camara.x : 0;
+        const camaY = this.GAME.room.room.camara ? this.GAME.room.room.camara.y : 0;
+
         this.tiles.forEach(tile => {
             ctx.drawImage(
                 this.img, // image
@@ -22,8 +26,8 @@ export default class TileMap extends Obj{
                 tile.ofSetY, // cut y
                 tile.cutW, // cut w
                 tile.cutH, // cut h
-                tile.x, // image x
-                tile.y, // image y
+                tile.x - camaX, // image x
+                tile.y - camaY, // image y
                 this.tileWidth, // image w
                 this.tileHeight // image h
             );

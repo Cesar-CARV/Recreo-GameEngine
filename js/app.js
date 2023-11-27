@@ -20,11 +20,14 @@ const GAME = new Game($gameDisplay, $gameInput, 700, 500, 64);
 // ---------------------- INSTANCES -----------------------
 // obj
 let obj = new Obj(GAME, 0, GAME.display.h - 60, GAME.display.w, 60);
+obj.draw = () => {} 
 // bird
 let bird = new Bird(GAME, GAME.display.w / 2 - 15, GAME.display.h / 2 - 15, 30, 30);
 // wall
 let wall = new Wall(GAME, GAME.display.w, 300, 50, 100, 4, false);
 
+// bird Room2
+let bird2 =new Bird(GAME, GAME.display.w / 2 - 15, GAME.display.h / 2 - 15, 30, 30)
 
 // stopButon
 let stopButton = new UIButton(GAME, 5, 5, 0, 0, "STOP");
@@ -56,10 +59,10 @@ let input = new UIInput(GAME, 100, 30, 0, 0, "")
 
 // TileMap1
 let tileMap = new TileMap(GAME, "./../tileMapTest.png", 32, 32);
-tileMap.addTile(100, 100, 0, 0, 16, 16);
-tileMap.addTile(100, 132, 16, 0, 16, 16);
-tileMap.addTile(132, 100, 16, 16, 16, 16);
-
+for (let i = 0; i < GAME.display.w / 32; i ++){
+    tileMap.addTile(32 * i, GAME.display.h - 60, 0, 0, 16, 16);
+    tileMap.addTile(32 * i, GAME.display.h - 28, 16, 0, 16, 16);
+}
 // ------------------------- ROOM -------------------------
 let room1 = new Room(GAME, GAME.display.w, GAME.display.h);
 room1.addInstance(bird);
@@ -68,18 +71,21 @@ room1.addInstance(wall);
 room1.addInstance(stopButton, true);
 room1.addInstance(resetGame, true);
 room1.tileMapLayer1 = tileMap;
+room1.camara.setTarget(bird);
 
-let room2 = new Room(GAME, GAME.display.w, GAME.display.h);
-room2.addInstance(new Bird(GAME, GAME.display.w / 2 - 15, GAME.display.h / 2 - 15, 30, 30));
-room2.addInstance(obj);
+let room2 = new Room(GAME, GAME.display.w + 60, GAME.display.h);
+room2.addInstance(bird2);
+room2.addInstance(new Obj(GAME, 0, GAME.display.h - 60, GAME.display.w + 30, 60));
+room2.addInstance(new Obj(GAME, GAME.display.w + 30, GAME.display.h - 90, 30, 30));
 room2.addInstance(stopButton, true);
 room2.addInstance(ui2Button, true);
 room2.addInstance(input, true);
 room2.addInstance(new UILabel(GAME, 100, 120, 0, 0, "SCORE:", 20), true);
+room2.camara.setTarget(bird2);
 
 GAME.addRoom("room1", room1);
 GAME.addRoom("testRoom", room2);
-GAME.changeRoom("room1");
+GAME.changeRoom("testRoom");
 
 GAME.startGame();
 

@@ -1,4 +1,5 @@
 import TileMap from "./tileMap.js";
+import Camara from "./camara.js";
 
 export default  class Room {
     constructor(game, w, h){
@@ -10,6 +11,7 @@ export default  class Room {
         this.tileMapLayer1 = undefined
         this.tileMapLayer2 = undefined
         this.tileMapLayer3 = undefined
+        this.camara = new Camara(game, this);
     }
 
     addBackground = (bg) => {
