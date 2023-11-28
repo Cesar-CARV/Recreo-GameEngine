@@ -172,7 +172,7 @@ export default class Game {
     }
 
     renderRoom = () => {
-        this.gameInstances = this.room.room.instances;
+        this.gameInstances = [...this.room.room.instances];
     }
     
     changeRoom = (roomName, saveState = false) => {
