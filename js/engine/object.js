@@ -46,9 +46,6 @@ export default  class Obj {
             this.draw(ctx, this.x, this.y);
             if (this.sprite) this.sprite.main(ctx);
         }
-        else {
-            this.GAME.room.room.camara.main(ctx, this);
-        }
         if (this.hitBox) this.hitBox.main(ctx);
     }
 }

@@ -78,7 +78,7 @@ export default class Bird extends Obj {
                     this.sprite.setGrid(3, 3, 16, 16);
                     this.sprite.startAnimation(100, 0);
                     this.sprite.animationEnds = () => {
-                        let resetGameButton = this.GAME.findByQuery("UIButton",[{key:"text", value:"Reset Game"}])[0];
+                        let resetGameButton = this.GAME.findByQuery("UIButton",[{key:"text", value:"Reset Game ⏱️"}])[0];
 
                         if (!resetGameButton) return;
         

@@ -1,3 +1,4 @@
+import Obj from "./object.js";
 import Display from "./diplay.js";
 
 export default class Game {
@@ -172,7 +173,8 @@ export default class Game {
     }
 
     renderRoom = () => {
-        this.gameInstances = [...this.room.room.instances];
+        this.gameInstances = this.room.room.instances;
+        if (this.room.room.instances.length % 2 === 0) this.room.room.addInstance(new Obj(this, -100, -100, 0, 0)); 
     }
     
     changeRoom = (roomName, saveState = false) => {
@@ -233,13 +235,18 @@ export default class Game {
 
         if (this.room) this.room.room.draw(this.ctx);
         
+        
         this.gameInstances.forEach(instance => {
+            this.room.room.camara.calculatePosCamara(this.ctx);
+
             if (instance.isPauseable === true){
                 if (this.pauseGame === false){
                     instance.main(this.ctx);
+                    this.room.room.camara.drawInstanceOnCamara(this.ctx, instance);
                 }
                 else {
                     instance.draw(this.ctx);
+                    this.room.room.camara.drawInstanceOnCamara(this.ctx, instance);
                 }
             }
             else if (instance.UI){

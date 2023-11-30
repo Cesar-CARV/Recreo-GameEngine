@@ -1,15 +1,18 @@
 import UI from './UI.js';
 
 export default class UIButton extends UI {
-    constructor(game, x, y, w, h, text, fontSize = 16, backgroundColor = "#eee", color = "#232323", padding = 16, border = true) {
+    constructor(game, x, y, w, h, text, fontSize = 16, bgColor = "#eee", bgColorHover = "#222", color = "#232323", colorHover = "#fff", padding = 16, border = true) {
         super(game, x, y, w, h);
         
         this.text = text;
         this.fontSize = fontSize;
-        this.backgroundColor = backgroundColor;
-        this.bgHover = "#ccc";
+        this.backgroundColor = bgColor;
+        this.bgHover = bgColorHover;
         this.bgNoHover = this.backgroundColor;
         this.color = color;
+        this.colorHover = colorHover;
+        this.colorNoHover = this.color;
+
         this.padding = padding;
         this.border = border;
         this.textSize = 0;
@@ -32,7 +35,8 @@ export default class UIButton extends UI {
     }
 
     steps = (ctx) => {
-        this.backgroundColor = this.hover ? this.bgHover : this.bgNoHover;  
+        this.backgroundColor = this.hover ? this.bgHover : this.bgNoHover;
+        this.color = this.hover ? this.colorHover : this.colorNoHover;
 
         if (this.w === 0) {
             this.hitBox.w = this.textSize + this.padding * 2;
