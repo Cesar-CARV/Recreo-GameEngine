@@ -144,6 +144,23 @@ export default class Game {
         return [!colInstance.length > 0 , colInstance];
     }
 
+    isFreeAtPoint = (x, y) => {
+        let colInstance = [];
+        
+        this.gameInstances.forEach((instance) => {
+            if (instance.UI) return;
+
+            if (x >= instance.hitBox.x && x <= instance.hitBox.x + instance.hitBox.w &&
+                y >= instance.hitBox.y && y <= instance.hitBox.y + instance.hitBox.h
+            ) {
+                    if (!instance.UI) colInstance.push(instance);
+                    return;
+            }
+        });
+
+        return [!colInstance.length > 0 , colInstance];
+    }
+
     getMouseCords = (e) => {
         return {X: e.offsetX - e.target.style.left, Y: e.offsetY - e.target.style.top};
     }

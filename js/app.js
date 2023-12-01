@@ -82,8 +82,9 @@ room1.camara.setTarget(bird);
 let room2 = new Room(GAME, GAME.display.w * 2, GAME.display.h + 60);
 room2.addInstance(bird2);
 room2.addInstance(new Obj(GAME, 0, GAME.display.h - 60, GAME.display.w, 60));
+room2.addInstance(new Obj(GAME, 0, 0, GAME.display.w, 60));
 room2.addInstance(new Obj(GAME, GAME.display.w + 30, GAME.display.h - 90, 30, 30));
-//room2.addInstance(new Obj(GAME, GAME.display.w, GAME.display.h - 30, 30, 30));
+room2.addInstance(new Obj(GAME, GAME.display.w, GAME.display.h - 30, 30, 30));
 room2.addInstance(new Obj(GAME, GAME.display.w, GAME.display.h - 120, 30, 30));
 room2.addInstance(stopButton, true);
 room2.addInstance(ui2Button, true);
@@ -94,7 +95,7 @@ room2.camara.setTarget(bird2);
 
 GAME.addRoom("room1", room1);
 GAME.addRoom("testRoom", room2);
-GAME.changeRoom("room1");
+GAME.changeRoom("testRoom");
 
 GAME.startGame();
 
