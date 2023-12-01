@@ -252,7 +252,6 @@ export default class Game {
 
         if (this.room) this.room.room.draw(this.ctx);
         
-        
         this.gameInstances.forEach(instance => {
             this.room.room.camara.calculatePosCamara(this.ctx);
 
@@ -270,6 +269,8 @@ export default class Game {
                 instance.main(this.ctx);
             }
         });
+
+        this.display.INPUT.style.cursor = this.hoverUI ? "pointer" : "default";
     }
 
 }

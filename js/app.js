@@ -40,17 +40,17 @@ let resetGame = new UIButton(GAME, 0, 220, 140, 40, "Reset Game ⏱️");
 resetGame.isPauseable = false;
 resetGame.visible = false;
 resetGame.onMouseDown = (e) => {
-    bird.restartValues();
+    room1.camara.x = 0;
+    room1.camara.y = 0;
     wall.x = GAME.display.w;
     wall.y = 300;
+    bird.restartValues();
     GAME.pauseGame = false;
     GAME.hoverUI = false;
     resetGame.mouseOn = false;
     resetGame.hover = false;
     resetGame.leave = false;
     resetGame.visible = false;
-    room1.camara.x = 0;
-    room1.camara.y = 0;
 }
 resetGame.onMouseUp = (e) => $gameInput.focus();
 
@@ -95,7 +95,7 @@ room2.camara.setTarget(bird2);
 
 GAME.addRoom("room1", room1);
 GAME.addRoom("testRoom", room2);
-GAME.changeRoom("testRoom");
+GAME.changeRoom("room1");
 
 GAME.startGame();
 
