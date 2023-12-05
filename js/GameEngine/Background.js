@@ -6,7 +6,7 @@ export default class Background extends Object{
         this._IMAGE = new Image();
         this._IMAGE.src = imageURL !== undefined ? imageURL : "";
         this.url = imageURL !== undefined;
-        this.canDraw = false;
+        this.canDraw = imageURL === undefined ? true : false;
         this._IMAGE.onload = () => {
             this.canDraw = true;
         };

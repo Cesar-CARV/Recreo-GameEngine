@@ -64,7 +64,7 @@ testRoom.addInstance(new UIInput(GAME, 100, 400, 0,0, "", "PLACEHOLDER", 30), tr
 testRoom.addInstance(new UILabel(GAME, 200, 100, 0,0, "Hola Mundo Desde Una Label", 10), true);
 testRoom.addInstance(stopButton, true);
 testRoom.setCamara(new Camara(GAME, testRoom, GAME.ctx, 0, 0, GAME.w, GAME.h, player));
-//testRoom.addBackground(new Background(GAME, 0, 0, GAME.w, GAME.h, undefined, "#000"));
+testRoom.addBackground(new Background(GAME, 0, 0, GAME.w, GAME.h, undefined, "#56f"));
 //testRoom.camara.mode = testRoom.camara.MODES.Borders;
 testRoom.tileMapLayer1 = tileMap;
 
