@@ -15,23 +15,23 @@ export default class UILabel extends UI {
 
     draw = (ctx) => {
         ctx.fillStyle = this.backgroundColor;
-        ctx.fillRect(this.x, this.y, this.hitBox.w, this.hitBox.h);
+        ctx.fillRect(this.x, this.y, this.w, this.h);
         
         if (this.border){
             ctx.strokeStyle = "#000";
-            ctx.strokeRect(this.x, this.y, this.hitBox.w, this.hitBox.h);
+            ctx.strokeRect(this.x, this.y, this.w, this.h);
         }
 
         ctx.fillStyle = this.color;
         ctx.font = `${this.fontSize}px monospace`;
         this.textSize = ctx.measureText(this.text).width;
-        ctx.fillText(this.text, (this.x + this.hitBox.w / 2) - (this.textSize / 2), this.y + this.hitBox.h / 2 + this.fontSize / 3);
+        ctx.fillText(this.text, (this.x + this.w / 2) - (this.textSize / 2), this.y + this.h / 2 + this.fontSize / 3);
 
     }
 
     steps = (ctx) => {
-        this.hitBox.w = this.textSize + this.padding * 2;
-        this.hitBox.h = this.fontSize + this.padding;
+        this.w = this.textSize + this.padding * 2;
+        this.h = this.fontSize + this.padding;
     }
 
 }

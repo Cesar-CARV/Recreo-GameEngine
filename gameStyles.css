@@ -29,6 +29,11 @@
     cursor: default;
 }
 
+#game__input:focus {
+    border-radius: .1rem;
+    outline: solid 2px #000;
+}
+
 .game-container {
     display: flex;
     justify-content: center;
