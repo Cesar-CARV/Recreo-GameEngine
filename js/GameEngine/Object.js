@@ -7,6 +7,7 @@ export default class Object {
         this.h = h;
         this._SPRITE = undefined;
         this._ANIMATOR = undefined;
+        this._BOXCOLLIDER = undefined;
     }
 
     draw = (ctx) => {
@@ -18,9 +19,9 @@ export default class Object {
     
     main = (ctx) => {
         this.steps(ctx);
+        if (this._BOXCOLLIDER) {this._BOXCOLLIDER.main(ctx);}
         if (this._SPRITE) {this._SPRITE.main(ctx);}
         if (this._ANIMATOR) {this._ANIMATOR.main(ctx);}
         this.draw(ctx);
-        if (this.hitBox) this.hitBox.main(ctx);
     }
 }

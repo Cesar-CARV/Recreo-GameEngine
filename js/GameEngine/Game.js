@@ -36,21 +36,21 @@ export default class Game {
         this.ctx = this.canvas.getContext("2d");
         this.ctx.imageSmoothingEnabled = false;
     }
-
+    
     //#region ROOM
     getRoomNames = () => this.rooms.map(rm => rm.name);
     getRoom = () => this.currentRoom;
     addRoom = (room) => this.rooms.push(room);
     changeRoom = (roomName, saveState = false) => {
         this.hoverUI = false;
-        this.lastRoom = saveState ? this.room : undefined;
+        this.lastRoom = saveState ? this.currentRoom : undefined;
         this.currentRoom = this.rooms.filter(rm => rm.name === roomName)[0];
     }
     //#endregion
 
     //#region SETUP GAME
     startGame = () => {
-        this.gameLoop = setInterval(this.main, Math.floor(1000 / this.tiks));
+        this.gameLoop = setInterval(this.main, Math.floor(1000  / this.ticks));
     }
 
     stopGame = () => {

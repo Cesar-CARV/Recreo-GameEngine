@@ -11,10 +11,20 @@ export default class Room {
         this.tileMapLayer1 = undefined;
         this.tileMapLayer2 = undefined;
         this.tileMapLayer3 = undefined;
+
+        //this.boxColliderColliding = new Set();
     }
+
+    /*checkBoxColliders = (instance) => {
+        
+    }*/
 
     addBackground = (bg) => {
         this.backgrounds.push(bg); 
+    }
+
+    setCamara = (camara) => {
+        this.camara = camara;
     }
 
     addInstance = (inst, UI = false) => {
@@ -25,10 +35,6 @@ export default class Room {
     removeInstance = (inst) => {
         if (UI) this.instancesUI = this.instancesUI.filter(x => x !== inst);
         else this.instances = this.instances.filter(x => x !== inst);
-    }
-
-    setCamara = (camara) => {
-        this.camara = camara;
     }
 
     draw = (ctx) => {
@@ -66,14 +72,15 @@ export default class Room {
             ctx.clearRect(0, 0, this.w, this.h);
 
             this.draw(ctx);
-            this.instances.forEach(instence => {
-                instence.main(ctx);
+            this.instances.forEach(instance => {
+                //this.checkBoxColliders(instance);
+                instance.main(ctx);
             });
         }
 
         // UI INSTANCES
-        this.instancesUI.forEach(instenceUI => {
-            instenceUI.main(ctx);
+        this.instancesUI.forEach(instanceUI => {
+            instanceUI.main(ctx);
         });
     }
 }

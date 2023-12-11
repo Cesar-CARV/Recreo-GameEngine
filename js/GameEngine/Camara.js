@@ -37,29 +37,19 @@ export default class Camara {
             if (this.mode === this.MODES.Center) {
                 // move x to center
                 if (this.target.x + this.target.w / 2 > this.w / 2 || this.target.x + this.target.w / 2 < this.w / 2) {
-                    //if (this.room.w >= this.GAME.w) {
-                        this.x = this.target.x + this.target.w / 2 - this.w / 2;
-                    //};
+                    this.x = this.target.x + this.target.w / 2 - this.w / 2;
                 }
                 // move y to center
                 if (this.target.y + this.target.h / 2 > this.h / 2 || this.target.y + this.target.h / 2 < this.h / 2) {
-                    //if (this.room.h >= this.GAME.h) {
-                        this.y = this.target.y + this.target.h / 2 - this.h / 2;
-                    //}
+                    this.y = this.target.y + this.target.h / 2 - this.h / 2;
                 }
-                
-                // collitions center
-                if (this.x < 0) this.x = 0;
-                else if (this.x + this.w > this.room.w) this.x = this.room.w - this.w;
-                if (this.y < 0) this.y = 0;
-                else if (this.y + this.h > this.room.h) this.y = this.room.h - this.h;
             }
             else if (this.mode === this.MODES.Borders) {
                 // move directions
                 const dirX = Math.sign(-1 * (this.x + this.w - this.target.x - this.target.w));
                 const dirY = Math.sign(-1 * (this.y+ this.h - this.target.y - this.target.h));
 
-                // move x to border right
+                // move x to border
                 if (this.target.x + this.target.w > this.w && this.x + this.w < this.room.w && dirX > 0) {
                     this.x = this.target.x + this.target.w - this.w;
                 }
@@ -67,7 +57,7 @@ export default class Camara {
                     this.x = this.target.x;
                 }
                 
-                // move x to border left
+                // move y to border
                 if (this.target.y + this.target.h > this.h && this.y + this.h < this.room.h && dirY > 0) {
                     this.y = this.target.y + this.target.h - this.h;
                 }
@@ -75,6 +65,12 @@ export default class Camara {
                     this.y = this.target.y;
                 }
             }
+
+            // collitions
+            if (this.x < 0) this.x = 0;
+            else if (this.x + this.w > this.room.w) this.x = this.room.w - this.w;
+            if (this.y < 0) this.y = 0;
+            else if (this.y + this.h > this.room.h) this.y = this.room.h - this.h;
         }
 
         // move camara
