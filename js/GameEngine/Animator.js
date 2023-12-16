@@ -26,9 +26,12 @@ class SpriteAnimator {
     }
 
     playAnimation = () => {
+        
         this.frame = this.frame > this.frames ? this.frames : this.frame;
-
+        
         this.#animationLoop = setInterval(() => {
+            if (this.parent._GAME.pauseGame) return;
+            
             if (this.repeat) this.frame = this.frame >= this.frames ? 0 : this.frame + 1;
             else this.frame = this.frame < this.frames ? this.frame + 1 : this.frame;
 

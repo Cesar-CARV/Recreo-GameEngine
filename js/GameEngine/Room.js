@@ -1,6 +1,8 @@
+import { SpriteAnimator } from "./Animator.js";
+
 export default class Room {
     constructor(GAME, w, h, name) {
-        this.GAME = GAME;
+        this._GAME = GAME;
         this.w = w;
         this.h = h;
         this.name = name;
@@ -11,13 +13,7 @@ export default class Room {
         this.tileMapLayer1 = undefined;
         this.tileMapLayer2 = undefined;
         this.tileMapLayer3 = undefined;
-
-        //this.boxColliderColliding = new Set();
     }
-
-    /*checkBoxColliders = (instance) => {
-        
-    }*/
 
     addBackground = (bg) => {
         this.backgrounds.push(bg); 
@@ -50,19 +46,22 @@ export default class Room {
             this.camara.steps();
             this.camara.moveCamara();
             this.draw(ctx);
-            this.instances.forEach(instence => {
-                this.camara.render(instence);
+            this.instances.forEach(instance => {
+                this.camara.render(instance);
+                if (instance._CHILDS !== new Array()) { 
+                    instance._CHILDS.forEach(child => this.camara.render(child.obj));
+                }
             });
             this.camara.resetCamara();
         }
         else {
             // clip rooom
             ctx.beginPath();
-            ctx.rect(0, 0, this.GAME.w, this.GAME.h);
+            ctx.rect(0, 0, this._GAME.w, this._GAME.h);
             ctx.clip();
             
             ctx.fillStyle = "#000";
-            ctx.fillRect(0, 0, this.GAME.w, this.GAME.h);
+            ctx.fillRect(0, 0, this._GAME.w, this._GAME.h);
 
             // clip room
             ctx.beginPath();
@@ -73,8 +72,18 @@ export default class Room {
 
             this.draw(ctx);
             this.instances.forEach(instance => {
-                //this.checkBoxColliders(instance);
-                instance.main(ctx);
+                if (!this._GAME.pauseGame) {instance.main(ctx);}
+                else {instance.draw(ctx);}
+
+                if (instance._CHILDS !== new Array()) { 
+                    instance._CHILDS.forEach(child => {
+                        if (!this._GAME.pauseGame) {child.obj.main(ctx);}
+                        else {
+                            if (child.obj.draw) child.obj.draw(ctx);
+                            if (child.obj instanceof SpriteAnimator) {child.obj.main(ctx);}
+                        }
+                    });
+                }
             });
         }
 

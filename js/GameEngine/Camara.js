@@ -1,6 +1,8 @@
+import { SpriteAnimator } from "./Animator.js";
+
 export default class Camara {
     constructor(GAME, room, ctx, x, y, w, h, target = undefined, border = false){
-        this.GAME = GAME;
+        this._GAME = GAME;
         this.room = room;
         this.ctx = ctx;
         this.absoluteX = x;
@@ -18,11 +20,11 @@ export default class Camara {
     clearCamara = () => {
         // clip camara
         this.ctx.beginPath();
-        this.ctx.rect(0, 0, this.GAME.w, this.GAME.h);
+        this.ctx.rect(0, 0, this._GAME.w, this._GAME.h);
         this.ctx.clip();
         
         this.ctx.fillStyle = "#000";
-        this.ctx.fillRect(0, 0, this.GAME.w, this.GAME.h);
+        this.ctx.fillRect(0, 0, this._GAME.w, this._GAME.h);
 
         // clip camara
         this.ctx.beginPath();
@@ -94,6 +96,10 @@ export default class Camara {
 
     render = (instance) => {
         // execute instance main
-        instance.main(this.ctx);
+        if (!this._GAME.pauseGame) {instance.main(this.ctx);}
+        else {
+            if (instance.draw) instance.draw(this.ctx);
+            if (instance instanceof SpriteAnimator) {instance.main(this.ctx);}
+        }
     }
 }

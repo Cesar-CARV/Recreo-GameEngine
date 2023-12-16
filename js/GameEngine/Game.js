@@ -61,6 +61,7 @@ export default class Game {
     main = () => {
         Time.main();
         console.log(`GAME RUNING ON ${this.ticks} TIKS, HOVER = ${this.hoverUI}`);
+        if (Time.deltaTime > 10) return;
         if (this.currentRoom) this.currentRoom.main(this.ctx);
     }
     //#endregion
