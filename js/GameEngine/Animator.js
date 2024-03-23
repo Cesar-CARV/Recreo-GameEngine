@@ -1,3 +1,4 @@
+// esta clase puede quedar igual ya que como no se puede agregar como hijo a otra clase no pasa nada
 class KeyFrame {
     constructor(cutX, cutY, cutW, cutH, w, h, offsetX = 0, offsetY = 0) {
         this.cutX = cutX;
@@ -11,7 +12,10 @@ class KeyFrame {
     }
 }
 
-class SpriteAnimator {
+// PENDIENTE MODIFICAR SpriteAnimator 
+// dado que SpriteAnimator es un objeto que puede ser agregado como hijo a otros objetos este tambien
+// deberia de heredar de la clase Object par que no cause problemas a la hora de renderizar
+class SpriteAnimator { 
     #animationLoop = undefined;
 
     constructor(parent, sprite, keyFrames, follow = true, time = 1000 / 12, repeat = true) {
@@ -25,7 +29,7 @@ class SpriteAnimator {
         this.repeat = repeat;
     }
 
-    playAnimation = () => {
+    play = () => {
         
         this.frame = this.frame > this.frames ? this.frames : this.frame;
         
@@ -39,10 +43,12 @@ class SpriteAnimator {
         }, this.time);
     }
 
-    stopAnimation = () => {
+    stop = () => {
         clearInterval(this.#animationLoop);
     }
 
+    // una vez que SpriteAnimator herede de la clase Object todo lo que hace esta funcion
+    // pasara a estar dentro de la funcion draw ya que lo unico que hace es dibujar los sprites
     main = (ctx) => {
         if (this.frames === -1 && !this.follow) { this.sprite.draw(ctx); }
         else if (this.frames === -1 && this.follow) { this.sprite.drawFollowTarget(ctx, this.parent); }

@@ -1,32 +1,68 @@
+import Vector2 from "./Vector2.js";
+
 export default class Object {
     constructor(GAME, x, y, w, h) {
         this._GAME = GAME;
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this._SPRITE = undefined;
-        this._ANIMATOR = undefined;
-        this._BOXCOLLIDER = undefined;
-        this._CHILDS = [];
+        this._PARENT = undefined; // padre directo
+        this._CHILDREN = []; // hijos del objeto
+        this.position = new Vector2(x, y); // posicion del objeto, nota: la posicion es relativa a el padre
+        this.size = new Vector2(w, h);
     }
 
-    draw = (ctx) => {
-        ctx.fillStyle = "#363636";
-        ctx.fillRect(this.x, this.y, this.w, this.h);
-    }
+    // actualiza la posicion de el objeto segun la posicion del padre
+    updatePosition = () => {
+        this.position = this._PARENT
+            ? new Vector2(
+                  this._PARENT.position.x + this.position.x,
+                  this._PARENT.position.y + this.position.y
+              )
+            : this.position;
+    };
 
-    addChild = (obj, name) => { this._CHILDS.push({name: name, obj: obj});}
+    // reinicia la posicion del objeto para que no cresca exponecialmente al sumar la posicion del padre
+    restartPosition = () => {
+        this.position = this._PARENT
+            ? new Vector2(
+                  this.position.x - this._PARENT.position.x,
+                  this.position.y - this._PARENT.position.y
+              )
+            : this.position;
+    };
+
+    // agrega un hijo al array de _CHILDREN y le agrega un nombre
+    addChild = (obj, name) => {
+        this._CHILDREN.push({ name: name, obj: obj });
+        obj._PARENT = this;
+    };
+
+    // retorna un hijo segun el nombre
     getChild = (name) => {
-        const child = this._CHILDS.filter(ch => ch.name === name)[0];
+        const child = this._CHILDREN.filter((ch) => ch.name === name)[0];
         return child ? child.obj : child;
-    }
-    delteChild = (name) => {this._CHILDS = this._CHILDS.filter(ch => ch.name !== name);}
+    };
 
-    steps = () => {}
-    
+    // elimina un hijo segun el nombre
+    delteChild = (name) => {
+        this._CHILDREN = this._CHILDREN.filter((ch) => ch.name !== name);
+    };
+
+    // dentro de esta funcion se podra utilizar el ContextGraphic del canvas para dibujar cualquier cosa
+    // como recomendacion solo utilizarla para dibujar ya que si se afecta al ContextGraphic de cierto modo
+    // esto podria afectar a el resto de el motor
+    draw = (ctx) => {};
+
+    // en este evento es donde se programaran las acciones del objeto,
+    // esta es la funcion un bucle del objeto
+    steps = () => {};
+
+    // como recomendacion no modificar esta funcion ya que esta llama a las funciones internas del objeto
+    // al ser renderizado
+    // NOTA: si se llega a modificar esta funcion procurar seguir el mismo orden y de preferencia no borrar
+    //       los metodos originales.
     main = (ctx) => {
-        this.steps(ctx);
+        this.updatePosition();
+        this.steps();
         this.draw(ctx);
-    }
+        this.restartPosition();
+    };
 }

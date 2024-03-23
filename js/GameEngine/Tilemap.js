@@ -49,8 +49,8 @@ export default class Tilemap extends Object{
         else {
             ctx.drawImage(
                 this.tileImage, // image
-                this.x, // image x
-                this.y, // image y
+                this.position.x, // image x
+                this.position.y, // image y
                 this._GAME.currentRoom.w,
                 this._GAME.currentRoom.h
             );
