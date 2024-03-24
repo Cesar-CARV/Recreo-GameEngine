@@ -1,70 +1,53 @@
-export default class Sprite {
-    constructor(x, y, w, h, url, autoDraw = true){
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
+import Object from "./Object.js";
+
+// MODIFICAR ESTA CLASE PRIMERO PARA COMENZAR CON LA NUEVAS FUNCIONALIDADES
+// SE TIENE QUE HACER QUE SPRITE HEREDE DE LA CLASE OBJECT
+
+export default class Sprite extends Object {
+    constructor(GAME, x, y, w, h, url) {
+        super(GAME, x, y, w, h);
+        this.url = url;
         this._IMAGE = new Image(w, h);
         this._IMAGE.src = url;
         this.canDraw = false;
         this._IMAGE.onload = () => {
             this.canDraw = true;
         };
-        this.autoDraw = autoDraw;
+
+        this.cutX = undefined;
+        this.cutY = undefined;
+        this.cutW = undefined;
+        this.cutH = undefined;
     }
 
-    draw = (ctx,  offsetX = 0, offsetY = 0) => {
+    draw = (ctx) => {
         if (!this.canDraw) return;
 
-        ctx.drawImage(this._IMAGE, this.x + offsetX, this.y + offsetY, this.w, this.h);
+        if (
+            this.cutX !== undefined &&
+            this.cutY !== undefined &&
+            this.cutW !== undefined &&
+            this.cutH !== undefined
+        ) {
+            ctx.drawImage(
+                this._IMAGE, // image
+                this.cutX, // cut x
+                this.cutY, // cut y
+                this.cutW, // cut w
+                this.cutH, // cut h
+                this.position.x, // sprite x
+                this.position.y, // sprite y
+                this.size.x, // sprite w
+                this.size.y // sprite h
+            );
+        } else {
+            ctx.drawImage(
+                this._IMAGE,
+                this.position.x,
+                this.position.y,
+                this.size.x,
+                this.size.y
+            );
+        }
     };
-
-    drawAtPoint = (ctx, x, y) => {
-        if (!this.canDraw) return;
-
-        ctx.drawImage(this._IMAGE, x, y, this.w, this.h);
-    }
-
-    drawFollowTarget = (ctx, target,  offsetX = 0, offsetY = 0) => {
-        if (!this.canDraw) return;
-
-        this.x = target.x;
-        this.y = target.y;
-        this.draw(ctx, offsetX, offsetY);
-    }
-
-    drawCut = (ctx, cutX, cutY, cutW, cutH, offsetX, offsetY, w, h) => {
-        if (!this.canDraw) return;
-
-        ctx.drawImage(
-            this._IMAGE, // image
-            cutX, // cut x
-            cutY, // cut y
-            cutW, // cut w
-            cutH, // cut h
-            this.x + offsetX, // image x
-            this.y + offsetY, // image y
-            w, // image w
-            h // image h
-        );
-    }
-
-    drawCutAndFollowTarget = (ctx, target, cutX, cutY, cutW, cutH,  offsetX, offsetY, w, h) => {
-        this.x = target.x;
-        this.y = target.y;
-
-        ctx.drawImage(
-            this._IMAGE, // image
-            cutX, // cut x
-            cutY, // cut y
-            cutW, // cut w
-            cutH, // cut h
-            this.x + offsetX, // image x
-            this.y + offsetY, // image y
-            w, // image w
-            h // image h
-        );
-    }
-
-    main = (ctx) => {if (this.autoDraw) this.draw(ctx)}
 }

@@ -107,8 +107,14 @@ const GAME = new Game($game, $gameCanvas, $gameInput, 700, 500, 64);
 // GAME.addRoom(testRoom);
 // GAME.changeRoom("testRoom");
 // GAME.startGame();
+const playerSprite = new Sprite(GAME, 0, 0, 50, 50, './../spriteTest.png');
+playerSprite.cutX = 0;
+playerSprite.cutY = 0;
+playerSprite.cutW = 16;
+playerSprite.cutH = 16;
 
 const player = new Object(GAME, 10, 10, 50, 50);
+player.addChild(playerSprite, "sprite");
 player.draw = (ctx) => {
     ctx.fillStyle = "#363636";
     ctx.fillRect(player.position.x, player.position.y, player.size.x, player.size.y);
@@ -117,10 +123,12 @@ player.draw = (ctx) => {
 player.steps = () => {
     if (Input.GetKeyPress("a")) player.position.x -= 40 * Time.deltaTime * 10;
     if (Input.GetKeyPress("d")) player.position.x += 40 * Time.deltaTime * 10;
+    if (Input.GetKeyPress("w")) player.position.y -= 40 * Time.deltaTime * 10;
+    if (Input.GetKeyPress("s")) player.position.y += 40 * Time.deltaTime * 10;
 }
 
 const playerContainer = new Object(GAME, 10, 10, 200, 200);
-playerContainer.addChild(player, "player")
+playerContainer.addChild(player, "player");
 playerContainer.draw = (ctx) => {
     ctx.fillStyle = "#222";
     ctx.fillRect(playerContainer.position.x, playerContainer.position.y, playerContainer.size.x, playerContainer.size.y);
@@ -145,3 +153,5 @@ room1.addInstance(pauseButton, true);
 GAME.addRoom(room1);
 GAME.changeRoom("Room1_test", false);
 GAME.startGame();
+
+console.log(playerContainer);
