@@ -52,10 +52,10 @@ export default class Room {
         } else {
             obj.updatePosition();
             obj.draw(ctx);
-            obj.restartPosition();
+            // obj.restartPosition(); // se comento esta linea para solucionar un error de seguimiento al poner pause
         }
 
-        obj._CHILDREN.forEach(child => {
+        obj._CHILDREN.forEach((child) => {
             this.renderObejct(child.obj, ctx);
         });
 
@@ -89,7 +89,7 @@ export default class Room {
             // y pasarle como parametros las medidas de la camara.
             // si no hay una camara asignada pasar los valroes de el room
             this._GAME.clipContextGraphic(this.w, this.h);
-            
+
             this.draw(ctx);
             // renderizar objetos
             this._INSTANCES.forEach((instance) => {

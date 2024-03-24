@@ -11,20 +11,27 @@ export default class Sprite extends Object {
             this.canDraw = true;
         };
 
+        // coordenadas y medidas de el recorte que se realizara a la imagen
         this.cutX = undefined;
         this.cutY = undefined;
         this.cutW = undefined;
         this.cutH = undefined;
+        this.tileWidth = undefined;
+        this.tileHeight = undefined;
     }
 
     draw = (ctx) => {
         if (!this.canDraw) return;
 
+        // comprueba si no hay las coordenadas y medidas del recorte estan completas
+        // de ser asi se dibujar la imagen recortada, si no se dibujara completa.
         if (
             this.cutX !== undefined &&
             this.cutY !== undefined &&
             this.cutW !== undefined &&
-            this.cutH !== undefined
+            this.cutH !== undefined &&
+            this.tileWidth !== undefined &&
+            this.tileHeight !== undefined
         ) {
             ctx.drawImage(
                 this._IMAGE, // image
@@ -34,8 +41,8 @@ export default class Sprite extends Object {
                 this.cutH, // cut h
                 this.position.x, // sprite x
                 this.position.y, // sprite y
-                this.size.x, // sprite w
-                this.size.y // sprite h
+                this.tileWidth, // sprite w
+                this.tileHeight // sprite h
             );
         } else {
             ctx.drawImage(

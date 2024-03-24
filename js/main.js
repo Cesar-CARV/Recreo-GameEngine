@@ -7,16 +7,16 @@ import UIButton from "./GameEngine/UI.Button.js";
 import UIInput from "./GameEngine/UI.Input.js";
 import UILabel from "./GameEngine/UI.Label.js";
 import Sprite from "./GameEngine/Sprite.js";
-import {SpriteAnimator, KeyFrame} from "./GameEngine/Animator.js";
+import { SpriteAnimator, KeyFrame } from "./GameEngine/Animator.js";
 import Background from "./GameEngine/Background.js";
 import Time from "./GameEngine/Time.js";
 import Tilemap from "./GameEngine/Tilemap.js";
 import BoxCollider from "./GameEngine/BoxCollider.js";
 
 // -------------------- GAME SETTINGS ---------------------
-const $game = document.querySelector('#game');
-const $gameInput = $game.querySelector('#game__input');
-const $gameCanvas = document.querySelector('#game__display');
+const $game = document.querySelector("#game");
+const $gameInput = $game.querySelector("#game__input");
+const $gameCanvas = document.querySelector("#game__display");
 const GAME = new Game($game, $gameCanvas, $gameInput, 700, 500, 64);
 
 // // ---------- PLAYER ----------
@@ -71,10 +71,8 @@ const GAME = new Game($game, $gameCanvas, $gameInput, 700, 500, 64);
 // }
 // // ---------- END AREA ----------
 
-
 // let stopButton = new UIButton(GAME, 100, 10, 0,0, "STOP GAME", 16, "#eee", "#f63", "#000", "#fff", 10, true);
 // stopButton.onMouseDown = () => {GAME.stopGame();}
-
 
 // let pauseButton = new UIButton(GAME, 10, 200, 0,0, "PAUSE", 30);
 // pauseButton.onMouseDown = () => {GAME.pauseGame = !GAME.pauseGame; pauseButton.text = GAME.pauseGame ? "PLAY" : "PAUSE"}
@@ -103,47 +101,70 @@ const GAME = new Game($game, $gameCanvas, $gameInput, 700, 500, 64);
 // testRoom.addBackground(new Background(GAME, 0, 0, GAME.w, GAME.h, undefined, "#29f"));
 // testRoom.tileMapLayer1 = tileMap;
 
-
 // GAME.addRoom(testRoom);
 // GAME.changeRoom("testRoom");
 // GAME.startGame();
-const playerSprite = new Sprite(GAME, 0, 0, 50, 50, './../spriteTest.png');
-playerSprite.cutX = 0;
-playerSprite.cutY = 0;
-playerSprite.cutW = 16;
-playerSprite.cutH = 16;
+const playerSprite = new Sprite(GAME, 0, 0, 48, 62, "./../spriteTest.png");
+const playerAnimator = new SpriteAnimator(GAME, [
+    new KeyFrame(0, 0, 16, 16, 50, 50),
+    new KeyFrame(16, 0, 16, 16, 50, 50),
+    new KeyFrame(32, 0, 16, 16, 50, 50),
+    new KeyFrame(0, 16, 16, 16, 50, 50),
+    new KeyFrame(16, 16, 16, 16, 50, 50),
+], 1000 / 2);
+
+playerAnimator.addChild(playerSprite, "player sprite");
 
 const player = new Object(GAME, 10, 10, 50, 50);
-player.addChild(playerSprite, "sprite");
+player.addChild(playerAnimator, "animator");
 player.draw = (ctx) => {
     ctx.fillStyle = "#363636";
-    ctx.fillRect(player.position.x, player.position.y, player.size.x, player.size.y);
-}
+    ctx.fillRect(
+        player.position.x,
+        player.position.y,
+        player.size.x,
+        player.size.y
+    );
+};
 
 player.steps = () => {
     if (Input.GetKeyPress("a")) player.position.x -= 40 * Time.deltaTime * 10;
     if (Input.GetKeyPress("d")) player.position.x += 40 * Time.deltaTime * 10;
     if (Input.GetKeyPress("w")) player.position.y -= 40 * Time.deltaTime * 10;
     if (Input.GetKeyPress("s")) player.position.y += 40 * Time.deltaTime * 10;
-}
+};
+
+playerAnimator.play();
 
 const playerContainer = new Object(GAME, 10, 10, 200, 200);
 playerContainer.addChild(player, "player");
 playerContainer.draw = (ctx) => {
     ctx.fillStyle = "#222";
-    ctx.fillRect(playerContainer.position.x, playerContainer.position.y, playerContainer.size.x, playerContainer.size.y);
-}
+    ctx.fillRect(
+        playerContainer.position.x,
+        playerContainer.position.y,
+        playerContainer.size.x,
+        playerContainer.size.y
+    );
+};
 
 playerContainer.steps = () => {
-    if (Input.GetKeyPress("ArrowLeft")) playerContainer.position.x -= 40 * Time.deltaTime * 10;
-    if (Input.GetKeyPress("ArrowRight")) playerContainer.position.x += 40 * Time.deltaTime * 10;
-}
+    if (Input.GetKeyPress("ArrowLeft"))
+        playerContainer.position.x -= 40 * Time.deltaTime * 10;
+    if (Input.GetKeyPress("ArrowRight"))
+        playerContainer.position.x += 40 * Time.deltaTime * 10;
+};
 
-const stopButton = new UIButton(GAME, 10, GAME.h - 100 , 0,0, "STOP GAME", 16);
-stopButton.onMouseDown = () => {GAME.stopGame();}
+const stopButton = new UIButton(GAME, 10, GAME.h - 100, 0, 0, "STOP GAME", 16);
+stopButton.onMouseDown = () => {
+    GAME.stopGame();
+};
 
-let pauseButton = new UIButton(GAME, 130, GAME.h - 100, 0,0, "PAUSE", 16);
-pauseButton.onMouseDown = () => {GAME.pauseGame = !GAME.pauseGame; pauseButton.text = GAME.pauseGame ? "PLAY" : "PAUSE"}
+let pauseButton = new UIButton(GAME, 130, GAME.h - 100, 0, 0, "PAUSE", 16);
+pauseButton.onMouseDown = () => {
+    GAME.pauseGame = !GAME.pauseGame;
+    pauseButton.text = GAME.pauseGame ? "PLAY" : "PAUSE";
+};
 
 const room1 = new Room(GAME, GAME.w, GAME.h, "Room1_test");
 room1.addInstance(playerContainer, false);
@@ -154,4 +175,3 @@ GAME.addRoom(room1);
 GAME.changeRoom("Room1_test", false);
 GAME.startGame();
 
-console.log(playerContainer);
