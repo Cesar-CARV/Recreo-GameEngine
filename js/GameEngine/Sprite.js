@@ -1,8 +1,5 @@
 import Object from "./Object.js";
 
-// MODIFICAR ESTA CLASE PRIMERO PARA COMENZAR CON LA NUEVAS FUNCIONALIDADES
-// SE TIENE QUE HACER QUE SPRITE HEREDE DE LA CLASE OBJECT
-
 export default class Sprite extends Object {
     constructor(GAME, x, y, w, h, url) {
         super(GAME, x, y, w, h);

@@ -58,6 +58,8 @@ export default class Room {
         obj._CHILDREN.forEach(child => {
             this.renderObejct(child.obj, ctx);
         });
+
+        obj.restartPosition();
     };
 
     // renderiza los objetos hijos de este nivel

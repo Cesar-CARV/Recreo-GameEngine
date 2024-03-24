@@ -63,6 +63,6 @@ export default class Object {
         this.updatePosition();
         this.steps();
         this.draw(ctx);
-        this.restartPosition();
+        // this.restartPosition();
     };
 }
