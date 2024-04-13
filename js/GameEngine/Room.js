@@ -1,4 +1,4 @@
-import { SpriteAnimator } from "./Animator.js";
+import Vector2 from "./Vector2.js";
 
 export default class Room {
     constructor(GAME, w, h, name) {
@@ -6,7 +6,7 @@ export default class Room {
         this.w = w;
         this.h = h;
         this.name = name;
-        this.camara;
+        this.positionContextRoom = new Vector2(0, 0);
         this._INSTANCESUI = [];
         this._INSTANCES = [];
         this.backgrounds = [];
@@ -20,10 +20,11 @@ export default class Room {
         this.backgrounds.push(bg);
     };
 
-    // agrega una camara al nive, por el momento solo puede tener una camara cada nivel
-    setCamara = (camara) => {
-        this.camara = camara;
-    };
+    // // agrega una camara al nive, por el momento solo puede tener una camara cada nivel
+    // setCamara = (camara) => {
+    //     camara.room = this;
+    //     this.camara = camara;
+    // };
 
     // agrega un objeto al nivel
     addInstance = (inst, UI = false) => {
@@ -39,10 +40,10 @@ export default class Room {
 
     // dibuja los fondos y los tile maps
     draw = (ctx) => {
-        this.backgrounds.forEach((bg) => bg.draw(ctx));
-        if (this.tileMapLayer1) this.tileMapLayer1.draw(ctx);
-        if (this.tileMapLayer2) this.tileMapLayer2.draw(ctx);
-        if (this.tileMapLayer3) this.tileMapLayer3.draw(ctx);
+        this.backgrounds.forEach((bg) => bg.main(ctx));
+        if (this.tileMapLayer1) this.tileMapLayer1.main(ctx);
+        if (this.tileMapLayer2) this.tileMapLayer2.main(ctx);
+        if (this.tileMapLayer3) this.tileMapLayer3.main(ctx);
     };
 
     // Renderiza los objetos esto quiere decir que llama a la funcion principal de cada uno
@@ -65,38 +66,33 @@ export default class Room {
     // renderiza los objetos hijos de este nivel
     // no modificar esta funcion ya que es por medio de esta que el motor renderiza renderiza el nivel
     main = (ctx) => {
-        if (this.camara) {
-            // QUEDA PENDIENTE DE MODIFICACION ESTA PARTE DE LA CAMARA
-            // esta parte donde la camara se encarga del renderizado hay que buscar la forma de que no se asi
-            // y que todo el renderizado lo haga el room.
-            this._GAME.clipContextGraphic(this.w, this.h);
-            this.camara.steps();
-            this.camara.moveCamara();
-            this.draw(ctx);
-            this._INSTANCES.forEach((instance) => {
-                this.camara.render(instance);
-                if (instance._CHILDREN !== new Array()) {
-                    instance._CHILDREN.forEach((child) =>
-                        this.camara.render(child.obj)
-                    );
-                }
-            });
-            this._GAME.resetContextGraphic();
-        } else {
-            // clip room
-            // esta parte de clip deberia de ser dinamica dependiendo si hay una camara o no
-            // la forma en la que se podria hacer esto es que compruebe si hay una camara asignada
-            // y pasarle como parametros las medidas de la camara.
-            // si no hay una camara asignada pasar los valroes de el room
-            this._GAME.clipContextGraphic(this.w, this.h);
+        // esta parte de clip deberia de ser dinamica dependiendo si hay una camara o no
+        // la forma en la que se podria hacer esto es que compruebe si hay una camara asignada
+        // y pasarle como parametros las medidas de la camara.
+        // si no hay una camara asignada pasar los valores de el room
+        // if (this.camara) {
+        //     this._GAME.clipContextGraphic(
+        //         this.camara.size.x,
+        //         this.camara.size.y
+        //     );
+        // } else {
+        //     this._GAME.clipContextGraphic(this.w, this.h);
+        // }
 
-            this.draw(ctx);
-            // renderizar objetos
-            this._INSTANCES.forEach((instance) => {
-                this.renderObejct(instance, ctx);
-            });
-            this._GAME.resetContextGraphic();
-        }
+        this._GAME.clipContextGraphic(this.w, this.h);
+
+        // mover context
+        ctx.translate(this.positionContextRoom.x, this.positionContextRoom.y);
+
+
+
+        // renderizar objetos
+        this._INSTANCES.forEach((instance) => {
+            this.renderObejct(instance, ctx);
+        });
+        this.draw(ctx);
+
+        this._GAME.resetContextGraphic();
 
         // renderizar los objetos que pertenecen a la interfaz grafica
         this._INSTANCESUI.forEach((instanceUI) => {

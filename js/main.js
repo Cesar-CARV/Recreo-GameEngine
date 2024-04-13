@@ -115,8 +115,11 @@ const playerAnimator = new SpriteAnimator(GAME, [
 
 playerAnimator.addChild(playerSprite, "player sprite");
 
-const player = new Object(GAME, 10, 10, 50, 50);
+const playerCamara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
+
+const player = new Object(GAME, 0, 0, 50, 50);
 player.addChild(playerAnimator, "animator");
+player.addChild(playerCamara, "camara");
 player.draw = (ctx) => {
     ctx.fillStyle = "#363636";
     ctx.fillRect(
@@ -136,7 +139,7 @@ player.steps = () => {
 
 playerAnimator.play();
 
-const playerContainer = new Object(GAME, 10, 10, 200, 200);
+const playerContainer = new Object(GAME, GAME.w / 2 - 25, GAME.h / 2 - 25, 200, 200);
 playerContainer.addChild(player, "player");
 playerContainer.draw = (ctx) => {
     ctx.fillStyle = "#222";
@@ -166,7 +169,22 @@ pauseButton.onMouseDown = () => {
     pauseButton.text = GAME.pauseGame ? "PLAY" : "PAUSE";
 };
 
-const room1 = new Room(GAME, GAME.w, GAME.h, "Room1_test");
+
+
+// TileMap1
+let tileMap = new Tilemap(GAME, "./../tileMapTest.png", 32, 32);
+for (let i = 0; i < GAME.w / 32; i ++){
+    tileMap.addTile(32 * i, GAME.h - 60, 0, 0, 16, 16);
+    tileMap.addTile(32 * i, GAME.h - 28, 16, 0, 16, 16);
+}
+
+
+const room1 = new Room(GAME, GAME.w * 2, GAME.h * 2, "Room1_test");
+room1.tileMapLayer1 = tileMap;
+
+// room1.setCamara(new Camara(GAME, 0, 0, GAME.w, GAME.h, player));
+// room1.camara.mode = room1.camara.MODES.Center;
+
 room1.addInstance(playerContainer, false);
 room1.addInstance(stopButton, true);
 room1.addInstance(pauseButton, true);
