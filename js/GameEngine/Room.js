@@ -20,12 +20,6 @@ export default class Room {
         this.backgrounds.push(bg);
     };
 
-    // // agrega una camara al nive, por el momento solo puede tener una camara cada nivel
-    // setCamara = (camara) => {
-    //     camara.room = this;
-    //     this.camara = camara;
-    // };
-
     // agrega un objeto al nivel
     addInstance = (inst, UI = false) => {
         if (UI) this._INSTANCESUI.push(inst);
@@ -63,28 +57,55 @@ export default class Room {
         obj.restartPosition();
     };
 
+    // #region FINDS
+
+    // ESTAS FUNCIONES QUEDAN PENDIENTES A MODIFICACION
+    // RESIVIRAN DOS PARAMETROS, LA LISTA A BUSCAR Y EL SELECTOR
+
+    // esta funcion busca un objeto por el tipo de dato, el valor queda
+    // pendiente si sera un tipo o un string ejemplo: obj instanceof UI
+    // findByType = (type) => {
+    //     //return this._INSTANCES.filter(inst => inst.constructor.name === type);
+    //     let found = [];
+
+    //     for (let i = 0; i < this._INSTANCES.length; i++) {
+    //         if (this._INSTANCES[i].constructor.name === type)
+    //             found.push(this._INSTANCES[i]);
+
+    //         if (this._INSTANCES[i]._CHILDREN.length !== 0) {
+    //             for (let j = 0; j < this._INSTANCES[i]._CHILDREN.length; j++) {
+    //                 if (
+    //                     this._INSTANCES[i]._CHILDREN[j].constructor.name ===
+    //                     type
+    //                 )
+    //                     found.push(this._INSTANCES[i]._CHILDREN[j]);
+    //             }
+    //         }
+    //     }
+
+    //     return found;
+    // };
+
+    // esta funcion busca un objeto por un query de clave y valor, el valor queda
+    // findByQuery = (type, querys = []) => {
+    //     return this._INSTANCES.filter(inst => {
+    //         let coincidences = 0;
+
+    //         querys.forEach(query => coincidences = inst[query.key] === query.value ? + 1 : coincidences);
+
+    //         if (coincidences === querys.length && type === inst.constructor.name) return inst;
+    //     });
+    // }
+
+    // #endregion
+
     // renderiza los objetos hijos de este nivel
     // no modificar esta funcion ya que es por medio de esta que el motor renderiza renderiza el nivel
     main = (ctx) => {
-        // esta parte de clip deberia de ser dinamica dependiendo si hay una camara o no
-        // la forma en la que se podria hacer esto es que compruebe si hay una camara asignada
-        // y pasarle como parametros las medidas de la camara.
-        // si no hay una camara asignada pasar los valores de el room
-        // if (this.camara) {
-        //     this._GAME.clipContextGraphic(
-        //         this.camara.size.x,
-        //         this.camara.size.y
-        //     );
-        // } else {
-        //     this._GAME.clipContextGraphic(this.w, this.h);
-        // }
-
         this._GAME.clipContextGraphic(this.w, this.h);
 
         // mover context
         ctx.translate(this.positionContextRoom.x, this.positionContextRoom.y);
-
-
 
         // renderizar objetos
         this._INSTANCES.forEach((instance) => {

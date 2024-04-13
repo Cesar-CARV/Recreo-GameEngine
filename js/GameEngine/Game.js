@@ -50,6 +50,7 @@ export default class Game {
     // #endregion
 
     // #region CLIP
+    
     // los parametros que resive esta funcion son las medidas de el area que se va a limpiar
     clipContextGraphic = (widht, height) => {
         // dibujar el fondo negro en el canvas
@@ -72,29 +73,6 @@ export default class Game {
         // Reset current transformation matrix to the identity matrix
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     };
-    // #endregion
-
-    // #region FINDS
-    
-    // ESTAS FUNCIONES QUEDAN PENDIENTES A MODIFICACION
-    // RESIVIRAN DOS PARAMETROS, LA LISTA A BUSCAR Y EL SELECTOR
-
-    // esta funcion busca un objeto por el tipo de dato, el valor queda 
-    // pendiente si sera un tipo o un string ejemplo: obj instanceof UI  
-    findByType = (type) => {
-        return this.gameInstances.filter(inst => inst.constructor.name === type);
-    }
-
-    // esta funcion busca un objeto por un query de clave y valor, el valor queda 
-    findByQuery = (type, querys = []) => {
-        return this.gameInstances.filter(inst => {
-            let coincidences = 0;
-
-            querys.forEach(query => coincidences = inst[query.key] === query.value ? +1 : coincidences);
-
-            if (coincidences === querys.length && type === inst.constructor.name) return inst;
-        });
-    }
     // #endregion
 
     // #region SETUP GAME

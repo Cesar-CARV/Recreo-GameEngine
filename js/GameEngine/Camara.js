@@ -15,7 +15,7 @@ export default class Camara extends Object {
     steps = () => {
         this._GAME.currentRoom.positionContextRoom.x = -this.position.x;
         this._GAME.currentRoom.positionContextRoom.y = -this.position.y;
-    }
+    };
 
     // actualiza la posicion de el objeto segun la posicion del padre
     updatePosition = () => {
