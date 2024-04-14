@@ -7,8 +7,8 @@ export default class Room {
         this.h = h;
         this.name = name;
         this.positionContextRoom = new Vector2(0, 0);
-        this._INSTANCESUI = [];
-        this._INSTANCES = [];
+        this._INSTANCESUI = {};
+        this._INSTANCES = {};
         this.backgrounds = [];
         this.tileMapLayer1 = undefined;
         this.tileMapLayer2 = undefined;
@@ -21,15 +21,25 @@ export default class Room {
     };
 
     // agrega un objeto al nivel
-    addInstance = (inst, UI = false) => {
-        if (UI) this._INSTANCESUI.push(inst);
-        else this._INSTANCES.push(inst);
+    addInstance = (inst, UI = false, name) => {
+        if (UI && !this._INSTANCESUI[name]) {
+            this._INSTANCESUI[name] = inst;
+        } else if (UI && this._INSTANCESUI[name]) {
+            throw new Error(`${name} does exist in UI`);
+        }
+
+        if (!UI && !this._INSTANCES[name]) {
+            this._INSTANCES[name] = inst;
+        } else if (!UI && this._INSTANCES[name]) {
+            throw new Error(`${name} does exist`);
+        }
     };
 
     // elimina un objeto y sus hijos del nievel
-    removeInstance = (inst) => {
-        if (UI) this._INSTANCESUI = this._INSTANCESUI.filter((x) => x !== inst);
-        else this._INSTANCES = this._INSTANCES.filter((x) => x !== inst);
+    removeInstance = (UI = false, name) => {
+        console.log(this._INSTANCES[name]);
+        if (UI) delete this._INSTANCESUI[name];
+        else delete this._INSTANCES[name];
     };
 
     // dibuja los fondos y los tile maps
@@ -50,7 +60,7 @@ export default class Room {
             // obj.restartPosition(); // se comento esta linea para solucionar un error de seguimiento al poner pause
         }
 
-        obj._CHILDREN.forEach((child) => {
+        Object.values(obj._CHILDREN).forEach((child) => {
             this.renderObejct(child.obj, ctx);
         });
 
@@ -108,7 +118,7 @@ export default class Room {
         ctx.translate(this.positionContextRoom.x, this.positionContextRoom.y);
 
         // renderizar objetos
-        this._INSTANCES.forEach((instance) => {
+        Object.values(this._INSTANCES).forEach((instance) => {
             this.renderObejct(instance, ctx);
         });
         this.draw(ctx);
@@ -116,7 +126,7 @@ export default class Room {
         this._GAME.resetContextGraphic();
 
         // renderizar los objetos que pertenecen a la interfaz grafica
-        this._INSTANCESUI.forEach((instanceUI) => {
+        Object.values(this._INSTANCESUI).forEach((instanceUI) => {
             instanceUI.main(ctx);
         });
     };
