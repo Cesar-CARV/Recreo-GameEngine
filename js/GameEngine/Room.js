@@ -1,3 +1,4 @@
+// import { SpriteAnimator } from "./Animator.js";
 import Vector2 from "./Vector2.js";
 
 export default class Room {
@@ -60,8 +61,8 @@ export default class Room {
             // obj.restartPosition(); // se comento esta linea para solucionar un error de seguimiento al poner pause
         }
 
-        Object.values(obj._CHILDREN).forEach((child) => {
-            this.renderObejct(child.obj, ctx);
+        window.Object.values(obj._CHILDREN).forEach((child) => {
+            this.renderObejct(child, ctx);
         });
 
         obj.restartPosition();
@@ -118,7 +119,7 @@ export default class Room {
         ctx.translate(this.positionContextRoom.x, this.positionContextRoom.y);
 
         // renderizar objetos
-        Object.values(this._INSTANCES).forEach((instance) => {
+        window.Object.values(this._INSTANCES).forEach((instance) => {
             this.renderObejct(instance, ctx);
         });
         this.draw(ctx);
@@ -126,7 +127,7 @@ export default class Room {
         this._GAME.resetContextGraphic();
 
         // renderizar los objetos que pertenecen a la interfaz grafica
-        Object.values(this._INSTANCESUI).forEach((instanceUI) => {
+        window.Object.values(this._INSTANCESUI).forEach((instanceUI) => {
             instanceUI.main(ctx);
         });
     };

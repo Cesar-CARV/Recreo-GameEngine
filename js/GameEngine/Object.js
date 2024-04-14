@@ -4,7 +4,7 @@ export default class Object {
     constructor(GAME, x, y, w, h) {
         this._GAME = GAME;
         this._PARENT = undefined; // padre directo
-        this._CHILDREN = []; // hijos del objeto
+        this._CHILDREN = {}; // hijos del objeto
         this.position = new Vector2(x, y); // posicion del objeto, nota: la posicion es relativa a el padre
         this.size = new Vector2(w, h);
     }
@@ -31,19 +31,28 @@ export default class Object {
 
     // agrega un hijo al array de _CHILDREN y le agrega un nombre
     addChild = (obj, name) => {
-        this._CHILDREN.push({ name: name, obj: obj });
-        obj._PARENT = this;
+        if (!this._CHILDREN[name]) {
+            this._CHILDREN[name] = obj;
+            obj._PARENT = this;
+        } else if (this._CHILDREN[name]) {
+            throw new Error(`${name} does exist in UI`);
+        }
+
+        // this._CHILDREN.push({ name: name, obj: obj });
+        // obj._PARENT = this;
     };
 
     // retorna un hijo segun el nombre
     getChild = (name) => {
-        const child = this._CHILDREN.filter((ch) => ch.name === name)[0];
-        return child ? child.obj : child;
+        return this._CHILDREN[name];
+        // const child = this._CHILDREN.filter((ch) => ch.name === name)[0];
+        // return child ? child.obj : child;
     };
 
     // elimina un hijo segun el nombre
     delteChild = (name) => {
-        this._CHILDREN = this._CHILDREN.filter((ch) => ch.name !== name);
+        return delete this._CHILDREN[name];
+        // this._CHILDREN = this._CHILDREN.filter((ch) => ch.name !== name);
     };
 
     // dentro de esta funcion se podra utilizar el ContextGraphic del canvas para dibujar cualquier cosa

@@ -45,12 +45,12 @@ class SpriteAnimator extends Object {
     steps = () => {
         if (this.frames === -1 || this._CHILDREN.length === 0) return;
 
-        this._CHILDREN[0].obj.cutX = this.keyFrames[this.frame].cutX;
-        this._CHILDREN[0].obj.cutY = this.keyFrames[this.frame].cutY;
-        this._CHILDREN[0].obj.cutW = this.keyFrames[this.frame].cutW;
-        this._CHILDREN[0].obj.cutH = this.keyFrames[this.frame].cutH;
-        this._CHILDREN[0].obj.tileWidth = this.keyFrames[this.frame].tileWidth;
-        this._CHILDREN[0].obj.tileHeight = this.keyFrames[this.frame].tileHeight;
+        window.Object.values(this._CHILDREN)[0].cutX = this.keyFrames[this.frame].cutX;
+        window.Object.values(this._CHILDREN)[0].cutY = this.keyFrames[this.frame].cutY;
+        window.Object.values(this._CHILDREN)[0].cutW = this.keyFrames[this.frame].cutW;
+        window.Object.values(this._CHILDREN)[0].cutH = this.keyFrames[this.frame].cutH;
+        window.Object.values(this._CHILDREN)[0].tileWidth = this.keyFrames[this.frame].tileWidth;
+        window.Object.values(this._CHILDREN)[0].tileHeight = this.keyFrames[this.frame].tileHeight;
     };
 }
 

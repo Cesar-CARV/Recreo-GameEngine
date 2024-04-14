@@ -29,7 +29,7 @@ const playerAnimator = new SpriteAnimator(GAME, [
     new KeyFrame(16, 16, 16, 16, 50, 50),
 ], 1000 / 12);
 
-playerAnimator.addChild(playerSprite, "player sprite");
+playerAnimator.addChild(playerSprite, "playerSprite");
 
 const playerCamara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
 
@@ -107,6 +107,8 @@ room1.addInstance(pauseButton, true, "pauseButton");
 
 GAME.addRoom(room1);
 GAME.changeRoom("Room1_test", false);
-console.log(room1._INSTANCES);
 GAME.startGame();
 
+
+console.log(room1);
+console.log(player._CHILDREN);
