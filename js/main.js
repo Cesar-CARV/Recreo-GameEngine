@@ -12,6 +12,7 @@ import Background from "./GameEngine/Background.js";
 import Time from "./GameEngine/Time.js";
 import Tilemap from "./GameEngine/Tilemap.js";
 import BoxCollider from "./GameEngine/BoxCollider.js";
+import Vector2 from "./GameEngine/Vector2.js";
 
 // -------------------- GAME SETTINGS --------------------- //
 const $game = document.querySelector("#game");
@@ -51,6 +52,7 @@ player.steps = () => {
     if (Input.GetKeyPress("d")) player.position.x += 40 * Time.deltaTime * 10;
     if (Input.GetKeyPress("w")) player.position.y -= 40 * Time.deltaTime * 10;
     if (Input.GetKeyPress("s")) player.position.y += 40 * Time.deltaTime * 10;
+    if (Input.GetKeyDown("t")) player.changePosition(0, 0);
 };
 
 playerAnimator.play();

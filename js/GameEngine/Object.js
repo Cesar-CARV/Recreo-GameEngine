@@ -9,6 +9,16 @@ export default class Object {
         this.size = new Vector2(w, h);
     }
 
+    // actualizar poscion relativa
+    changePosition = (x, y) => {
+        this.position = this._PARENT
+            ? new Vector2(
+                  this._PARENT.position.x + x,
+                  this._PARENT.position.y + y
+              )
+            : new Vector2(x, y);
+    };
+
     // actualiza la posicion de el objeto segun la posicion del padre
     updatePosition = () => {
         this.position = this._PARENT

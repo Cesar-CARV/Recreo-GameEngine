@@ -58,7 +58,6 @@ export default class Room {
         } else {
             obj.updatePosition();
             obj.draw(ctx);
-            // obj.restartPosition(); // se comento esta linea para solucionar un error de seguimiento al poner pause
         }
 
         window.Object.values(obj._CHILDREN).forEach((child) => {
