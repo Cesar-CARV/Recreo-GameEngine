@@ -64,6 +64,12 @@ export default class Input {
         target.addEventListener("mouseup", Input._OnMouseUp.bind(this));
         target.addEventListener("mousemove", Input._OnMouseMove.bind(this));
         target.addEventListener("contextmenu", (e) => e.preventDefault());
+        target.addEventListener("blur", (e) => {
+            Input.keydown.clear();
+            Input.keypress.clear();
+            Input.mousedown.clear();
+            Input.mouseup.clear();
+        });
     }
 
 }

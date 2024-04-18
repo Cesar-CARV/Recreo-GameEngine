@@ -75,27 +75,12 @@ export default class Room {
 
     // esta funcion busca un objeto por el tipo de dato, el valor queda
     // pendiente si sera un tipo o un string ejemplo: obj instanceof UI
-    // findByType = (type) => {
-    //     //return this._INSTANCES.filter(inst => inst.constructor.name === type);
-    //     let found = [];
-
-    //     for (let i = 0; i < this._INSTANCES.length; i++) {
-    //         if (this._INSTANCES[i].constructor.name === type)
-    //             found.push(this._INSTANCES[i]);
-
-    //         if (this._INSTANCES[i]._CHILDREN.length !== 0) {
-    //             for (let j = 0; j < this._INSTANCES[i]._CHILDREN.length; j++) {
-    //                 if (
-    //                     this._INSTANCES[i]._CHILDREN[j].constructor.name ===
-    //                     type
-    //                 )
-    //                     found.push(this._INSTANCES[i]._CHILDREN[j]);
-    //             }
-    //         }
-    //     }
-
-    //     return found;
-    // };
+    findByType = (type) => {
+        // PARA PODER REALIZAR LA BUSQUEDA DE UNA MANERA EFICIETNE A LO LARGO DE TODO EL ARBOL BUSCAR
+        // UN ALGORITMO DE BUSQUEDA DE GRAFOS / ARBOLES
+        //return this._INSTANCES.filter(inst => inst.constructor.name === type);
+        
+    };
 
     // esta funcion busca un objeto por un query de clave y valor, el valor queda
     // findByQuery = (type, querys = []) => {
