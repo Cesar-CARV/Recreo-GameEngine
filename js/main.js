@@ -38,7 +38,10 @@ playerAnimator.addChild(playerSprite, "playerSprite");
 
 const playerCamara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
 
+const playerCollider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
+
 const player = new Object(GAME, 0, 0, 50, 50);
+player.addChild(playerCollider, "playerCollider");
 player.addChild(playerAnimator, "animator");
 player.addChild(playerCamara, "camara");
 player.draw = (ctx) => {
@@ -57,6 +60,13 @@ player.steps = () => {
     if (Input.GetKeyPress("w")) player.position.y -= 40 * Time.deltaTime * 10;
     if (Input.GetKeyPress("s")) player.position.y += 40 * Time.deltaTime * 10;
     if (Input.GetKeyDown("t")) player.changePosition(0, 0);
+
+    const collider = player.getChild("playerCollider");
+
+    // console.log(collider.onArea());
+    if (collider.onArea()) {
+        console.log("Collition");
+    }
 };
 
 playerAnimator.play();
@@ -97,7 +107,46 @@ playerContainer.steps = () => {
 const node1 = new Object(GAME, 10, 0, 10, 10);
 const node2 = new Object(GAME, 30, 0, 10, 10);
 const node3 = new Object(GAME, 50, 0, 10, 10);
-const node2_2 = new Object(GAME, 70, 0, 10, 10);
+const node2_2 = new Object(GAME, 0, 20, 10, 10);
+const node2_2Collider = new BoxCollider(GAME, 0, 0, 10, 10, 0, [], true);
+node2_2.addChild(node2_2Collider, "node2_2Collider");
+
+node1.draw = (ctx) => {
+    ctx.fillStyle = "#363636";
+    ctx.fillRect(
+        node1.position.x,
+        node1.position.y,
+        node1.size.x,
+        node1.size.y
+    );
+};
+node2.draw = (ctx) => {
+    ctx.fillStyle = "#363636";
+    ctx.fillRect(
+        node2.position.x,
+        node2.position.y,
+        node2.size.x,
+        node2.size.y
+    );
+};
+node3.draw = (ctx) => {
+    ctx.fillStyle = "#363636";
+    ctx.fillRect(
+        node3.position.x,
+        node3.position.y,
+        node3.size.x,
+        node3.size.y
+    );
+};
+node2_2.draw = (ctx) => {
+    ctx.fillStyle = "#561";
+    ctx.fillRect(
+        node2_2.position.x,
+        node2_2.position.y,
+        node2_2.size.x,
+        node2_2.size.y
+    );
+};
 
 node2.addChild(node2_2, "subNodo2");
 

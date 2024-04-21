@@ -1,4 +1,5 @@
 import Vector2 from "./Vector2.js";
+import Time from "./Time.js";
 
 export default class Object {
     constructor(GAME, x, y, w, h) {
