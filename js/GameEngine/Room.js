@@ -72,13 +72,45 @@ export default class Room {
     // ESTAS FUNCIONES QUEDAN PENDIENTES A MODIFICACION
     // RESIVIRAN DOS PARAMETROS, LA LISTA A BUSCAR Y EL SELECTOR
 
-    // esta funcion busca un objeto por el tipo de dato, el valor queda
-    // pendiente si sera un tipo o un string ejemplo: obj instanceof UI
-    findByType = (type) => {
-        // PARA PODER REALIZAR LA BUSQUEDA DE UNA MANERA EFICIETNE A LO LARGO DE TODO EL ARBOL BUSCAR
-        // UN ALGORITMO DE BUSQUEDA DE GRAFOS / ARBOLES
-        //return this._INSTANCES.filter(inst => inst.constructor.name === type);
-        
+    // esta funcion busca un objeto por el nombre
+    findByName = (name, node = undefined, nodesVisited = new Set()) => {
+        if (node) {
+            // comprueba si el nodo es igual el nodo es el que se busca
+            if (node?._PARENT?._CHILDREN[name] === node) {
+                return node;
+            }
+
+            // si el nodo no es el que se busca se agrega al set
+            nodesVisited.add(node);
+
+            // comprueba si no tiene hijos, si no tiene se retorna a el padre
+            if (node._CHILDREN.length === 0) {
+                return this.findByName(name, node._PARENT, nodesVisited);
+            }
+
+            // comprueba si tiene hijos, si es asi valida que los hijos no se encuentren el el set
+            // y de ser asi retornara la funcion con el parametro de nodo como el primer hijo
+            if (node._CHILDREN.length !== 0) {
+                const children = window.Object.values(node._CHILDREN).filter(
+                    (nd) => !nodesVisited.has(nd)
+                );
+
+                if (children.length === 0) {
+                    return this.findByName(name, node._PARENT, nodesVisited);
+                }
+
+                return this.findByName(name, children[0], nodesVisited);
+            }
+        }
+
+        // si no el nodo no existe se filtran los nodos hijos de el room
+        // y se busca en el primer indice
+        const instances = window.Object.values(this._INSTANCES).filter(
+            (nd) => !nodesVisited.has(nd)
+        );
+
+        if (instances.length === 0) return undefined;
+        return this.findByName(name, instances[0], nodesVisited);
     };
 
     // esta funcion busca un objeto por un query de clave y valor, el valor queda

@@ -22,13 +22,17 @@ const GAME = new Game($game, $gameCanvas, $gameInput, 700, 500, 64);
 
 // -------------------- INSTANCES --------------------- //
 const playerSprite = new Sprite(GAME, 0, 0, 48, 62, "./../spriteTest.png");
-const playerAnimator = new SpriteAnimator(GAME, [
-    new KeyFrame(0, 0, 16, 16, 50, 50),
-    new KeyFrame(16, 0, 16, 16, 50, 50),
-    new KeyFrame(32, 0, 16, 16, 50, 50),
-    new KeyFrame(0, 16, 16, 16, 50, 50),
-    new KeyFrame(16, 16, 16, 16, 50, 50),
-], 1000 / 12);
+const playerAnimator = new SpriteAnimator(
+    GAME,
+    [
+        new KeyFrame(0, 0, 16, 16, 50, 50),
+        new KeyFrame(16, 0, 16, 16, 50, 50),
+        new KeyFrame(32, 0, 16, 16, 50, 50),
+        new KeyFrame(0, 16, 16, 16, 50, 50),
+        new KeyFrame(16, 16, 16, 16, 50, 50),
+    ],
+    1000 / 12
+);
 
 playerAnimator.addChild(playerSprite, "playerSprite");
 
@@ -57,7 +61,13 @@ player.steps = () => {
 
 playerAnimator.play();
 
-const playerContainer = new Object(GAME, GAME.w / 2 - 25, GAME.h / 2 - 25, 200, 200);
+const playerContainer = new Object(
+    GAME,
+    GAME.w / 2 - 25,
+    GAME.h / 2 - 25,
+    200,
+    200
+);
 playerContainer.addChild(player, "player");
 playerContainer.draw = (ctx) => {
     ctx.fillStyle = "#222";
@@ -77,9 +87,19 @@ playerContainer.steps = () => {
 
     if (Input.GetKeyDown("k")) {
         console.log("kill");
-        playerContainer._GAME.currentRoom.removeInstance(false, "playerContainer");
+        playerContainer._GAME.currentRoom.removeInstance(
+            false,
+            "playerContainer"
+        );
     }
 };
+
+const node1 = new Object(GAME, 10, 0, 10, 10);
+const node2 = new Object(GAME, 30, 0, 10, 10);
+const node3 = new Object(GAME, 50, 0, 10, 10);
+const node2_2 = new Object(GAME, 70, 0, 10, 10);
+
+node2.addChild(node2_2, "subNodo2");
 
 const stopButton = new UIButton(GAME, 10, GAME.h - 100, 0, 0, "STOP GAME", 16);
 stopButton.onMouseDown = () => {
@@ -94,11 +114,10 @@ pauseButton.onMouseDown = () => {
 
 // TileMap1
 let tileMap = new Tilemap(GAME, "./../tileMapTest.png", 32, 32);
-for (let i = 0; i < GAME.w / 32; i ++){
+for (let i = 0; i < GAME.w / 32; i++) {
     tileMap.addTile(32 * i, GAME.h - 60, 0, 0, 16, 16);
     tileMap.addTile(32 * i, GAME.h - 28, 16, 0, 16, 16);
 }
-
 
 const room1 = new Room(GAME, GAME.w * 2, GAME.h * 2, "Room1_test");
 room1.tileMapLayer1 = tileMap;
@@ -106,11 +125,19 @@ room1.tileMapLayer1 = tileMap;
 room1.addInstance(playerContainer, false, "playerContainer");
 room1.addInstance(stopButton, true, "stopButton");
 room1.addInstance(pauseButton, true, "pauseButton");
+room1.addInstance(node1, false, "node1");
+room1.addInstance(node2, false, "node2");
+room1.addInstance(node3, false, "node3");
 
 GAME.addRoom(room1);
 GAME.changeRoom("Room1_test", false);
 GAME.startGame();
 
-
-console.log(room1);
-console.log(player._CHILDREN);
+// console.log(room1);
+// console.log(player._CHILDREN);
+console.time();
+console.log(
+    "Se busco al objeto subNodo2 y el resultado fue: ",
+    GAME.currentRoom.findByName("subNodo2") !== undefined
+);
+console.timeEnd();
