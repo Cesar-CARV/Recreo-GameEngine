@@ -59,13 +59,17 @@ player.steps = () => {
     if (Input.GetKeyPress("d")) player.position.x += 40 * Time.deltaTime * 10;
     if (Input.GetKeyPress("w")) player.position.y -= 40 * Time.deltaTime * 10;
     if (Input.GetKeyPress("s")) player.position.y += 40 * Time.deltaTime * 10;
+    if (Input.GetKeyPress("ArrowUp")) player.position.y -= 1 * Time.deltaTime * 10;
     if (Input.GetKeyDown("t")) player.changePosition(0, 0);
 
     const collider = player.getChild("playerCollider");
 
-    // console.log(collider.onArea());
-    if (collider.onArea()) {
-        console.log("Collition");
+    
+    // if (collider.onArea()) {
+    //     console.log("Collition");
+    // }
+    if (collider.onPlaceMeeting(new Vector2(player.position.x, player.position.y - 2))) {
+        console.log("Meeting");
     }
 };
 

@@ -11,7 +11,7 @@ export default class BoxCollider extends Object {
 
         this.collides = new Set();
     }
-    
+
     // actualiza la posicion de el objeto segun la posicion del padre
     updatePosition = () => {
         this.position = this._PARENT
@@ -82,15 +82,45 @@ export default class BoxCollider extends Object {
         return this.iterateTree(condition, instances[0], nodesVisited);
     };
 
+    collideRules = (node) => {
+        // detecta si el nodo es del tipo BoxCollider y no es el mismo que el que llama el metodo
+        if (node === this || !(node instanceof BoxCollider)) return false;
+
+        // detecta si el objeto con el que coliciona esta en la misma layer o no es una excepcion
+        if (node.layer !== this.layer && node.exceptions.includes(node))
+            return false;
+
+        return true;
+    };
+
+    // detecta si un objeto del tipo BoxCollider entra en el Area
     onArea = () => {
         return this.iterateTree((node) => {
-            if (node === this || !(node instanceof BoxCollider)) return false;
+            if (!this.collideRules(node)) return false;
 
             return (
                 this.absolutePosition.x + this.size.x >= node.absolutePosition.x &&
                 this.absolutePosition.x <= node.absolutePosition.x + node.size.x &&
                 this.absolutePosition.y + this.size.y >= node.absolutePosition.y &&
                 this.absolutePosition.y <= node.absolutePosition.y + node.size.y
+            );
+        });
+    };
+
+    // detecta si un objeto del tipo BoxCollider entra en las coordenadas que recibe como parametro
+    /**
+     * 
+     * @param {Vector2} position 
+     */
+    onPlaceMeeting = (position) => {
+        return this.iterateTree((node) => {
+            if (!this.collideRules(node)) return false;
+
+            return (
+                position.x >= node.absolutePosition.x &&
+                position.x <= node.absolutePosition.x + node.size.x &&
+                position.y >= node.absolutePosition.y &&
+                position.y <= node.absolutePosition.y + node.size.y
             );
         });
     };
