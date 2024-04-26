@@ -53,24 +53,44 @@ player.draw = (ctx) => {
         player.size.y
     );
 };
+let playerVelocity = new Vector2(0, 0);
+let playerGravity = 4;
+let playerJump = -150;
 
 player.steps = () => {
-    if (Input.GetKeyPress("a")) player.position.x -= 40 * Time.deltaTime * 10;
-    if (Input.GetKeyPress("d")) player.position.x += 40 * Time.deltaTime * 10;
-    if (Input.GetKeyPress("w")) player.position.y -= 40 * Time.deltaTime * 10;
-    if (Input.GetKeyPress("s")) player.position.y += 40 * Time.deltaTime * 10;
-    if (Input.GetKeyPress("ArrowUp")) player.position.y -= 1 * Time.deltaTime * 10;
-    if (Input.GetKeyDown("t")) player.changePosition(0, 0);
-
     const collider = player.getChild("playerCollider");
 
-    
-    // if (collider.onArea()) {
-    //     console.log("Collition");
-    // }
-    if (collider.onPlaceMeeting(new Vector2(player.position.x, player.position.y - 2))) {
-        console.log("Meeting");
+    // gravedad
+    const onFloor = collider.onPlaceMeetingBox(
+        new Vector2(player.position.x, player.position.y + 1 + playerVelocity.y)
+    );
+
+    if (!onFloor.res && playerVelocity.y < 40) {
+        playerVelocity.y += playerGravity * Time.deltaTime * 10;
     }
+
+    if (onFloor.res && Input.GetKeyDown("w")) {
+        playerVelocity.y = playerJump * Time.deltaTime * 10;
+    } else if (onFloor.res) {
+        playerVelocity.y = 0;
+        player.position.y += onFloor.target.absolutePosition.y - (player.position.y + player.size.y + 1);
+    }
+
+    if (collider.onArea().res) {
+        console.log("Area");
+    }
+
+    // movimiento horizontal
+    playerVelocity.x =
+        (Input.GetKeyPress("d") - Input.GetKeyPress("a")) *
+        40 *
+        Time.deltaTime *
+        10;
+
+    // teletransportar
+    if (Input.GetKeyDown("t")) player.changePosition(0, 0);
+
+    player.position = player.position.Sum(playerVelocity);
 };
 
 playerAnimator.play();
@@ -78,7 +98,7 @@ playerAnimator.play();
 const playerContainer = new Object(
     GAME,
     GAME.w / 2 - 25,
-    GAME.h / 2 - 25,
+    GAME.h / 2 - 175,
     200,
     200
 );
@@ -154,6 +174,21 @@ node2_2.draw = (ctx) => {
 
 node2.addChild(node2_2, "subNodo2");
 
+// -------------------------------------------------------------
+// Floor
+const floorCollider = new BoxCollider(GAME, 0, 0, GAME.w, 10, 0, [], true);
+const floor = new Object(GAME, 0, GAME.h - 75, GAME.w, 10);
+floor.addChild(floorCollider, "floorCollider");
+floor.draw = (ctx) => {
+    ctx.fillStyle = "#363636";
+    ctx.fillRect(
+        floor.position.x,
+        floor.position.y,
+        floor.size.x,
+        floor.size.y
+    );
+};
+
 const stopButton = new UIButton(GAME, 10, GAME.h - 100, 0, 0, "STOP GAME", 16);
 stopButton.onMouseDown = () => {
     GAME.stopGame();
@@ -181,6 +216,7 @@ room1.addInstance(pauseButton, true, "pauseButton");
 room1.addInstance(node1, false, "node1");
 room1.addInstance(node2, false, "node2");
 room1.addInstance(node3, false, "node3");
+room1.addInstance(floor, false, "floor");
 
 GAME.addRoom(room1);
 GAME.changeRoom("Room1_test", false);

@@ -38,11 +38,19 @@ export default class BoxCollider extends Object {
     };
 
     // recorrer arbol de objetos
+    /**
+     * 
+     * @param {Function} condition 
+     * @param {Object} node 
+     * @param {Set} nodesVisited 
+     * @returns
+     */
     iterateTree = (condition, node = undefined, nodesVisited = new Set()) => {
         if (node) {
             // comprueba las condiciones de la funcion condition para detectar uan colision
             if (condition(node)) {
-                return true;
+                // return true;
+                return {res: true, target: node};
             }
 
             // si el nodo no es el que se busca se agrega al set
@@ -78,7 +86,8 @@ export default class BoxCollider extends Object {
             this._GAME.currentRoom._INSTANCES
         ).filter((nd) => !nodesVisited.has(nd));
 
-        if (instances.length === 0) return false;
+        // if (instances.length === 0) return false;
+        if (instances.length === 0) return {res: false, target: undefined};
         return this.iterateTree(condition, instances[0], nodesVisited);
     };
 
@@ -96,7 +105,7 @@ export default class BoxCollider extends Object {
     // detecta si un objeto del tipo BoxCollider entra en el Area
     onArea = () => {
         return this.iterateTree((node) => {
-            if (!this.collideRules(node)) return false;
+            if (!this.collideRules(node)) return false
 
             return (
                 this.absolutePosition.x + this.size.x >= node.absolutePosition.x &&
@@ -124,4 +133,24 @@ export default class BoxCollider extends Object {
             );
         });
     };
+
+    // detecta si un objeto del tipo BoxCollider entra en las coordenadas mas el size que recibe como parametro
+    /**
+     * 
+     * @param {Vector2} position 
+     * @return {object}
+     */
+    onPlaceMeetingBox = (position) => {
+        return this.iterateTree((node) => {
+            if (!this.collideRules(node)) return false
+
+            return (
+                position.x + this.size.x >= node.absolutePosition.x &&
+                position.x <= node.absolutePosition.x + node.size.x &&
+                position.y + this.size.y >= node.absolutePosition.y &&
+                position.y <= node.absolutePosition.y + node.size.y
+            );
+        });
+    };
+
 }
