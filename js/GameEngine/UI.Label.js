@@ -1,63 +1,57 @@
 import UI from "./UI.js";
+import Vector2 from "./Vector2.js";
 
 export default class UILabel extends UI {
-  constructor(
-    game,
-    x,
-    y,
-    w,
-    h,
-    text,
-    font = "16px san-serif",
-    backgroundColor = "#eee0",
-    color = "#232323",
-    padding = 16,
-    border = false
-  ) {
-    super(game, x, y, w, h);
+    constructor(game, x, y, w, h, text) {
+        super(game, x, y, w, h);
 
-    this.text = text;
-    this.font = font;
-    this.backgroundColor = backgroundColor;
-    this.color = color;
-    this.padding = padding;
-    this.border = border;
-    this.textSize = 0;
-  }
-
-  draw = (ctx) => {
-    ctx.fillStyle = this.backgroundColor;
-    ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
-
-    if (this.border) {
-      ctx.strokeStyle = "#000";
-      ctx.strokeRect(
-        this.position.x,
-        this.position.y,
-        this.size.x,
-        this.size.y
-      );
+        this.text = text;
+        this.font = "16px san-serif";
+        this.backgroundColor = "#000";
+        this.color = "#aaa";
+        this.fill = false;
+        this.border = false;
+        this.align = "left";
+        this.textMetrics = new Vector2(0, 0);
     }
 
-    ctx.fillStyle = this.color;
-    ctx.font = this.font;
-    const fontSplited = this.font.split('');
-    let fontSize = fontSplited.length === 2 ? fontSplited[0] : fontSplited[1];
-    let fontSizeNumber = fontSize.substr(0, -2);
-    this.textSize = ctx.measureText(this.text).width;
-    ctx.fillText(
-      this.text,
-      this.position.x + this.size.x / 2 - this.textSize / 2,
-      this.position.y + this.size.y / 2 + fontSizeNumber / 3
-    );
-  };
+    draw = (ctx) => {
+        ctx.font = this.font;
+        this.textMetrics.x = Math.ceil(ctx.measureText(this.text).width);
+        this.textMetrics.y = Math.ceil(
+            ctx.measureText(this.text).hangingBaseline
+        );
 
-  steps = () => {
-    const fontSplited = this.font.split('');
-    let fontSize = fontSplited.length === 2 ? fontSplited[0] : fontSplited[1];
-    let fontSizeNumber = fontSize.substr(0, -2);
+        ctx.fillStyle = this.backgroundColor;
+        ctx.fillRect(
+            this.position.x,
+            this.position.y,
+            this.size.x,
+            this.size.y
+        );
 
-    this.size.x = this.textSize + this.padding * 2;
-    this.size.y = fontSizeNumber + this.padding;
-  };
+        ctx.fillStyle = this.color;
+        ctx.strokeStyle = this.color;
+        let textAlign =
+            this.align === "center"
+                ? this.size.x / 2 - this.textMetrics.x / 2
+                : this.align === "right"
+                ? this.size.x - this.textMetrics.x
+                : 0;
+        if (this.fill) {
+            ctx.fillText(
+                this.text,
+                this.position.x + textAlign,
+                this.position.y + this.textMetrics.y / 2 + this.size.y / 4,
+                this.size.x
+            );
+        } else {
+            ctx.strokeText(
+                this.text,
+                this.position.x + textAlign,
+                this.position.y + this.textMetrics.y / 2 + this.size.y / 2,
+                this.size.x
+            );
+        }
+    };
 }

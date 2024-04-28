@@ -239,12 +239,28 @@ const wall2Collider = new BoxCollider(GAME, 0, 0, 30, 100, 0, [], true);
 const wall2 = new Object(GAME, 240, GAME.h - 175, 30, 100);
 wall2.addChild(wall2Collider, "wall2Collider");
 
-const stopButton = new UIButton(GAME, 10, GAME.h - 100, 0, 0, "STOP GAME", 16);
+const stopButton = new UIButton(
+    GAME,
+    10,
+    GAME.h - 100,
+    0,
+    0,
+    "STOP GAME",
+    "16px monospace"
+);
 stopButton.onMouseDown = () => {
     GAME.stopGame();
 };
 
-let pauseButton = new UIButton(GAME, 130, GAME.h - 100, 0, 0, "PAUSE", 16);
+let pauseButton = new UIButton(
+    GAME,
+    130,
+    GAME.h - 100,
+    0,
+    0,
+    "PAUSE",
+    "16px monospace"
+);
 pauseButton.onMouseDown = () => {
     GAME.gamePaused ? GAME.playGame() : GAME.pauseGame();
     pauseButton.text = GAME.gamePaused ? "PLAY" : "PAUSE";
@@ -259,17 +275,8 @@ for (let i = 0; i < GAME.w / 32; i++) {
 
 // -------------------------------------------------------------
 // Titulo
-const title = new UILabel(
-    GAME,
-    GAME.w / 2 - 24 * 3,
-    10,
-    100,
-    60,
-    "ROOM TEST",
-    "bold 24px monospace",
-    "#0000",
-    "#aaa"
-);
+const title = new UILabel(GAME, 40, 20, GAME.w - 80, 60, "ROOM TEST");
+title.align = "center";
 
 const room1 = new Room(GAME, GAME.w * 2, GAME.h * 2, "Room1_test");
 room1.tileMapLayer1 = tileMap;
