@@ -36,7 +36,7 @@ const playerAnimator = new SpriteAnimator(
 
 playerAnimator.addChild(playerSprite, "playerSprite");
 
-const playerCamara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
+const playerCamara = new Camara(GAME, 0, 0, GAME.w / 1.5, GAME.h / 2);
 
 const playerCollider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
 

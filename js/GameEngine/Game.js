@@ -52,7 +52,8 @@ export default class Game {
     // #region CLIP
     
     // los parametros que resive esta funcion son las medidas de el area que se va a limpiar
-    clipContextGraphic = (widht, height) => {
+    clipContextGraphic = (width, height) => {
+        this.ctx.save();
         // dibujar el fondo negro en el canvas
         this.ctx.beginPath();
         this.ctx.rect(0, 0, this.w, this.h);
@@ -61,16 +62,20 @@ export default class Game {
         this.ctx.fillRect(0, 0, this.w, this.h);
 
         // limpiar el fondo negro donde se mostrara el contenido del nivel
+        const centerX = this.w / 2 - this.currentRoom.sizeContextRoom.x / 2;
+        const centerY = this.h / 2 - this.currentRoom.sizeContextRoom.y / 2;
+
         this.ctx.beginPath();
-        this.ctx.rect(0, 0, widht, height);
+        this.ctx.rect(centerX, centerY, width, height);
         this.ctx.clip();
 
-        this.ctx.clearRect(0, 0, widht, height);
+        this.ctx.clearRect(centerX, centerY, width, height);
     };
 
     // reinicia el ContextGraphic para que se muestre como normalmente lo haria
     resetContextGraphic = () => {
         // Reset current transformation matrix to the identity matrix
+        this.ctx.restore();
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     };
     // #endregion

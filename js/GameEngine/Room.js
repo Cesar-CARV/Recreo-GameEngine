@@ -8,6 +8,7 @@ export default class Room {
         this.h = h;
         this.name = name;
         this.positionContextRoom = new Vector2(0, 0);
+        this.sizeContextRoom = new Vector2(0, 0);
         this._INSTANCESUI = {};
         this._INSTANCES = {};
         this.backgrounds = [];
@@ -129,10 +130,13 @@ export default class Room {
     // renderiza los objetos hijos de este nivel
     // no modificar esta funcion ya que es por medio de esta que el motor renderiza renderiza el nivel
     main = (ctx) => {
-        this._GAME.clipContextGraphic(this.w, this.h);
-
+        // clip context
+        this._GAME.clipContextGraphic(this.sizeContextRoom.x, this.sizeContextRoom.y);
+        
         // mover context
-        ctx.translate(this.positionContextRoom.x, this.positionContextRoom.y);
+        const centerX = this.positionContextRoom.x + (this._GAME.w / 2 - this.sizeContextRoom.x / 2);
+        const centerY = this.positionContextRoom.y + (this._GAME.h / 2 - this.sizeContextRoom.y / 2);
+        ctx.translate(centerX, centerY);
 
         // renderizar objetos
         window.Object.values(this._INSTANCES).forEach((instance) => {
@@ -146,5 +150,6 @@ export default class Room {
         window.Object.values(this._INSTANCESUI).forEach((instanceUI) => {
             instanceUI.main(ctx);
         });
+
     };
 }
