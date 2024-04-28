@@ -8,7 +8,7 @@ export default class UILabel extends UI {
     w,
     h,
     text,
-    fontSize = 16,
+    font = "16px san-serif",
     backgroundColor = "#eee0",
     color = "#232323",
     padding = 16,
@@ -17,7 +17,7 @@ export default class UILabel extends UI {
     super(game, x, y, w, h);
 
     this.text = text;
-    this.fontSize = fontSize;
+    this.font = font;
     this.backgroundColor = backgroundColor;
     this.color = color;
     this.padding = padding;
@@ -40,17 +40,24 @@ export default class UILabel extends UI {
     }
 
     ctx.fillStyle = this.color;
-    ctx.font = `${this.fontSize}px monospace`;
+    ctx.font = this.font;
+    const fontSplited = this.font.split('');
+    let fontSize = fontSplited.length === 2 ? fontSplited[0] : fontSplited[1];
+    let fontSizeNumber = fontSize.substr(0, -2);
     this.textSize = ctx.measureText(this.text).width;
     ctx.fillText(
       this.text,
       this.position.x + this.size.x / 2 - this.textSize / 2,
-      this.position.y + this.size.y / 2 + this.fontSize / 3
+      this.position.y + this.size.y / 2 + fontSizeNumber / 3
     );
   };
 
   steps = () => {
+    const fontSplited = this.font.split('');
+    let fontSize = fontSplited.length === 2 ? fontSplited[0] : fontSplited[1];
+    let fontSizeNumber = fontSize.substr(0, -2);
+
     this.size.x = this.textSize + this.padding * 2;
-    this.size.y = this.fontSize + this.padding;
+    this.size.y = fontSizeNumber + this.padding;
   };
 }

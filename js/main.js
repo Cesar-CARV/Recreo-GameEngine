@@ -37,7 +37,7 @@ const playerAnimator = new SpriteAnimator(
 playerAnimator.addChild(playerSprite, "playerSprite");
 
 const playerCamara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
-playerCamara.setScale(.5, .5);
+playerCamara.setScale(0.01, 0.01);
 
 const playerCollider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
 
@@ -45,6 +45,7 @@ const player = new Object(GAME, 0, 0, 50, 50);
 player.addChild(playerCollider, "playerCollider");
 player.addChild(playerAnimator, "animator");
 player.addChild(playerCamara, "camara");
+
 player.draw = (ctx) => {
     ctx.fillStyle = "#363636";
     ctx.fillRect(
@@ -60,6 +61,12 @@ let playerJump = -100;
 
 player.steps = () => {
     const collider = player.getChild("playerCollider");
+
+    if (playerCamara.scaleX < 1 && playerCamara.scaleY < 1)
+        playerCamara.setScale(
+            playerCamara.scaleX + 0.01,
+            playerCamara.scaleY + 0.01
+        );
 
     // velocidad horizontal
     playerVelocity.x =
@@ -250,6 +257,20 @@ for (let i = 0; i < GAME.w / 32; i++) {
     tileMap.addTile(32 * i, GAME.h - 28, 16, 0, 16, 16);
 }
 
+// -------------------------------------------------------------
+// Titulo
+const title = new UILabel(
+    GAME,
+    GAME.w / 2 - 24 * 3,
+    10,
+    100,
+    60,
+    "ROOM TEST",
+    "bold 24px monospace",
+    "#0000",
+    "#aaa"
+);
+
 const room1 = new Room(GAME, GAME.w * 2, GAME.h * 2, "Room1_test");
 room1.tileMapLayer1 = tileMap;
 
@@ -262,6 +283,7 @@ room1.addInstance(floor, false, "floor");
 room1.addInstance(wall, false, "wall");
 room1.addInstance(wall2, false, "wall2");
 room1.addInstance(playerContainer, false, "playerContainer");
+room1.addInstance(title, "title");
 
 GAME.addRoom(room1);
 GAME.changeRoom("Room1_test", false);
