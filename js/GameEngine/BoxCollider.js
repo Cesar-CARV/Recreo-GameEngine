@@ -134,7 +134,8 @@ export default class BoxCollider extends Object {
         });
     };
 
-    // detecta si un objeto del tipo BoxCollider entra en las coordenadas mas el size que recibe como parametro
+    // detecta si un objeto del tipo BoxCollider entra en las coordenadas mas el size 
+    // de el bojeto que ejecuta la funcion que recibe como parametro
     /**
      * 
      * @param {Vector2} position 
@@ -152,5 +153,28 @@ export default class BoxCollider extends Object {
             );
         });
     };
+
+    // este metodo es muy similar a onPlaceMeetingBox solo que aqui el usuario puede
+    // determinar el tamaño de el box con el que se hace la deteccion de la colision
+    /**
+     * 
+     * @param {number} x
+     * @param {number} y
+     * @param {number} x2
+     * @param {number} y2
+     * @return {object}
+     */
+    onRectangleCollision = (x, y, x2, y2) => {
+        return this.iterateTree((node) => {
+            if (!this.collideRules(node)) return false
+
+            return (
+                x + x2 >= node.absolutePosition.x &&
+                x <= node.absolutePosition.x + node.size.x &&
+                y + y2 >= node.absolutePosition.y &&
+                y <= node.absolutePosition.y + node.size.y
+            );
+        });
+    }
 
 }
