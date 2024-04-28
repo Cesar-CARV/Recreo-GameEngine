@@ -9,6 +9,7 @@ export default class Room {
         this.name = name;
         this.positionContextRoom = new Vector2(0, 0);
         this.sizeContextRoom = new Vector2(0, 0);
+        this.scaleContextRoom = new Vector2(0, 0);
         this._INSTANCESUI = {};
         this._INSTANCES = {};
         this.backgrounds = [];
@@ -130,12 +131,32 @@ export default class Room {
     // renderiza los objetos hijos de este nivel
     // no modificar esta funcion ya que es por medio de esta que el motor renderiza renderiza el nivel
     main = (ctx) => {
-        // clip context
-        this._GAME.clipContextGraphic(this.sizeContextRoom.x, this.sizeContextRoom.y);
+        // // escalar context
+        // this._GAME.scaleContextGraphic(
+        //     this.scaleContextRoom.x,
+        //     this.scaleContextRoom.y
+        // );
         
+        // clip context
+        this._GAME.clipContextGraphic(
+            this.sizeContextRoom.x,
+            this.sizeContextRoom.y
+        );
+
+        // escalar context
+        this._GAME.scaleContextGraphic(
+            this.scaleContextRoom.x,
+            this.scaleContextRoom.y
+        );
+
         // mover context
-        const centerX = this.positionContextRoom.x + (this._GAME.w / 2 - this.sizeContextRoom.x / 2);
-        const centerY = this.positionContextRoom.y + (this._GAME.h / 2 - this.sizeContextRoom.y / 2);
+        const centerX =
+            this.positionContextRoom.x +
+            (this._GAME.w / 2 - this.sizeContextRoom.x / 2 * this.scaleContextRoom.x) / this.scaleContextRoom.x;
+        const centerY =
+            this.positionContextRoom.y +
+            (this._GAME.h / 2 - this.sizeContextRoom.y / 2 * this.scaleContextRoom.y) / this.scaleContextRoom.y;
+
         ctx.translate(centerX, centerY);
 
         // renderizar objetos
@@ -150,6 +171,5 @@ export default class Room {
         window.Object.values(this._INSTANCESUI).forEach((instanceUI) => {
             instanceUI.main(ctx);
         });
-
     };
 }

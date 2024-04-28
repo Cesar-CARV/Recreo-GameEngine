@@ -49,6 +49,10 @@ export default class Game {
     };
     // #endregion
 
+    scaleContextGraphic = (x, y) => {
+        this.ctx.scale(x, y);
+    }
+
     // #region CLIP
     
     // los parametros que resive esta funcion son las medidas de el area que se va a limpiar
