@@ -54,42 +54,81 @@ player.draw = (ctx) => {
     );
 };
 let playerVelocity = new Vector2(0, 0);
-let playerGravity = 4;
-let playerJump = -150;
+let playerGravity = 5;
+let playerJump = -100;
 
 player.steps = () => {
     const collider = player.getChild("playerCollider");
 
-    // gravedad
-    const onFloor = collider.onPlaceMeetingBox(
-        new Vector2(player.position.x, player.position.y + 1 + playerVelocity.y)
-    );
-
-    if (!onFloor.res && playerVelocity.y < 40) {
-        playerVelocity.y += playerGravity * Time.deltaTime * 10;
-    }
-
-    if (onFloor.res && Input.GetKeyDown("w")) {
-        playerVelocity.y = playerJump * Time.deltaTime * 10;
-    } else if (onFloor.res) {
-        playerVelocity.y = 0;
-        player.position.y += onFloor.target.absolutePosition.y - (player.position.y + player.size.y + 1);
-    }
-
-    if (collider.onArea().res) {
-        console.log("Area");
-    }
-
-    // movimiento horizontal
+    // velocidad horizontal
     playerVelocity.x =
         (Input.GetKeyPress("d") - Input.GetKeyPress("a")) *
         40 *
         Time.deltaTime *
         10;
 
+    const onFloor = collider.onPlaceMeetingBox(
+        new Vector2(player.position.x, player.position.y + 1 + playerVelocity.y)
+    );
+
+    const onWall = collider.onPlaceMeetingBox(
+        new Vector2(
+            player.position.x + playerVelocity.x + Math.sign(playerVelocity.x),
+            player.position.y
+        )
+    );
+
+    // gravedad
+    if (!onFloor.res && playerVelocity.y < 40) {
+        playerVelocity.y += playerGravity * Time.deltaTime * 10;
+    }
+
+    // salto
+    if (onFloor.res && Input.GetKeyPress("w")) {
+        playerVelocity.y = playerJump * Time.deltaTime * 10;
+    } else if (onFloor.res) {
+        playerVelocity.y = 0;
+        player.position.y +=
+            onFloor.target.absolutePosition.y -
+            player.position.y -
+            player.size.y -
+            1;
+    }
+
+    // colision con la pared
+    if (onWall.res) {
+        if (
+            onWall.target.absolutePosition.x < player.position.x &&
+            playerVelocity.x < 0
+        ) {
+            playerVelocity.x = 0;
+            player.position.x -=
+                player.position.x -
+                onWall.target.absolutePosition.x -
+                onWall.target.size.x -
+                1;
+        } else if (
+            onWall.target.absolutePosition.x > player.position.x &&
+            playerVelocity.x > 0
+        ) {
+            playerVelocity.x = 0;
+            player.position.x +=
+                onWall.target.absolutePosition.x -
+                player.position.x -
+                player.size.x -
+                1;
+        }
+    }
+
+    if (collider.onArea().res) {
+        // console.log("Area", collider.onArea().target);
+        // GAME.stopGame();
+    }
+
     // teletransportar
     if (Input.GetKeyDown("t")) player.changePosition(0, 0);
 
+    // mover
     player.position = player.position.Sum(playerVelocity);
 };
 
@@ -179,15 +218,18 @@ node2.addChild(node2_2, "subNodo2");
 const floorCollider = new BoxCollider(GAME, 0, 0, GAME.w, 10, 0, [], true);
 const floor = new Object(GAME, 0, GAME.h - 75, GAME.w, 10);
 floor.addChild(floorCollider, "floorCollider");
-floor.draw = (ctx) => {
-    ctx.fillStyle = "#363636";
-    ctx.fillRect(
-        floor.position.x,
-        floor.position.y,
-        floor.size.x,
-        floor.size.y
-    );
-};
+
+// -------------------------------------------------------------
+// Wall
+const wallCollider = new BoxCollider(GAME, 0, 0, 30, 100, 0, [], true);
+const wall = new Object(GAME, 150, GAME.h - 175, 30, 100);
+wall.addChild(wallCollider, "wallCollider");
+
+// -------------------------------------------------------------
+// Wall2
+const wall2Collider = new BoxCollider(GAME, 0, 0, 30, 100, 0, [], true);
+const wall2 = new Object(GAME, 240, GAME.h - 175, 30, 100);
+wall2.addChild(wall2Collider, "wall2Collider");
 
 const stopButton = new UIButton(GAME, 10, GAME.h - 100, 0, 0, "STOP GAME", 16);
 stopButton.onMouseDown = () => {
@@ -210,13 +252,15 @@ for (let i = 0; i < GAME.w / 32; i++) {
 const room1 = new Room(GAME, GAME.w * 2, GAME.h * 2, "Room1_test");
 room1.tileMapLayer1 = tileMap;
 
-room1.addInstance(playerContainer, false, "playerContainer");
 room1.addInstance(stopButton, true, "stopButton");
 room1.addInstance(pauseButton, true, "pauseButton");
 room1.addInstance(node1, false, "node1");
 room1.addInstance(node2, false, "node2");
 room1.addInstance(node3, false, "node3");
 room1.addInstance(floor, false, "floor");
+room1.addInstance(wall, false, "wall");
+room1.addInstance(wall2, false, "wall2");
+room1.addInstance(playerContainer, false, "playerContainer");
 
 GAME.addRoom(room1);
 GAME.changeRoom("Room1_test", false);
