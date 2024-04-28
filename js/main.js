@@ -36,7 +36,7 @@ const playerAnimator = new SpriteAnimator(
 
 playerAnimator.addChild(playerSprite, "playerSprite");
 
-const playerCamara = new Camara(GAME, 0, 0, GAME.w / 1.5, GAME.h / 2);
+const playerCamara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
 
 const playerCollider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
 
@@ -238,8 +238,8 @@ stopButton.onMouseDown = () => {
 
 let pauseButton = new UIButton(GAME, 130, GAME.h - 100, 0, 0, "PAUSE", 16);
 pauseButton.onMouseDown = () => {
-    GAME.pauseGame = !GAME.pauseGame;
-    pauseButton.text = GAME.pauseGame ? "PLAY" : "PAUSE";
+    GAME.gamePaused ? GAME.playGame() : GAME.pauseGame();
+    pauseButton.text = GAME.gamePaused ? "PLAY" : "PAUSE";
 };
 
 // TileMap1

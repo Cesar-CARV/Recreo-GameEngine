@@ -54,7 +54,7 @@ export default class Room {
 
     // Renderiza los objetos esto quiere decir que llama a la funcion principal de cada uno
     renderObejct = (obj, ctx) => {
-        if (!this._GAME.pauseGame) {
+        if (!this._GAME.gamePaused) {
             obj.main(ctx);
         } else {
             obj.updatePosition();

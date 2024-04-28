@@ -12,7 +12,7 @@ export default class Game {
         this.w = w;
         this.h = h;
         this.ticks = ticks;
-        this.pauseGame = false;
+        this.gamePaused = false;
         this.gameLoop = undefined;
         this.rooms = [];
         this.currentRoom = undefined;
@@ -91,6 +91,16 @@ export default class Game {
         clearInterval(this.gameLoop);
         this.gameLoop = undefined;
     };
+
+    // pausa el juego
+    pauseGame = () => {
+        this.gamePaused = true;
+    }
+
+    // des pausa el juego
+    playGame = () => {
+        this.gamePaused = false;
+    }
 
     // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
     main = () => {
