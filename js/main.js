@@ -135,6 +135,10 @@ player.steps = () => {
 
     // teletransportar
     if (Input.GetKeyDown("t")) player.changePosition(0, 0);
+    // cambiar de nivel
+    if (Input.GetKeyDown("c")){
+        GAME.changeRoom("Room2_test");
+    }
 
     // mover
     player.position = player.position.Sum(playerVelocity);
@@ -281,8 +285,25 @@ room1.addInstance(wall2, false, "wall2");
 room1.addInstance(playerContainer, false, "playerContainer");
 room1.addInstance(title, "title");
 
+// -------------------------------------------------------------
+// Input improvizado 
+const inputTest = new Object(GAME, 10, 10, 100, 40);
+inputTest.draw = (ctx) => {
+    ctx.fillStyle = "#aaa";
+    ctx.fillRect(inputTest.position.x, inputTest.position.y, inputTest.size.x, inputTest.size.y);
+}
+inputTest.steps = () => {
+    if (Input.GetKeyDown("c")){
+        GAME.changeRoom("Room1_test");
+    }
+}
+
+const room2 = new Room(GAME, GAME.w, GAME.h, "Room2_test");
+room2.addInstance(inputTest, false, "inputTest");
+
 GAME.addRoom(room1);
-GAME.changeRoom("Room1_test", false);
+GAME.addRoom(room2);
+GAME.changeRoom("Room1_test");
 GAME.startGame();
 
 // console.log(room1);

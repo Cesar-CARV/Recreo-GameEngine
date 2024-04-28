@@ -8,8 +8,8 @@ export default class Room {
         this.h = h;
         this.name = name;
         this.positionContextRoom = new Vector2(0, 0);
-        this.sizeContextRoom = new Vector2(0, 0);
-        this.scaleContextRoom = new Vector2(0, 0);
+        this.sizeContextRoom = new Vector2(this._GAME.w, this._GAME.h);
+        this.scaleContextRoom = new Vector2(1, 1);
         this._INSTANCESUI = {};
         this._INSTANCES = {};
         this.backgrounds = [];
@@ -131,12 +131,6 @@ export default class Room {
     // renderiza los objetos hijos de este nivel
     // no modificar esta funcion ya que es por medio de esta que el motor renderiza renderiza el nivel
     main = (ctx) => {
-        // // escalar context
-        // this._GAME.scaleContextGraphic(
-        //     this.scaleContextRoom.x,
-        //     this.scaleContextRoom.y
-        // );
-        
         // clip context
         this._GAME.clipContextGraphic(
             this.sizeContextRoom.x,

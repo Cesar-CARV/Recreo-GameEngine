@@ -42,22 +42,22 @@ export default class Game {
     getRoomNames = () => this.rooms.map((rm) => rm.name);
     getRoom = () => this.currentRoom;
     addRoom = (room) => this.rooms.push(room);
-    changeRoom = (roomName, saveState = false) => {
+    changeRoom = (roomName) => {
         this.hoverUI = false;
-        this.lastRoom = saveState ? this.currentRoom : undefined;
+        this.lastRoom = this.currentRoom;
         this.currentRoom = this.rooms.filter((rm) => rm.name === roomName)[0];
+        this.resetContextGraphic();
     };
     // #endregion
 
     scaleContextGraphic = (x, y) => {
         this.ctx.scale(x, y);
-    }
+    };
 
     // #region CLIP
-    
+
     // los parametros que resive esta funcion son las medidas de el area que se va a limpiar
     clipContextGraphic = (width, height) => {
-        this.ctx.save();
         // dibujar el fondo negro en el canvas
         this.ctx.beginPath();
         this.ctx.rect(0, 0, this.w, this.h);
@@ -79,7 +79,6 @@ export default class Game {
     // reinicia el ContextGraphic para que se muestre como normalmente lo haria
     resetContextGraphic = () => {
         // Reset current transformation matrix to the identity matrix
-        this.ctx.restore();
         this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     };
     // #endregion
@@ -99,12 +98,12 @@ export default class Game {
     // pausa el juego
     pauseGame = () => {
         this.gamePaused = true;
-    }
+    };
 
     // des pausa el juego
     playGame = () => {
         this.gamePaused = false;
-    }
+    };
 
     // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
     main = () => {

@@ -2,7 +2,7 @@ import Object from "./Object.js";
 import Vector2 from "./Vector2.js";
 
 export default class Camara extends Object {
-    constructor(GAME, x, y, w, h, scaleX, scaleY) {
+    constructor(GAME, x, y, w, h) {
         super(GAME, x, y, w, h);
         this.ABSOLUTEPOSITION = new Vector2(x, y);
         this.MODES = { Center: "Center", Borders: "Borders" };
@@ -10,20 +10,25 @@ export default class Camara extends Object {
         this.padding = 50;
         this.scaleX = 1;
         this.scaleY = 1;
+        this._ROOM = undefined;
     }
 
     setScale = (x, y) => {
         this.scaleX = x;
-        this.scaleY = y; 
-    }
+        this.scaleY = y;
+    };
 
     steps = () => {
-        this._GAME.currentRoom.scaleContextRoom.x = this.scaleX;
-        this._GAME.currentRoom.scaleContextRoom.y = this.scaleY;
+        if (!this._ROOM) {
+            this._ROOM = this._GAME.currentRoom;
+        } else {
+            this._ROOM.scaleContextRoom.x = this.scaleX;
+            this._ROOM.scaleContextRoom.y = this.scaleY;
 
-        this._GAME.currentRoom.sizeContextRoom = this.size;
-        this._GAME.currentRoom.positionContextRoom.x = -this.position.x;
-        this._GAME.currentRoom.positionContextRoom.y = -this.position.y;
+            this._ROOM.sizeContextRoom = this.size;
+            this._ROOM.positionContextRoom.x = -this.position.x;
+            this._ROOM.positionContextRoom.y = -this.position.y;
+        }
     };
 
     // actualiza la posicion de el objeto segun la posicion del padre
