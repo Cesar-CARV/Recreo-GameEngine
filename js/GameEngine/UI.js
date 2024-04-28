@@ -86,15 +86,11 @@ export default class UI extends Object {
 
     main = (ctx) => {
         if (this.visible) {
-            // this.events();
-            // this.draw(ctx);
-            // this.steps(ctx);
             this.updatePosition();
             this.events();
             this.steps();
             this.draw(ctx);
             this.restartPosition();
         }
-        //this.hitBox.main(ctx);
     };
 }

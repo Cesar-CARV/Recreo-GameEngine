@@ -6,10 +6,10 @@ export default class UILabel extends UI {
         super(game, x, y, w, h);
 
         this.text = text;
-        this.font = "16px san-serif";
-        this.backgroundColor = "#000";
-        this.color = "#aaa";
-        this.fill = false;
+        this.font = "16px sans-serif";
+        this.backgroundColor = "#0005";
+        this.color = "#000";
+        this.fill = true;
         this.border = false;
         this.align = "left";
         this.textMetrics = new Vector2(0, 0);
@@ -42,7 +42,7 @@ export default class UILabel extends UI {
             ctx.fillText(
                 this.text,
                 this.position.x + textAlign,
-                this.position.y + this.textMetrics.y / 2 + this.size.y / 4,
+                this.position.y + this.textMetrics.y / 2 + this.size.y / 2,
                 this.size.x
             );
         } else {
