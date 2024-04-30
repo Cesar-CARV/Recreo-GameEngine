@@ -34,6 +34,7 @@ export default class UI extends Object {
             this._GAME.hoverUI = true;
         } else if (this.active && Input.GetMouseDown(0)) {
             this.active = false;
+            this.onBlur();
         } else if (this.hover) {
             this.leave = true;
             this.hover = false;
@@ -41,6 +42,8 @@ export default class UI extends Object {
         }
     };
 
+    onBlur = () => {}
+    onFocus = () => {}
     onMouseDown = () => {};
     onMouseUp = () => {};
     onMouseMove = () => {};
@@ -65,6 +68,9 @@ export default class UI extends Object {
         }
         if (this.mouseOn && Input.GetMouseDown(0)) {
             this.onMouseDown();
+            if (!this.active) {
+                this.onFocus();
+            }
             this.active = true;
         }
         if (this.mouseOn && this.active && Input.GetMouseUp(0)) {

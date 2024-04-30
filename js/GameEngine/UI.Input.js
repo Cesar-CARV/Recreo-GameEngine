@@ -1,127 +1,150 @@
 import Input from "./Input.js";
 import UI from "./UI.js";
+import Vector2 from "./Vector2.js";
 
 export default class UIInput extends UI {
-  constructor(
-    game,
-    x,
-    y,
-    w,
-    h,
-    text,
-    placeholder,
-    fontSize = 16,
-    bgColor = "#eee",
-    bgColorHover = "#222",
-    color = "#232323",
-    colorHover = "#fff",
-    colorPlaceHolder = "#aaa",
-    padding = 16,
-    border = true
-  ) {
-    super(game, x, y, w, h);
+    constructor(game, x, y, w, h, text = "", placeholder = "placeholder") {
+        super(game, x, y, w, h);
 
-    this.text = [...text];
-    this.placeholder = placeholder;
-    this.fontSize = fontSize;
-    this.backgroundColor = bgColor;
-    this.bgHover = bgColorHover;
-    this.bgNoHover = this.backgroundColor;
-    this.color = color;
-    this.colorHover = colorHover;
-    this.colorNoHover = this.color;
-    this.colorPlaceHolder = colorPlaceHolder;
-    this.sizeUndefined = w === 0 && h === 0;
-    // this.w = w;
-    // this.h = h;
+        this.text = text;
+        this.maxTextLength = 50;
+        this.placeholder = placeholder;
+        this.font = "16px sans-serif";
+        this.placeholderColor = "#555";
+        this.backgroundColor = "#aaa";
+        this.colorPointer = "#000";
+        this.pointer = 0;
+        this.color = "#222";
+        this.fill = true;
+        this.border = false;
+        this.activeBorderColor = "#0ea5e9";
+        this.textMetrics = new Vector2(0, 0);
 
-    this.padding = padding;
-    this.border = border;
-    this.textSize = 0;
-    this.textIndex = 0;
-  }
-
-  onKeyDown = () => {
-    let letters =
-      "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNMñÑ,.-_;:[]{}''*+^¨°!|#$%&/()=?¡¿ ".split(
-        ""
-      );
-
-    if (Input.GetKeyDown("ArrowLeft")) {
-      this.textIndex += this.textIndex > 0 ? -1 : 0;
-    }
-    if (Input.GetKeyDown("ArrowRight")) {
-      this.textIndex += this.textIndex < this.text.length ? 1 : 0;
-    }
-    if (Input.GetKeyDown("End")) {
-      this.textIndex = this.text.length;
-    }
-    if (Input.GetKeyDown("Home")) {
-      this.textIndex = 0;
-    }
-    if (Input.GetKeyDown("Backspace")) {
-      this.textIndex += this.textIndex > 0 ? -1 : 0;
-      this.text.splice(this.textIndex, 1);
+        this.backgroundColorHover = "#0ea5e9";
+        this.colorHover = "#fff";
     }
 
-    letters.forEach((lett) => {
-      if (Input.GetKeyDown(lett)) {
-        this.text = [
-          ...this.text.slice(0, this.textIndex),
-          lett,
-          ...this.text.slice(this.textIndex),
-        ];
-        this.textIndex++;
-      }
-    });
-  };
+    onKeyDown = () => {
+        let letters =
+            "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNMñÑ,.-_;:[]{}''*+^¨°!|#$%&/()=?¡¿ ".split(
+                ""
+            );
 
-  draw = (ctx) => {
-    ctx.fillStyle = this.backgroundColor;
-    ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
+        if (Input.GetKeyDown("ArrowLeft")) {
+            this.pointer += this.pointer > 0 ? -1 : 0;
+        }
+        if (Input.GetKeyDown("ArrowRight")) {
+            this.pointer += this.pointer < this.text.length ? 1 : 0;
+        }
+        if (Input.GetKeyDown("End")) {
+            this.pointer = this.text.length;
+        }
+        if (Input.GetKeyDown("Home")) {
+            this.pointer = 0;
+        }
+        if (Input.GetKeyDown("Backspace")) {
+            this.text = this.text
+                .split("")
+                .filter((x, i) => (i === this.pointer - 1 ? "" : x))
+                .join("");
+            this.pointer += this.pointer > 0 ? -1 : 0;
+        }
 
-    if (this.border) {
-      ctx.strokeStyle = "#000";
-      ctx.strokeRect(
-        this.position.x,
-        this.position.y,
-        this.size.x,
-        this.size.y
-      );
+        letters.forEach((lett) => {
+            if (this.text.length >= this.maxTextLength) return;
+
+            if (Input.GetKeyDown(lett)) {
+                if (this.text === "") {
+                    this.text += lett;
+                    this.pointer++;
+                } else {
+                    this.text = this.text
+                        .split("")
+                        .map((x, i) => (i === this.pointer - 1 ? x + lett : x))
+                        .join("");
+                    this.pointer++;
+                }
+            }
+        });
+    };
+
+    onBlur = () => {
+        this.pointer = 0;
     }
 
-    ctx.fillStyle = this.text.length === 0 ? this.colorPlaceHolder : this.color;
-    ctx.font = `${this.fontSize}px monospace`;
-    this.textSize =
-      this.text.length === 0
-        ? ctx.measureText(this.placeholder).width
-        : ctx.measureText(this.text.join("")).width;
-    ctx.fillText(
-      this.text.length === 0 ? this.placeholder : this.text.join(""),
-      this.position.x + this.padding,
-      this.position.y + this.size.y / 2 + this.fontSize / 3
-    );
+    draw = (ctx) => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(this.position.x, this.position.y, this.size.x, this.size.y);
+        ctx.clip();
 
-    if (this.active) {
-      let pointerX =
-        this.position.x +
-        (this.textSize / this.text.length) * this.textIndex +
-        this.padding;
-      ctx.fillStyle = this.color;
-      ctx.fillRect(pointerX, this.position.y + 3, 3, this.size.y - 6);
-    }
-  };
+        ctx.font = this.font;
+        this.textMetrics.x = Math.ceil(ctx.measureText(this.text).width);
+        this.textMetrics.y = Math.ceil(
+            ctx.measureText(this.text).hangingBaseline
+        );
 
-  steps = () => {
-    this.backgroundColor = this.hover ? this.bgHover : this.bgNoHover;
-    this.color = this.hover ? this.colorHover : this.colorNoHover;
+        ctx.fillStyle = this.hover
+            ? this.backgroundColorHover
+            : this.backgroundColor;
+        ctx.fillRect(
+            this.position.x,
+            this.position.y,
+            this.size.x,
+            this.size.y
+        );
 
-    if (this.sizeUndefined) {
-      this.size.x = this.textSize + this.padding * 2;
-    }
+        // overflow
+        let overflow = 0;
+        if (
+            ctx.measureText(this.text.substr(0, this.pointer)).width >
+            this.size.x
+        ) {
+            overflow =
+                ctx.measureText(this.text.substr(0, this.pointer)).width -
+                this.size.x;
+        }
 
-    if (this.sizeUndefined) {
-      this.size.y = this.fontSize + this.padding;
-    }
-  };
+        // pointer y active border
+        if (this.active) {
+            // active border
+            ctx.strokeStyle = this.activeBorderColor;
+            ctx.strokeRect(
+                this.position.x + 1,
+                this.position.y + 1,
+                this.size.x - 2,
+                this.size.y - 2
+            );
+
+            // pointer
+            ctx.fillStyle = this.colorPointer;
+            ctx.fillRect(
+                this.position.x +
+                    ctx.measureText(this.text.substr(0, this.pointer)).width -
+                    overflow,
+                this.position.y + this.size.y / 6,
+                2,
+                this.size.y - this.size.y / 3
+            );
+        }
+
+        //  texto
+        ctx.fillStyle = this.hover ? this.colorHover : this.color;
+        ctx.strokeStyle = this.hover ? this.colorHover : this.color;
+
+        if (this.fill) {
+            ctx.fillText(
+                this.text,
+                this.position.x - overflow,
+                this.position.y + this.textMetrics.y / 2 + this.size.y / 2
+            );
+        } else {
+            ctx.strokeText(
+                this.text,
+                this.position.x - overflow,
+                this.position.y + this.textMetrics.y / 2 + this.size.y / 2
+            );
+        }
+        ctx.restore();
+    };
 }

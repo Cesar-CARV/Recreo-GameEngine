@@ -19,6 +19,12 @@ export default class UIButton extends UI {
     }
 
     draw = (ctx) => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(this.position.x, this.position.y, this.size.x, this.size.y);
+        ctx.clip();
+
+
         ctx.font = this.font;
         this.textMetrics.x = Math.ceil(ctx.measureText(this.text).width);
         this.textMetrics.y = Math.ceil(
@@ -47,33 +53,15 @@ export default class UIButton extends UI {
             ctx.fillText(
                 this.text,
                 this.position.x + textAlign,
-                this.position.y + this.textMetrics.y / 2 + this.size.y / 2,
-                this.size.x
+                this.position.y + this.textMetrics.y / 2 + this.size.y / 2
             );
         } else {
             ctx.strokeText(
                 this.text,
                 this.position.x + textAlign,
-                this.position.y + this.textMetrics.y / 2 + this.size.y / 2,
-                this.size.x
+                this.position.y + this.textMetrics.y / 2 + this.size.y / 2
             );
         }
+        ctx.restore();
     };
-
-    // steps = () => {
-    //     this.backgroundColor = this.hover ? this.bgHover : this.bgNoHover;
-    //     this.color = this.hover ? this.colorHover : this.colorNoHover;
-
-    //     const fontSplited = this.font.split('');
-    //     let fontSize = fontSplited.length === 2 ? fontSplited[0] : fontSplited[1];
-    //     let fontSizeNumber = fontSize.substr(0, -2);
-
-    //     if (this.size.x === 0 && this.textSize !== 0) {
-    //         this.size.x = this.textSize + this.padding * 2;
-    //     }
-
-    //     if (this.size.y === 0 && this.textSize !== 0) {
-    //         this.size.y = fontSizeNumber + this.padding * 2;
-    //     }
-    // };
 }

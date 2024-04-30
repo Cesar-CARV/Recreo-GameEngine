@@ -287,19 +287,24 @@ room1.addInstance(title, "title");
 
 // -------------------------------------------------------------
 // Input improvizado 
-const inputTest = new Object(GAME, 10, 10, 100, 40);
-inputTest.draw = (ctx) => {
-    ctx.fillStyle = "#aaa";
-    ctx.fillRect(inputTest.position.x, inputTest.position.y, inputTest.size.x, inputTest.size.y);
-}
+const inputTest = new UIInput(GAME, 10, 10, 300, 20, "");
 inputTest.steps = () => {
-    if (Input.GetKeyDown("c")){
+    if (inputTest.text === "cambiar a nivel 1") {
+        inputTest.text = '';
+        inputTest.pointer = 0;
         GAME.changeRoom("Room1_test");
     }
 }
+// -------------------------------------------------------------
+// Titulo de nivel 2
+const title2 = new UILabel(GAME, 40, GAME.h - 80, GAME.w - 80, 60, "ROOM TEST 2");
+title2.backgroundColor = "#346"
+title2.color = "#fff";
+title2.align = "center";
 
 const room2 = new Room(GAME, GAME.w, GAME.h, "Room2_test");
 room2.addInstance(inputTest, false, "inputTest");
+room2.addInstance(title2, false, "title2");
 
 GAME.addRoom(room1);
 GAME.addRoom(room2);
