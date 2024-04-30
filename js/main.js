@@ -37,7 +37,7 @@ const playerAnimator = new SpriteAnimator(
 playerAnimator.addChild(playerSprite, "playerSprite");
 
 const playerCamara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
-playerCamara.setScale(0.01, 0.01);
+playerCamara.setScale(0.5, 0.5);
 
 const playerCollider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
 
@@ -270,10 +270,24 @@ const title = new UILabel(GAME, 40, 20, GAME.w - 80, 60, "ROOM TEST");
 title.backgroundColor = "#f355"
 title.color = "#fff";
 title.align = "center";
+title.steps = () => {
+    const pylr = GAME.currentRoom.findByName("player", false);
+    if (!pylr) return;
+    title.text = "ROOM TEST " + Math.floor(pylr.position.y);
+}
+
+// -------------------------------------------------------------
+// background 1
+const room1Background = new Background(GAME, -GAME.w / 2, -GAME.h / 2, GAME.w * 2, GAME.h * 2, "./../../Fondo_01.png");
+// -------------------------------------------------------------
+// background 2
+const room1Background2 = new Background(GAME, 0, 0, 100, 100, "./../../Fondo_01.png");
 
 const room1 = new Room(GAME, GAME.w * 2, GAME.h * 2, "Room1_test");
 room1.tileMapLayer1 = tileMap;
 
+room1.addBackground(room1Background);
+room1.addBackground(room1Background2);
 room1.addInstance(stopButton, true, "stopButton");
 room1.addInstance(pauseButton, true, "pauseButton");
 room1.addInstance(title, true, "title");

@@ -167,11 +167,13 @@ export default class Room {
 
         ctx.translate(centerX, centerY);
 
+        // draw tiles and background
+        this.draw(ctx);
+        
         // renderizar objetos
         window.Object.values(this._INSTANCES).forEach((instance) => {
             this.renderObejct(instance, ctx);
         });
-        this.draw(ctx);
 
         this._GAME.resetContextGraphic();
 

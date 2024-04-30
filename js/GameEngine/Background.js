@@ -16,10 +16,10 @@ export default class Background extends Object{
     draw = (ctx) => {
         if (!this.canDraw) return;
         
-        if (this.url) ctx.drawImage(this._IMAGE, this.x, this.y, this.w, this.h);
+        if (this.url) ctx.drawImage(this._IMAGE, this.position.x, this.position.y, this.size.x, this.size.y);
         if (this.color){
             ctx.fillStyle = this.color;
-            ctx.fillRect(this.x, this.y, this.w, this.h);
+            ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
         }
     }
 }
