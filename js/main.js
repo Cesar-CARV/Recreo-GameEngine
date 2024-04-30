@@ -287,7 +287,14 @@ room1.addInstance(title, "title");
 
 // -------------------------------------------------------------
 // Input improvizado 
-const inputTest = new UIInput(GAME, 10, 10, 300, 20, "");
+const inputTest = new UIInput(GAME, 10, 10, 300, 30, "", "Escribe lo que quieras aqui");
+inputTest.backgroundColor = "#232323";
+inputTest.backgroundColorHover = "#363636";
+inputTest.color = "#aaa";
+inputTest.placeholderColor = "#555";
+inputTest.colorHover = "#fff";
+inputTest.colorPointer = "#aaa";
+inputTest.activeBorderColor = "#000";
 inputTest.steps = () => {
     if (inputTest.text === "cambiar a nivel 1") {
         inputTest.text = '';

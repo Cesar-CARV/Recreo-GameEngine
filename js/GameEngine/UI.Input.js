@@ -70,7 +70,7 @@ export default class UIInput extends UI {
 
     onBlur = () => {
         this.pointer = 0;
-    }
+    };
 
     draw = (ctx) => {
         ctx.save();
@@ -129,18 +129,22 @@ export default class UIInput extends UI {
         }
 
         //  texto
-        ctx.fillStyle = this.hover ? this.colorHover : this.color;
+        if (this.text.length > 0) {
+            ctx.fillStyle = this.hover ? this.colorHover : this.color;
+        } else {
+            ctx.fillStyle = this.placeholderColor;
+        }
         ctx.strokeStyle = this.hover ? this.colorHover : this.color;
 
         if (this.fill) {
             ctx.fillText(
-                this.text,
+                this.text.length === 0 ? this.placeholder : this.text,
                 this.position.x - overflow,
                 this.position.y + this.textMetrics.y / 2 + this.size.y / 2
             );
         } else {
             ctx.strokeText(
-                this.text,
+                this.text.length === 0 ? this.placeholder : this.text,
                 this.position.x - overflow,
                 this.position.y + this.textMetrics.y / 2 + this.size.y / 2
             );
