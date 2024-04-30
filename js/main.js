@@ -276,6 +276,7 @@ room1.tileMapLayer1 = tileMap;
 
 room1.addInstance(stopButton, true, "stopButton");
 room1.addInstance(pauseButton, true, "pauseButton");
+room1.addInstance(title, true, "title");
 room1.addInstance(node1, false, "node1");
 room1.addInstance(node2, false, "node2");
 room1.addInstance(node3, false, "node3");
@@ -283,7 +284,6 @@ room1.addInstance(floor, false, "floor");
 room1.addInstance(wall, false, "wall");
 room1.addInstance(wall2, false, "wall2");
 room1.addInstance(playerContainer, false, "playerContainer");
-room1.addInstance(title, "title");
 
 // -------------------------------------------------------------
 // Input improvizado 
@@ -318,11 +318,19 @@ GAME.addRoom(room2);
 GAME.changeRoom("Room1_test");
 GAME.startGame();
 
-// console.log(room1);
-// console.log(player._CHILDREN);
+
+// buscar subNodo2
+// console.time();
+// console.log(
+//     "Se busco al objeto subNodo2 y el resultado fue: ",
+//     GAME.currentRoom.findByName("subNodo2") !== undefined
+// );
+// console.timeEnd();
+
+// buscar label de el room 1
 console.time();
 console.log(
-    "Se busco al objeto subNodo2 y el resultado fue: ",
-    GAME.currentRoom.findByName("subNodo2") !== undefined
+    "Se busco al objeto title y el resultado fue: ",
+    GAME.currentRoom.findByName("title", true) !== undefined
 );
 console.timeEnd();

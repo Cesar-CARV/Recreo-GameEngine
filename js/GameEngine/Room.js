@@ -75,10 +75,15 @@ export default class Room {
     // RESIVIRAN DOS PARAMETROS, LA LISTA A BUSCAR Y EL SELECTOR
 
     // esta funcion busca un objeto por el nombre
-    findByName = (name, node = undefined, nodesVisited = new Set()) => {
+    findByName = (
+        name, UI = false, node = undefined, nodesVisited = new Set()
+    ) => {
         if (node) {
             // comprueba si el nodo es igual el nodo es el que se busca
-            if (node?._PARENT?._CHILDREN[name] === node) {
+            if (!node?._PARENT) {
+                if (UI && this._INSTANCESUI[name] === node) return node;
+                else if (!UI && this._INSTANCES[name] === node) return node;
+            } else if (node?._PARENT?._CHILDREN[name] === node) {
                 return node;
             }
 
@@ -87,7 +92,7 @@ export default class Room {
 
             // comprueba si no tiene hijos, si no tiene se retorna a el padre
             if (node._CHILDREN.length === 0) {
-                return this.findByName(name, node._PARENT, nodesVisited);
+                return this.findByName(name, UI, node._PARENT, nodesVisited);
             }
 
             // comprueba si tiene hijos, si es asi valida que los hijos no se encuentren el el set
@@ -98,21 +103,26 @@ export default class Room {
                 );
 
                 if (children.length === 0) {
-                    return this.findByName(name, node._PARENT, nodesVisited);
+                    return this.findByName(
+                        name,
+                        UI,
+                        node._PARENT,
+                        nodesVisited
+                    );
                 }
 
-                return this.findByName(name, children[0], nodesVisited);
+                return this.findByName(name, UI, children[0], nodesVisited);
             }
         }
 
         // si no el nodo no existe se filtran los nodos hijos de el room
         // y se busca en el primer indice
-        const instances = window.Object.values(this._INSTANCES).filter(
-            (nd) => !nodesVisited.has(nd)
-        );
+        const instances = window.Object.values(
+            UI ? this._INSTANCESUI : this._INSTANCES
+        ).filter((nd) => !nodesVisited.has(nd));
 
         if (instances.length === 0) return undefined;
-        return this.findByName(name, instances[0], nodesVisited);
+        return this.findByName(name, UI, instances[0], nodesVisited);
     };
 
     // esta funcion busca un objeto por un query de clave y valor, el valor queda
@@ -146,10 +156,14 @@ export default class Room {
         // mover context
         const centerX =
             this.positionContextRoom.x +
-            (this._GAME.w / 2 - this.sizeContextRoom.x / 2 * this.scaleContextRoom.x) / this.scaleContextRoom.x;
+            (this._GAME.w / 2 -
+                (this.sizeContextRoom.x / 2) * this.scaleContextRoom.x) /
+                this.scaleContextRoom.x;
         const centerY =
             this.positionContextRoom.y +
-            (this._GAME.h / 2 - this.sizeContextRoom.y / 2 * this.scaleContextRoom.y) / this.scaleContextRoom.y;
+            (this._GAME.h / 2 -
+                (this.sizeContextRoom.y / 2) * this.scaleContextRoom.y) /
+                this.scaleContextRoom.y;
 
         ctx.translate(centerX, centerY);
 
