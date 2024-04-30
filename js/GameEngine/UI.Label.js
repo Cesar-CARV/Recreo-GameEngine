@@ -16,6 +16,11 @@ export default class UILabel extends UI {
     }
 
     draw = (ctx) => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(this.position.x, this.position.y, this.size.x, this.size.y);
+        ctx.clip();
+
         ctx.font = this.font;
         this.textMetrics.x = Math.ceil(ctx.measureText(this.text).width);
         this.textMetrics.y = Math.ceil(
@@ -53,5 +58,7 @@ export default class UILabel extends UI {
                 this.size.x
             );
         }
+
+        ctx.restore();
     };
 }
