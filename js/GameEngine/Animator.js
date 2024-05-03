@@ -26,14 +26,16 @@ class SpriteAnimator extends Object {
         this.frame = this.frame > this.frames ? this.frames : this.frame;
 
         this.#animationLoop = setInterval(() => {
-            if (this._GAME.pauseGame) return;
+            if (this._GAME.gamePaused) return;
 
-            if (this.repeat)
+            if (this.repeat){
                 this.frame = this.frame >= this.frames ? 0 : this.frame + 1;
-            else
+            }
+            else {
                 this.frame =
-                    this.frame < this.frames ? this.frame + 1 : this.frame;
-
+                this.frame < this.frames ? this.frame + 1 : this.frame;
+            }
+            
             if (!this.repeat && this.frame >= this.frames) this.stopAnimation();
         }, this.time);
     };
@@ -41,6 +43,16 @@ class SpriteAnimator extends Object {
     stop = () => {
         clearInterval(this.#animationLoop);
     };
+
+    changeAnimation =  (keyFrames, time = 1000 / 12, repeat = true) => {
+        this.stop();
+        this.frame = 0;
+        this.frames = keyFrames.length - 1;
+        this.keyFrames = keyFrames;
+        this.time = time;
+        this.repeat = repeat;
+        this.play();
+    }
 
     steps = () => {
         if (this.frames === -1 || this._CHILDREN.length === 0) return;
