@@ -41,7 +41,7 @@ const playerAnimator = new SpriteAnimator(GAME, animations.idle, 1000 / 6);
 playerAnimator.addChild(playerSprite, "playerSprite");
 
 const playerCamara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
-playerCamara.setScale(0.05, 0.05);
+playerCamara.setScale(.01, .01);
 
 const playerCollider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
 
@@ -57,11 +57,11 @@ let playerJump = -100;
 player.steps = () => {
   const collider = player.getChild("playerCollider");
 
-  if (playerCamara.scaleX < 1 && playerCamara.scaleY < 1)
-    playerCamara.setScale(
-      playerCamara.scaleX + 0.01,
-      playerCamara.scaleY + 0.01
-    );
+    if (playerCamara.scaleX < 1 && playerCamara.scaleY < 1)
+      playerCamara.setScale(
+        playerCamara.scaleX + 0.01,
+        playerCamara.scaleY + 0.01
+      );
 
   // velocidad horizontal
   playerVelocity.x =
