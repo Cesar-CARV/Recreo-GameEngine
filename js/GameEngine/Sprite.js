@@ -1,6 +1,4 @@
-import Game from "./Game.js";
 import Object from "./Object.js";
-import Vector2 from "./Vector2.js";
 
 export default class Sprite extends Object {
   constructor(GAME, x, y, w, h, url) {

@@ -41,7 +41,7 @@ const playerAnimator = new SpriteAnimator(GAME, animations.idle, 1000 / 6);
 playerAnimator.addChild(playerSprite, "playerSprite");
 
 const playerCamara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
-playerCamara.setScale(.01, .01);
+playerCamara.setScale(0.01, 0.01);
 
 const playerCollider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
 
@@ -57,11 +57,11 @@ let playerJump = -100;
 player.steps = () => {
   const collider = player.getChild("playerCollider");
 
-    if (playerCamara.scaleX < 1 && playerCamara.scaleY < 1)
-      playerCamara.setScale(
-        playerCamara.scaleX + 0.01,
-        playerCamara.scaleY + 0.01
-      );
+  if (playerCamara.scaleX < 1 && playerCamara.scaleY < 1)
+    playerCamara.setScale(
+      playerCamara.scaleX + 0.01,
+      playerCamara.scaleY + 0.01
+    );
 
   // velocidad horizontal
   playerVelocity.x =
@@ -141,8 +141,11 @@ player.steps = () => {
     playerAnimator.changeAnimation(animations.idle, 1000 / 6);
   }
 
-  if (playerVelocity.x < 0) playerSprite.flipX = true;
-  else if (playerVelocity.x > 0) playerSprite.flipX = false;
+  if (playerVelocity.x < 0) {
+    playerSprite.flipX = true;
+  } else if (playerVelocity.x > 0) {
+    playerSprite.flipX = false;
+  }
 
   // mover
   player.position = player.position.Sum(playerVelocity);
@@ -213,7 +216,7 @@ node2.addChild(node2_2, "subNodo2");
 
 // -------------------------------------------------------------
 // Floor
-const floorCollider = new BoxCollider(GAME, 0, 0, GAME.w, 10, 0, [], true);
+const floorCollider = new BoxCollider(GAME, 0, 0, GAME.w * 2, 10, 0, [], true);
 const floor = new Object(GAME, 0, GAME.h - 75, GAME.w, 10);
 floor.addChild(floorCollider, "floorCollider");
 
@@ -283,11 +286,21 @@ const room1Background2 = new Background(
   "./../../Fondo_01.png"
 );
 
+const room1Background3 = new Background(
+  GAME,
+  GAME.w * 2 - 100,
+  0,
+  100,
+  100,
+  "./../../tileMapTest.png"
+);
+
 const room1 = new Room(GAME, GAME.w * 2, GAME.h * 2, "Room1_test");
 room1.tileMapLayer1 = tileMap;
 
 room1.addBackground(room1Background);
 room1.addBackground(room1Background2);
+room1.addBackground(room1Background3);
 room1.addInstance(stopButton, true, "stopButton");
 room1.addInstance(pauseButton, true, "pauseButton");
 room1.addInstance(title, true, "title");
