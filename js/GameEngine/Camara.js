@@ -35,19 +35,41 @@ export default class Camara extends Object {
 
       this._ROOM.sizeContextRoom = this.size;
 
-      //   colisiones
-      if (
-        this.absolutePosition.x > this.LIMITS.l &&
-        this.absolutePosition.x + this.size.x - 1 < this.LIMITS.r
-      ) {
-        this._ROOM.positionContextRoom.x = -this.position.x;
+      // mover camara
+      this._ROOM.positionContextRoom.x = -this.position.x;
+      this._ROOM.positionContextRoom.y = -this.position.y;
+
+
+      // colision L
+      if (this.absolutePosition.x < this.LIMITS.l) {
+        this._ROOM.positionContextRoom.x = this.LIMITS.l + 1;
       }
-      if (
-        this.absolutePosition.y > this.LIMITS.t &&
-        this.absolutePosition.y + this.size.y - 1 < this.LIMITS.b
-      ) {
-        this._ROOM.positionContextRoom.y = -this.position.y;
+      // colsion R
+      else if (this.absolutePosition.x + this.size.x > this.LIMITS.r) {
+        this._ROOM.positionContextRoom.x = -(this.LIMITS.r - this.size.x);
       }
+      // colision T
+      if (this.absolutePosition.y < this.LIMITS.t) {
+        this._ROOM.positionContextRoom.y = this.LIMITS.t + 1;
+      }
+      // colsion B
+      else if (this.absolutePosition.y + this.size.y > this.LIMITS.b) {
+        this._ROOM.positionContextRoom.y = -(this.LIMITS.b - this.size.y);
+      }
+
+
+      // if (
+      //   this.absolutePosition.x > this.LIMITS.l &&
+      //   this.absolutePosition.x + this.size.x - 1 < this.LIMITS.r
+      // ) {
+      //   this._ROOM.positionContextRoom.x = -this.position.x;
+      // }
+      // if (
+      //   this.absolutePosition.y > this.LIMITS.t &&
+      //   this.absolutePosition.y + this.size.y - 1 < this.LIMITS.b
+      // ) {
+      //   this._ROOM.positionContextRoom.y = -this.position.y;
+      // }
     }
   };
 

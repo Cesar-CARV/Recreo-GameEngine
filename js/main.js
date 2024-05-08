@@ -126,7 +126,10 @@ player.steps = () => {
   }
 
   // teletransportar
-  if (Input.GetKeyDown("t")) player.changePosition(0, 0);
+  if (Input.GetKeyDown("t")) {
+    player.changePosition(0, 0);
+    playerCamara.position.x += .001;
+  }
   // cambiar de nivel
   if (Input.GetKeyDown("c")) {
     GAME.changeRoom("Room2_test");
@@ -154,8 +157,7 @@ player.steps = () => {
   if (Input.GetKeyDown("k")) {
     const obj = GAME.currentRoom.findByName("subNodo2", false);
     console.log(obj);
-    if (obj) obj.kamikaze(()=> console.log("HOLA"));
-
+    if (obj) obj.kamikaze(() => console.log("HOLA"));
   }
 };
 
