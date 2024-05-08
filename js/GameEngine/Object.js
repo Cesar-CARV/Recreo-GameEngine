@@ -1,88 +1,92 @@
 import Vector2 from "./Vector2.js";
-import Time from "./Time.js";
 
 export default class Object {
-    constructor(GAME, x, y, w, h) {
-        this._GAME = GAME;
-        this._PARENT = undefined; // padre directo
-        this._CHILDREN = {}; // hijos del objeto
-        this.position = new Vector2(x, y); // posicion del objeto, nota: la posicion es relativa a el padre
-        this.size = new Vector2(w, h);
+  constructor(GAME, x, y, w, h) {
+    this._GAME = GAME;
+    this._NAME = undefined;
+    this._PARENT = undefined; // padre directo
+    this._CHILDREN = {}; // hijos del objeto
+    this.position = new Vector2(x, y); // posicion del objeto, nota: la posicion es relativa a el padre
+    this.size = new Vector2(w, h);
+  }
+
+  // eliminarse a si mismo
+  kamikaze = (callback = ()=> {}) => {
+    if (callback) callback();
+    this._PARENT._CHILDREN = delete this._PARENT._CHILDREN[this._NAME];
+  };
+
+  // actualizar poscion relativa
+  changePosition = (x, y) => {
+    this.position = this._PARENT
+      ? new Vector2(this._PARENT.position.x + x, this._PARENT.position.y + y)
+      : new Vector2(x, y);
+  };
+
+  // actualiza la posicion de el objeto segun la posicion del padre
+  updatePosition = () => {
+    this.position = this._PARENT
+      ? new Vector2(
+          this._PARENT.position.x + this.position.x,
+          this._PARENT.position.y + this.position.y
+        )
+      : this.position;
+  };
+
+  // reinicia la posicion del objeto para que no cresca exponecialmente al sumar la posicion del padre
+  restartPosition = () => {
+    this.position = this._PARENT
+      ? new Vector2(
+          this.position.x - this._PARENT.position.x,
+          this.position.y - this._PARENT.position.y
+        )
+      : this.position;
+  };
+
+  // agrega un hijo al array de _CHILDREN y le agrega un nombre
+  addChild = (obj, name) => {
+    if (!this._CHILDREN[name]) {
+      this._CHILDREN[name] = obj;
+      obj._PARENT = this;
+      obj._NAME = name;
+    } else if (this._CHILDREN[name]) {
+      throw new Error(`${name} does exist in UI`);
     }
 
-    // actualizar poscion relativa
-    changePosition = (x, y) => {
-        this.position = this._PARENT
-            ? new Vector2(
-                  this._PARENT.position.x + x,
-                  this._PARENT.position.y + y
-              )
-            : new Vector2(x, y);
-    };
+    // this._CHILDREN.push({ name: name, obj: obj });
+    // obj._PARENT = this;
+  };
 
-    // actualiza la posicion de el objeto segun la posicion del padre
-    updatePosition = () => {
-        this.position = this._PARENT
-            ? new Vector2(
-                  this._PARENT.position.x + this.position.x,
-                  this._PARENT.position.y + this.position.y
-              )
-            : this.position;
-    };
+  // retorna un hijo segun el nombre
+  getChild = (name) => {
+    return this._CHILDREN[name];
+    // const child = this._CHILDREN.filter((ch) => ch.name === name)[0];
+    // return child ? child.obj : child;
+  };
 
-    // reinicia la posicion del objeto para que no cresca exponecialmente al sumar la posicion del padre
-    restartPosition = () => {
-        this.position = this._PARENT
-            ? new Vector2(
-                  this.position.x - this._PARENT.position.x,
-                  this.position.y - this._PARENT.position.y
-              )
-            : this.position;
-    };
+  // elimina un hijo segun el nombre
+  delteChild = (name) => {
+    return delete this._CHILDREN[name];
+    // this._CHILDREN = this._CHILDREN.filter((ch) => ch.name !== name);
+  };
 
-    // agrega un hijo al array de _CHILDREN y le agrega un nombre
-    addChild = (obj, name) => {
-        if (!this._CHILDREN[name]) {
-            this._CHILDREN[name] = obj;
-            obj._PARENT = this;
-        } else if (this._CHILDREN[name]) {
-            throw new Error(`${name} does exist in UI`);
-        }
+  // dentro de esta funcion se podra utilizar el ContextGraphic del canvas para dibujar cualquier cosa
+  // como recomendacion solo utilizarla para dibujar ya que si se afecta al ContextGraphic de cierto modo
+  // esto podria afectar a el resto de el motor
+  draw = (ctx) => {};
 
-        // this._CHILDREN.push({ name: name, obj: obj });
-        // obj._PARENT = this;
-    };
+  // en este evento es donde se programaran las acciones del objeto,
+  // esta es la funcion un bucle del objeto
+  steps = () => {};
 
-    // retorna un hijo segun el nombre
-    getChild = (name) => {
-        return this._CHILDREN[name];
-        // const child = this._CHILDREN.filter((ch) => ch.name === name)[0];
-        // return child ? child.obj : child;
-    };
-
-    // elimina un hijo segun el nombre
-    delteChild = (name) => {
-        return delete this._CHILDREN[name];
-        // this._CHILDREN = this._CHILDREN.filter((ch) => ch.name !== name);
-    };
-
-    // dentro de esta funcion se podra utilizar el ContextGraphic del canvas para dibujar cualquier cosa
-    // como recomendacion solo utilizarla para dibujar ya que si se afecta al ContextGraphic de cierto modo
-    // esto podria afectar a el resto de el motor
-    draw = (ctx) => {};
-
-    // en este evento es donde se programaran las acciones del objeto,
-    // esta es la funcion un bucle del objeto
-    steps = () => {};
-
-    // como recomendacion no modificar esta funcion ya que esta llama a las funciones internas del objeto
-    // al ser renderizado
-    // NOTA: si se llega a modificar esta funcion procurar seguir el mismo orden y de preferencia no borrar
-    //       los metodos originales.
-    main = (ctx) => {
-        this.updatePosition();
-        this.steps();
-        this.draw(ctx);
-        // this.restartPosition(); // esta linea se elemino para solucionar el bug de seguimiento de los padres
-    };
+  // como recomendacion no modificar esta funcion ya que esta llama a las funciones internas del objeto
+  // al ser renderizado
+  // NOTA: si se llega a modificar esta funcion procurar seguir el mismo orden y de preferencia no borrar
+  //       los metodos originales.
+  main = (ctx) => {
+    this.updatePosition();
+    this.steps();
+    this.draw(ctx);
+    // this.restartPosition(); // esta linea se elemino para solucionar el bug de seguimiento de los padres
+  };
 }

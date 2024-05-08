@@ -149,6 +149,14 @@ player.steps = () => {
 
   // mover
   player.position = player.position.Sum(playerVelocity);
+
+  // destruir objeto con el metodo kamikaze
+  if (Input.GetKeyDown("k")) {
+    const obj = GAME.currentRoom.findByName("subNodo2", false);
+    console.log(obj);
+    if (obj) obj.kamikaze(()=> console.log("HOLA"));
+
+  }
 };
 
 playerAnimator.play();
@@ -177,10 +185,10 @@ playerContainer.steps = () => {
   if (Input.GetKeyPress("ArrowRight"))
     playerContainer.position.x += 40 * Time.deltaTime * 10;
 
-  if (Input.GetKeyDown("k")) {
-    console.log("kill");
-    playerContainer._GAME.currentRoom.removeInstance(false, "playerContainer");
-  }
+  // if (Input.GetKeyDown("k")) {
+  //   console.log("kill");
+  //   playerContainer._GAME.currentRoom.removeInstance(false, "playerContainer");
+  // }
 };
 
 const node1 = new Object(GAME, 10, 0, 10, 10);

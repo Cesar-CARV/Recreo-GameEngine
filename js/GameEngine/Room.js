@@ -26,12 +26,14 @@ export default class Room {
     // agrega un objeto al nivel
     addInstance = (inst, UI = false, name) => {
         if (UI && !this._INSTANCESUI[name]) {
+            inst._NAME = name;
             this._INSTANCESUI[name] = inst;
         } else if (UI && this._INSTANCESUI[name]) {
             throw new Error(`${name} does exist in UI`);
         }
 
         if (!UI && !this._INSTANCES[name]) {
+            inst._NAME = name;
             this._INSTANCES[name] = inst;
         } else if (!UI && this._INSTANCES[name]) {
             throw new Error(`${name} does exist`);
