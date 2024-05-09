@@ -1,18 +1,19 @@
-import Game from "./GameEngine/Game.js";
-import Input from "./GameEngine/Input.js";
-import Room from "./GameEngine/Room.js";
-import Object from "./GameEngine/Object.js";
-import Camara from "./GameEngine/Camara.js";
-import UIButton from "./GameEngine/UI.Button.js";
-import UIInput from "./GameEngine/UI.Input.js";
-import UILabel from "./GameEngine/UI.Label.js";
-import Sprite from "./GameEngine/Sprite.js";
-import { SpriteAnimator, KeyFrame } from "./GameEngine/Animator.js";
-import Background from "./GameEngine/Background.js";
-import Time from "./GameEngine/Time.js";
-import Tilemap from "./GameEngine/Tilemap.js";
-import BoxCollider from "./GameEngine/BoxCollider.js";
-import Vector2 from "./GameEngine/Vector2.js";
+import Game from './GameEngine/Game.js';
+import Input from './GameEngine/Input.js';
+import Time from './GameEngine/Time.js';
+import Vector2 from './GameEngine/Vector2.js';
+import Room from './GameEngine/Room.js';
+import Object from './GameEngine/Object.js';
+import Camara from './GameEngine/Camara.js';
+import Sprite from './GameEngine/Sprite.js';
+import { SpriteAnimator, KeyFrame } from './GameEngine/Animator.js';
+import BoxCollider from './GameEngine/BoxCollider.js';
+import Background from './GameEngine/Background.js';
+import Tilemap from './GameEngine/Tilemap.js';
+import UI from './GameEngine/UI.js';
+import UILabel from './GameEngine/UI.Label.js';
+import UIButton from './GameEngine/UI.Button.js';
+import UIInput from './GameEngine/UI.Input.js';
 
 // -------------------- GAME SETTINGS --------------------- //
 const $game = document.querySelector("#game");

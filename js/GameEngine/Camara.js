@@ -42,7 +42,7 @@ export default class Camara extends Object {
 
       // colision L
       if (this.absolutePosition.x < this.LIMITS.l) {
-        this._ROOM.positionContextRoom.x = this.LIMITS.l + 1;
+        this._ROOM.positionContextRoom.x = this.LIMITS.l;
       }
       // colsion R
       else if (this.absolutePosition.x + this.size.x > this.LIMITS.r) {
@@ -50,7 +50,7 @@ export default class Camara extends Object {
       }
       // colision T
       if (this.absolutePosition.y < this.LIMITS.t) {
-        this._ROOM.positionContextRoom.y = this.LIMITS.t + 1;
+        this._ROOM.positionContextRoom.y = this.LIMITS.t;
       }
       // colsion B
       else if (this.absolutePosition.y + this.size.y > this.LIMITS.b) {
