@@ -243,20 +243,34 @@ const wall2Collider = new BoxCollider(GAME, 0, 0, 30, 100, 0, [], true);
 const wall2 = new Object(GAME, 240, GAME.h - 175, 30, 100);
 wall2.addChild(wall2Collider, "wall2Collider");
 
-const stopButton = new UIButton(GAME, 10, GAME.h - 60, 120, 40, "STOP GAME");
+// -------------------------------------------------------------
+// UI
+const stopButton = new UIButton(GAME, 0, 0, 120, 40, "STOP GAME");
 stopButton.align = "center";
 stopButton.backgroundColorHover = "#f35";
 stopButton.onMouseDown = () => {
   GAME.stopGame();
 };
 
-const pauseButton = new UIButton(GAME, 140, GAME.h - 60, 80, 40, "PAUSE");
+const pauseButton = new UIButton(GAME, 130, 0, 80, 40, "PAUSE");
 pauseButton.align = "center";
+pauseButton.onFocus = () => console.log("Focus");
+pauseButton.onBlur = () => console.log("Blur");
+pauseButton.onMouseHover = () => console.log("Hover");
+pauseButton.onMouseLeave = () => console.log("Mouse Leave");
+pauseButton.onMouseMove = () => console.log("Mouse Move", pauseButton.mouseOn);
+pauseButton.onMouseUp = () => console.log("Mouse Up");
 pauseButton.onMouseDown = () => {
+  console.log("Click");
   GAME.gamePaused ? GAME.playGame() : GAME.pauseGame();
   pauseButton.text = GAME.gamePaused ? "PLAY" : "PAUSE";
 };
 
+const UIContainer = new UI(GAME, 10, GAME.h - 60, GAME.w, 60);
+UIContainer.addChild(stopButton, "stopButton");
+UIContainer.addChild(pauseButton, "pauseButton");
+
+// -------------------------------------------------------------
 // TileMap1
 let tileMap = new Tilemap(GAME, "./../tileMapTest.png", 32, 32);
 for (let i = 0; i < GAME.w / 32; i++) {
@@ -312,8 +326,7 @@ room1.tileMapLayer1 = tileMap;
 room1.addBackground(room1Background);
 room1.addBackground(room1Background2);
 room1.addBackground(room1Background3);
-room1.addInstance(stopButton, true, "stopButton");
-room1.addInstance(pauseButton, true, "pauseButton");
+room1.addInstance(UIContainer, true, "UIContainer");
 room1.addInstance(title, true, "title");
 room1.addInstance(node1, false, "node1");
 room1.addInstance(node2, false, "node2");
