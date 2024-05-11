@@ -72,14 +72,14 @@ export default class Room {
     };
 
     // Renderiza los objetos de la UI esto quiere decir que llama a la funcion principal de cada uno
-    renderUI = (obj, ctx) => {
-        obj.main(ctx);
-
-        window.Object.values(obj._CHILDREN).forEach((child) => {
-            this.renderUI(child, ctx);
+    renderUI = (objUI, ctx) => {
+        
+        window.Object.values(objUI._CHILDREN).forEach((childUI) => {
+            this.renderUI(childUI, ctx);
         });
-
-        obj.restartPosition();
+        
+        objUI.main(ctx);
+        objUI.restartPosition();
     };
 
     // #region FINDS

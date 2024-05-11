@@ -34,19 +34,6 @@ export default class UI extends Object {
       this.hover = false;
       this._GAME.hoverUI = false;
     }
-
-    // if (
-    //     Input.GetMouseCords().x >= this.position.x &&
-    //     Input.GetMouseCords().x <= this.position.x + this.size.x &&
-    //     Input.GetMouseCords().y >= this.position.y &&
-    //     Input.GetMouseCords().y <= this.position.y + this.size.y &&
-    //     this._GAME.targetUI !== this
-    // ) {
-    //     this.leave = true;
-    //     this.hover = false;
-    //     this._GAME.hoverUI = false;
-    //     this._GAME.targetUI = undefined;
-    // }
   };
 
   onBlur = () => {};

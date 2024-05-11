@@ -245,30 +245,29 @@ wall2.addChild(wall2Collider, "wall2Collider");
 
 // -------------------------------------------------------------
 // UI
-const stopButton = new UIButton(GAME, 0, 0, 120, 40, "STOP GAME");
+const stopButton = new UIButton(GAME, 10, 10, 120, 40, "STOP GAME");
 stopButton.align = "center";
 stopButton.backgroundColorHover = "#f35";
 stopButton.onMouseDown = () => {
   GAME.stopGame();
 };
 
-const pauseButton = new UIButton(GAME, 130, 0, 80, 40, "PAUSE");
+const pauseButton = new UIButton(GAME, 140, 10, 80, 40, "PAUSE");
 pauseButton.align = "center";
-pauseButton.onFocus = () => console.log("Focus");
-pauseButton.onBlur = () => console.log("Blur");
-pauseButton.onMouseHover = () => console.log("Hover");
-pauseButton.onMouseLeave = () => console.log("Mouse Leave");
-pauseButton.onMouseMove = () => console.log("Mouse Move", pauseButton.mouseOn);
-pauseButton.onMouseUp = () => console.log("Mouse Up");
 pauseButton.onMouseDown = () => {
-  console.log("Click");
   GAME.gamePaused ? GAME.playGame() : GAME.pauseGame();
   pauseButton.text = GAME.gamePaused ? "PLAY" : "PAUSE";
 };
 
-const UIContainer = new UI(GAME, 10, GAME.h - 60, GAME.w, 60);
+const UIContainer = new UI(GAME, 10, GAME.h - 80, GAME.w - 20, 60);
+UIContainer.draw = (ctx) => {
+  ctx.fillStyle = "#0003";
+  ctx.fillRect(UIContainer.position.x, UIContainer.position.y, UIContainer.size.x, UIContainer.size.y);
+}
+
 UIContainer.addChild(stopButton, "stopButton");
 UIContainer.addChild(pauseButton, "pauseButton");
+
 
 // -------------------------------------------------------------
 // TileMap1
@@ -359,6 +358,9 @@ inputTest.steps = () => {
     inputTest.text = "";
     inputTest.pointer = 0;
     GAME.changeRoom("Room1_test");
+  }
+  else if (inputTest.text === "stop game") {
+    GAME.stopGame();
   }
 };
 // -------------------------------------------------------------
