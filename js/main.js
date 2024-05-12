@@ -20,6 +20,7 @@ const $game = document.querySelector("#game");
 const $gameInput = $game.querySelector("#game__input");
 const $gameCanvas = document.querySelector("#game__display");
 const GAME = new Game($game, $gameCanvas, $gameInput, 700, 500, 64);
+// GAME.debug = false; 
 
 // -------------------- INSTANCES --------------------- //
 const playerSprite = new Sprite(GAME, 0, 0, 48, 62, "./../elf.png");
@@ -197,8 +198,8 @@ playerContainer.steps = () => {
 const node1 = new Object(GAME, 10, 0, 10, 10);
 const node2 = new Object(GAME, 30, 0, 10, 10);
 const node3 = new Object(GAME, 50, 0, 10, 10);
-const node2_2 = new Object(GAME, 0, 20, 10, 10);
-const node2_2Collider = new BoxCollider(GAME, 0, 0, 10, 10, 0, [], true);
+const node2_2 = new Object(GAME, 0, 20, 60, 10);
+const node2_2Collider = new BoxCollider(GAME, 0, 0, 60, 10, 0, [], true);
 node2_2.addChild(node2_2Collider, "node2_2Collider");
 
 node1.draw = (ctx) => {
@@ -387,12 +388,16 @@ GAME.changeRoom("Room1_test");
 GAME.startGame();
 
 // buscar subNodo2
-// console.time();
-// console.log(
-//     "Se busco al objeto subNodo2 y el resultado fue: ",
-//     GAME.currentRoom.findByName("subNodo2") !== undefined
-// );
-// console.timeEnd();
+console.time();
+console.log(
+    "Se busco al objeto subNodo2 y el resultado fue: ",
+    GAME.currentRoom.findByQuery([
+      {key: "_NAME", value: "subNodo2"}, 
+      {key: "_PARENT._NAME", value: "node2"},
+      {key: "size.x", value: 60},
+    ], false) !== undefined
+);
+console.timeEnd();
 
 // buscar label de el room 1
 console.time();

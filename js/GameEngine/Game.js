@@ -46,7 +46,7 @@ export default class Game {
   changeRoom = (roomName) => {
     this.hoverUI = false;
     this.lastRoom = this.currentRoom;
-    this.currentRoom = this.rooms.filter((rm) => rm.name === roomName)[0];
+    this.currentRoom = this.rooms.filter((rm) => rm._NAME === roomName)[0];
     this.resetContextGraphic();
   };
   // #endregion
