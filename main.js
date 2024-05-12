@@ -23,7 +23,7 @@ const GAME = new Game($game, $gameCanvas, $gameInput, 700, 500, 64);
 // GAME.debug = false; 
 
 // -------------------- INSTANCES --------------------- //
-const playerSprite = new Sprite(GAME, 0, 0, 48, 62, "./../elf.png");
+const playerSprite = new Sprite(GAME, 0, 0, 48, 62, "./Sprites/elf.png");
 const animations = {
   idle: [
     new KeyFrame(0, 0, 16, 16, 50, 50),
@@ -272,7 +272,7 @@ UIContainer.addChild(pauseButton, "pauseButton");
 
 // -------------------------------------------------------------
 // TileMap1
-let tileMap = new Tilemap(GAME, "./../tileMapTest.png", 32, 32);
+let tileMap = new Tilemap(GAME, "./Tilemaps/tileMapTest.png", 32, 32);
 for (let i = 0; i < GAME.w / 32; i++) {
   tileMap.addTile(32 * i, GAME.h - 60, 0, 0, 16, 16);
   tileMap.addTile(32 * i, GAME.h - 28, 16, 0, 16, 16);
@@ -298,7 +298,7 @@ const room1Background = new Background(
   -GAME.h / 2,
   GAME.w * 2,
   GAME.h * 2,
-  "./../../Fondo_01.png"
+  "./Backgrounds/Fondo_01.png"
 );
 room1Background.static = true;
 // -------------------------------------------------------------
@@ -309,7 +309,7 @@ const room1Background2 = new Background(
   0,
   100,
   100,
-  "./../../Fondo_01.png"
+  "./Backgrounds/Fondo_01.png"
 );
 
 const room1Background3 = new Background(
@@ -318,7 +318,7 @@ const room1Background3 = new Background(
   0,
   100,
   100,
-  "./../../tileMapTest.png"
+  "./Tilemaps/tileMapTest.png"
 );
 
 const room1 = new Room(GAME, GAME.w * 2, GAME.h * 2, "Room1_test");
