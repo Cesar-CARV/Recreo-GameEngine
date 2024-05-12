@@ -111,7 +111,8 @@ export default class Game {
     Time.main();
     if (this.debug) {
       console.log(
-        `GAME RUNING ON ${this.ticks} TIKS, HOVER = ${this.hoverUI}`
+        `%cGAME RUNING ON ${this.ticks} TIKS, HOVER = ${this.hoverUI}`,
+        "color: #ffed9c; padding: 1px 4px;"
       );
     }
     if (Time.deltaTime > 10) return;

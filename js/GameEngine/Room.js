@@ -1,4 +1,3 @@
-// import { SpriteAnimator } from "./Animator.js";
 import Vector2 from "./Vector2.js";
 
 export default class Room {
@@ -82,10 +81,6 @@ export default class Room {
   };
 
   // #region FINDS
-
-  // ESTAS FUNCIONES QUEDAN PENDIENTES A MODIFICACION
-  // RESIVIRAN DOS PARAMETROS, LA LISTA A BUSCAR Y EL SELECTOR
-
   // esta funcion busca un objeto por el nombre
   findByName = (
     name,
@@ -142,11 +137,6 @@ export default class Room {
     node = undefined,
     nodesVisited = new Set()
   ) => {
-    // return this._INSTANCES.filter(inst => {
-    //     let coincidences = 0;
-    //     querys.forEach(query => coincidences = inst[query.key] === query.value ? + 1 : coincidences);
-    //     if (coincidences === querys.length && type === inst.constructor.name) return inst;
-    // });
     if (node) {
       // comprueba si el nodo es igual el nodo es el que se busca
       let coincidences = 0;
@@ -161,10 +151,8 @@ export default class Room {
           //  se hace la validacion segun si es negacion o no
           if (query?.not) {
             if (key !== query.value) coincidences++;
-            // if ((eval(`node${key}`)) !== query.value) coincidences++;
           } else {
             if (key === query.value) coincidences++;
-            // if ((eval(`node${key}`)) === query.value) coincidences++;
           }
         } catch (error) {
           if (this._GAME.debug) {
