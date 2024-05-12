@@ -300,6 +300,7 @@ const room1Background = new Background(
   GAME.h * 2,
   "./../../Fondo_01.png"
 );
+room1Background.static = true;
 // -------------------------------------------------------------
 // background 2
 const room1Background2 = new Background(
