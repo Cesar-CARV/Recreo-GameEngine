@@ -130,13 +130,13 @@ export default class RoomTest1 extends Room {
     const stopButton = new UIButton(this._GAME, 10, 10, 120, 40, "STOP GAME");
     stopButton.align = "center";
     stopButton.backgroundColorHover = "#f35";
-    stopButton.onMouseDown = () => {
+    stopButton.onClick = () => {
       this._GAME.stopGame();
     };
 
     const pauseButton = new UIButton(this._GAME, 140, 10, 80, 40, "PAUSE");
     pauseButton.align = "center";
-    pauseButton.onMouseDown = () => {
+    pauseButton.onClick = () => {
       this._GAME.gamePaused ? this._GAME.playGame() : this._GAME.pauseGame();
       pauseButton.text = this._GAME.gamePaused ? "PLAY" : "PAUSE";
     };

@@ -10,6 +10,7 @@ export default class UI extends Object {
     this.active = false;
     this.leave = false;
     this.hover = false;
+    this.pressed = false;
     this.lastMouseCord = { x: -10, y: -10 };
   }
 
@@ -37,6 +38,7 @@ export default class UI extends Object {
   };
 
   onBlur = () => {};
+  onClick = () => {};
   onFocus = () => {};
   onMouseDown = () => {};
   onMouseUp = () => {};
@@ -62,6 +64,7 @@ export default class UI extends Object {
     }
     if (this.mouseOn && Input.GetMouseDown(0)) {
       this.onMouseDown();
+      this.pressed = true;
       if (!this.active) {
         this.onFocus();
       }
@@ -69,6 +72,8 @@ export default class UI extends Object {
     }
     if (this.mouseOn && this.active && Input.GetMouseUp(0)) {
       this.onMouseUp();
+      this.onClick();
+      this.pressed = false;
     }
     if (this.mouseOn && this.lastMouseCord !== Input.GetMouseCords()) {
       this.onMouseMove();
