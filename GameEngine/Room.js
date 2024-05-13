@@ -1,9 +1,9 @@
 import Vector2 from "./Vector2.js";
 
 export default class Room {
-  constructor(GAME, w, h, name) {
+  constructor(GAME, w, h) {
     this._GAME = GAME;
-    this._NAME = name;
+    this._NAME = this.constructor.name;
     this.w = w;
     this.h = h;
     this.positionContextRoom = new Vector2(0, 0);
@@ -156,7 +156,7 @@ export default class Room {
           }
         } catch (error) {
           if (this._GAME.debug) {
-            console.log("Was a error whit the querys");
+            console.log("Was an error whit the querys");
           }
         }
       });
