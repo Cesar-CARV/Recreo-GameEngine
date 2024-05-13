@@ -17,13 +17,13 @@ export default class RoomTest2 extends Room {
       "",
       "Escribe lo que quieras aqui"
     );
-    inputTest.backgroundColor = "#232323";
-    inputTest.backgroundColorHover = "#363636";
-    inputTest.color = "#ddd";
-    inputTest.placeholderColor = "#555";
-    inputTest.colorHover = "#fff";
-    inputTest.colorPointer = "#aaa";
-    inputTest.activeBorderColor = "#000";
+    inputTest.backgroundColor = "#fff";
+    inputTest.backgroundColorHover = "#eee";
+    inputTest.color = "#000";
+    inputTest.placeholderColor = "#aaa";
+    inputTest.colorHover = "#111";
+    inputTest.colorPointer = "#000";
+    inputTest.activeBorderColor = "#00f";
     inputTest.steps = () => {
       if (inputTest.text === "cambiar a nivel 1") {
         inputTest.text = "";

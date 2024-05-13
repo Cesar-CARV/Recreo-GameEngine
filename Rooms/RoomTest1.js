@@ -101,13 +101,13 @@ export default class RoomTest1 extends Room {
       this._GAME,
       0,
       0,
-      30,
+      32,
       100,
       0,
       [],
       true
     );
-    const wall = new Object(this._GAME, 150, this._GAME.h - 175, 30, 100);
+    const wall = new Object(this._GAME, 0, this._GAME.h - 175, 32, 100);
     wall.addChild(wallCollider, "wallCollider");
 
     // -------------------------------------------------------------
@@ -230,13 +230,13 @@ export default class RoomTest1 extends Room {
     this.addBackground(room1Background2);
     this.addBackground(room1Background3);
     this.addInstance(player, false, "player");
-    this.addInstance(UIContainer, true, "UIContainer");
-    this.addInstance(title, true, "title");
     this.addInstance(node1, false, "node1");
     this.addInstance(node2, false, "node2");
     this.addInstance(node3, false, "node3");
     this.addInstance(floor, false, "floor");
     this.addInstance(wall, false, "wall");
     this.addInstance(wall2, false, "wall2");
+    this.addInstance(title, true, "title");
+    this.addInstance(UIContainer, true, "UIContainer");
   }
 }
