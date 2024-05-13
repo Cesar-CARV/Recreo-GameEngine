@@ -43,10 +43,25 @@ export default class Game {
   getRoomNames = () => this.rooms.map((rm) => rm.name);
   getRoom = () => this.currentRoom;
   addRoom = (room) => this.rooms.push(room);
-  changeRoom = (roomName) => {
+  changeRoom = (roomName, save = false) => {
     this.hoverUI = false;
-    this.lastRoom = this.currentRoom;
-    this.currentRoom = this.rooms.filter((rm) => rm._NAME === roomName)[0];
+    // EL FUNCIONAMIENTO DE LOS NIVELES CAMBIARA
+    // AHORA EL CURRENT ROOM EN LUGAR DE HACER REFERENCIA A EL NIVEL COMO TAL
+    // ESTE CREARA UNA NUEVA INSTANCIA DE EL NIVEL PARA ESTO EN LUGAR DE
+    // PASAR COMO PARAMETRO LA INSTANCIA DE EL ROOM A EL METODOD addRoom SE 
+    // PASARA LA CLASE DE EL ROOM, ESTO QUIERE DECIR QUE PARA CREAR NIVELES
+    // SE TENDRA QUE CREAR UNA NUEVA CLASE QUE HEREDE DE ROOM Y
+    // QUE ESTA AÑADA LOS OBJETOS, BACKGROUND Y TILES QUE TENDRA EL MISMO EN LA VARAIBLE DE 
+    // _CHILDREN
+    let tempRoom = this.currentRoom;
+    if (roomName === this.lastRoom?._NAME) {
+      this.currentRoom = this.lastRoom;
+      this.lastRoom = save ? tempRoom : undefined;
+    }
+    else {
+      this.currentRoom = new this.rooms.filter((rm) => rm._NAME === roomName)[0];
+      this.lastRoom = save ? tempRoom : undefined;
+    }
     this.resetContextGraphic();
   };
   // #endregion
