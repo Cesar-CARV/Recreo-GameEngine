@@ -1,6 +1,7 @@
 import Vector2 from "./Vector2.js";
 
 export default class Object {
+  #created = false;
   constructor(GAME, x, y, w, h) {
     this._GAME = GAME;
     this._NAME = undefined;
@@ -8,6 +9,11 @@ export default class Object {
     this._CHILDREN = {}; // hijos del objeto
     this.position = new Vector2(x, y); // posicion del objeto, nota: la posicion es relativa a el padre
     this.size = new Vector2(w, h);
+  }
+
+  // al crear 
+  onCreate = () => {
+
   }
 
   // eliminarse a si mismo
@@ -84,6 +90,10 @@ export default class Object {
   // NOTA: si se llega a modificar esta funcion procurar seguir el mismo orden y de preferencia no borrar
   //       los metodos originales.
   main = (ctx) => {
+    if (!this.#created) {
+      this.onCreate();
+      this.#created = true;
+    }
     this.updatePosition();
     this.steps();
     this.draw(ctx);

@@ -30,25 +30,29 @@ export default class Player extends Object {
       ],
     };
     // sprite
-    this.sprite = new Sprite(this._GAME, 0, 0, 48, 62, "./../Sprites/elf.png");
+    this.sprite = new Sprite(GAME, 0, 0, 48, 62, "./../Sprites/elf.png");
     // animator
     this.animator = new SpriteAnimator(
-      this._GAME,
+      GAME,
       this.animations.idle,
       1000 / 6
     );
     this.animator.addChild(this.sprite, "playerSprite");
     // camara
-    this.camara = new Camara(this._GAME, 0, 0, this._GAME.w, this._GAME.h);
+    this.camara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
     this.camara.setScale(0.01, 0.01);
     // collider
-    this.collider = new BoxCollider(this._GAME, 0, 0, 50, 50, 0, [], true);
+    this.collider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
     // add children
     this.addChild(this.collider, "playerCollider");
     this.addChild(this.animator, "animator");
     this.addChild(this.camara, "camara");
 
     this.animator.play();
+  }
+
+  onCreate = () => {
+    this.camara.setCamaraLimits(0, 0, this._GAME.currentRoom.w, this._GAME.currentRoom.h);
   }
 
   steps = () => {
@@ -144,7 +148,7 @@ export default class Player extends Object {
 
     // destruir objeto con el metodo kamikaze
     if (Input.GetKeyDown("k")) {
-      const obj = this._GAME.currentRoom.findByName("subNodo2", false);
+      const obj = GAME.currentRoom.findByName("subNodo2", false);
       console.log(obj);
       if (obj) obj.kamikaze(() => console.log("HOLA"));
     }

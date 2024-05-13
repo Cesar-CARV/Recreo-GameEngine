@@ -11,7 +11,7 @@ export default class Camara extends Object {
     this.scaleX = 1;
     this.scaleY = 1;
     this._ROOM = undefined;
-    this.LIMITS = { l: 0, t: 0, r: 1400, b: 1000 };
+    this.LIMITS = { l: undefined, t: undefined, r: undefined, b: undefined };
   }
 
   setScale = (x, y) => {
@@ -39,6 +39,15 @@ export default class Camara extends Object {
       this._ROOM.positionContextRoom.x = -this.position.x;
       this._ROOM.positionContextRoom.y = -this.position.y;
 
+      // si los limites no estan definidos saltarse este las colisiones
+      if (
+        !this.LIMITS.l &&
+        !this.LIMITS.r &&
+        !this.LIMITS.t &&
+        !this.LIMITS.b
+      ) {
+        return;
+      }
 
       // colision L
       if (this.absolutePosition.x < this.LIMITS.l) {
@@ -56,20 +65,6 @@ export default class Camara extends Object {
       else if (this.absolutePosition.y + this.size.y > this.LIMITS.b) {
         this._ROOM.positionContextRoom.y = -(this.LIMITS.b - this.size.y);
       }
-
-
-      // if (
-      //   this.absolutePosition.x > this.LIMITS.l &&
-      //   this.absolutePosition.x + this.size.x - 1 < this.LIMITS.r
-      // ) {
-      //   this._ROOM.positionContextRoom.x = -this.position.x;
-      // }
-      // if (
-      //   this.absolutePosition.y > this.LIMITS.t &&
-      //   this.absolutePosition.y + this.size.y - 1 < this.LIMITS.b
-      // ) {
-      //   this._ROOM.positionContextRoom.y = -this.position.y;
-      // }
     }
   };
 
@@ -88,7 +83,7 @@ export default class Camara extends Object {
         )
       : this.position;
 
-      this.absolutePosition = this.position.Copy();
+    this.absolutePosition = this.position.Copy();
   };
 
   // reinicia la posicion del objeto para que no cresca exponecialmente al sumar la posicion del padre
