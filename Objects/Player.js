@@ -6,6 +6,7 @@ import Input from "./../GameEngine/Input.js";
 import BoxCollider from "../GameEngine/BoxCollider.js";
 import Time from "../GameEngine/Time.js";
 import Vector2 from "../GameEngine/Vector2.js";
+import Clock from "../GameEngine/Clock.js";
 
 export default class Player extends Object {
   constructor(GAME, x, y) {
@@ -14,6 +15,9 @@ export default class Player extends Object {
     this.velocity = new Vector2(0, 0);
     this.gravity = 98;
     this.jump = -1200;
+    
+    // clock
+    this.clock = new Clock(GAME, 10, false);
 
     // animations
     this.animations = {
@@ -43,18 +47,21 @@ export default class Player extends Object {
     this.addChild(this.collider, "playerCollider");
     this.addChild(this.animator, "animator");
     this.addChild(this.camara, "camara");
-
-    this.animator.play();
   }
 
   onCreate = () => {
     console.log("Hola desde player");
+
+    this.animator.play();
+
     this.camara.setCamaraLimits(
       0,
       0,
       this._GAME.currentRoom.w,
       this._GAME.currentRoom.h
     );
+
+    if (!this.clock.runing) this.clock.start();
   };
 
   draw = (ctx) => {
@@ -68,6 +75,8 @@ export default class Player extends Object {
   };
 
   steps = () => {
+    this.clock.tick(() => console.log("Fin de el timer"));
+
     if (this.camara.scaleX < 1 && this.camara.scaleY < 1)
       this.camara.setScale(
         this.camara.scaleX + 0.01,
