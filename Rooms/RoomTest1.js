@@ -81,7 +81,7 @@ export default class RoomTest1 extends Room {
       0,
       0,
       this._GAME.w * 2,
-      10,
+      50,
       0,
       [],
       true
@@ -91,7 +91,7 @@ export default class RoomTest1 extends Room {
       0,
       this._GAME.h - 75,
       this._GAME.w,
-      10
+      50
     );
     floor.addChild(floorCollider, "floorCollider");
 
@@ -107,7 +107,7 @@ export default class RoomTest1 extends Room {
       [],
       true
     );
-    const wall = new Object(this._GAME, 0, this._GAME.h - 175, 32, 100);
+    const wall = new Object(this._GAME, 150, this._GAME.h - 175, 32, 100);
     wall.addChild(wallCollider, "wallCollider");
 
     // -------------------------------------------------------------
@@ -192,7 +192,7 @@ export default class RoomTest1 extends Room {
     title.steps = () => {
       const pylr = this._GAME.currentRoom.findByName("player", false);
       if (!pylr) return;
-      title.text = "ROOM TEST " + Math.floor(pylr.position.y);
+      title.text = "ROOM TEST " + Math.floor(pylr.velocity.y);
     };
 
     // -------------------------------------------------------------

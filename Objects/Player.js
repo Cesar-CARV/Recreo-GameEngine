@@ -12,8 +12,8 @@ export default class Player extends Object {
     super(GAME, x, y, 50, 50);
     // propiedades
     this.velocity = new Vector2(0, 0);
-    this.gravity = 5;
-    this.jump = -100;
+    this.gravity = 98;
+    this.jump = -1200;
 
     // animations
     this.animations = {
@@ -32,11 +32,7 @@ export default class Player extends Object {
     // sprite
     this.sprite = new Sprite(GAME, 0, 0, 48, 62, "./../Sprites/elf.png");
     // animator
-    this.animator = new SpriteAnimator(
-      GAME,
-      this.animations.idle,
-      1000 / 6
-    );
+    this.animator = new SpriteAnimator(GAME, this.animations.idle, 1000 / 6);
     this.animator.addChild(this.sprite, "playerSprite");
     // camara
     this.camara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
@@ -52,8 +48,24 @@ export default class Player extends Object {
   }
 
   onCreate = () => {
-    this.camara.setCamaraLimits(0, 0, this._GAME.currentRoom.w, this._GAME.currentRoom.h);
-  }
+    console.log("Hola desde player");
+    this.camara.setCamaraLimits(
+      0,
+      0,
+      this._GAME.currentRoom.w,
+      this._GAME.currentRoom.h
+    );
+  };
+
+  draw = (ctx) => {
+    ctx.fillStyle = "#0ff5";
+    ctx.fillRect(
+      this.position.x,
+      this.position.y,
+      this.size.x,
+      this.size.y + 1 + this.velocity.y
+    );
+  };
 
   steps = () => {
     if (this.camara.scaleX < 1 && this.camara.scaleY < 1)
@@ -64,11 +76,9 @@ export default class Player extends Object {
 
     // velocidad horizontal
     this.velocity.x =
-      (Input.GetKeyPress("d") - Input.GetKeyPress("a")) *
-      40 *
-      Time.deltaTime *
-      10;
+      (Input.GetKeyPress("d") - Input.GetKeyPress("a")) * 400 * Time.deltaTime;
 
+    // detectar colisiones
     const onFloor = this.collider.onPlaceMeetingBox(
       new Vector2(this.position.x, this.position.y + 1 + this.velocity.y)
     );
@@ -81,50 +91,23 @@ export default class Player extends Object {
     );
 
     // gravedad
-    if (!onFloor.res && this.velocity.y < 40) {
-      this.velocity.y += this.gravity * Time.deltaTime * 10;
+    if (!onFloor.res && this.velocity.y < 100) {
+      this.velocity.y += this.gravity * Time.deltaTime;
+      if (this.velocity.y > 100) {
+        this.velocity.y = 100;
+      }
     }
 
     // salto
     if (onFloor.res && Input.GetKeyPress("w")) {
-      this.velocity.y = this.jump * Time.deltaTime * 10;
+      this.velocity.y = this.jump * Time.deltaTime;
     } else if (onFloor.res) {
       this.velocity.y = 0;
       this.position.y +=
         onFloor.target.absolutePosition.y - this.position.y - this.size.y - 1;
     }
 
-    // colision con la pared
-    if (onWall.res) {
-      if (
-        onWall.target.absolutePosition.x < this.position.x &&
-        this.velocity.x < 0
-      ) {
-        this.velocity.x = 0;
-        this.position.x -=
-          this.position.x -
-          onWall.target.absolutePosition.x -
-          onWall.target.size.x -
-          1;
-      } else if (
-        onWall.target.absolutePosition.x > this.position.x &&
-        this.velocity.x > 0
-      ) {
-        this.velocity.x = 0;
-        this.position.x +=
-          onWall.target.absolutePosition.x - this.position.x - this.size.x - 1;
-      }
-    }
-
-    // teletransportar
-    if (Input.GetKeyDown("t")) {
-      this.changePosition(0, 0);
-    }
-    // cambiar de nivel
-    if (Input.GetKeyDown("c")) {
-      this._GAME.changeRoom("RoomTest2");
-    }
-
+    // animaciones
     if (
       this.animator.keyFrames === this.animations.idle &&
       this.velocity.x !== 0
@@ -141,6 +124,44 @@ export default class Player extends Object {
       this.sprite.flipX = true;
     } else if (this.velocity.x > 0) {
       this.sprite.flipX = false;
+    }
+
+    // colision con la pared
+    if (onWall.res) {
+      if (
+        onWall.target.absolutePosition.x < this.position.x &&
+        this.velocity.x < 0
+      ) {
+        this.velocity.x = 0;
+        let dis =
+          this.position.x -
+          onWall.target.absolutePosition.x -
+          onWall.target.size.x -
+          1;
+
+        for (let i = 0; i < dis; i++) {
+          this.position.x--;
+        }
+      } else if (
+        onWall.target.absolutePosition.x > this.position.x &&
+        this.velocity.x > 0
+      ) {
+        this.velocity.x = 0;
+        let dis =
+          onWall.target.absolutePosition.x - this.position.x - this.size.x - 1;
+        for (let i = 0; i < dis - 1; i++) {
+          this.position.x++;
+        }
+      }
+    }
+
+    // teletransportar
+    if (Input.GetKeyDown("t")) {
+      this.changePosition(this.position.x, 0);
+    }
+    // cambiar de nivel
+    if (Input.GetKeyDown("c")) {
+      this._GAME.changeRoom("RoomTest2", true);
     }
 
     // mover

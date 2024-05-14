@@ -3,7 +3,7 @@ import Time from "./Time.js";
 
 export default class Game {
   #oldTime = 0;
-  constructor(game, canvas, input, w, h, ticks) {
+  constructor(game, canvas, input, w, h) {
     this.$ = game;
     this.canvas = canvas;
     this.input = input;
@@ -11,8 +11,9 @@ export default class Game {
     this.ctx.imageSmoothingEnabled = false;
     this.w = w;
     this.h = h;
-    this.ticks = ticks;
+    // this.ticks = ticks;
     this.gamePaused = false;
+    this.stopedGame = false;
     this.gameLoop = undefined;
     this.rooms = [];
     this.currentRoom = undefined;
@@ -22,6 +23,16 @@ export default class Game {
 
     this.resize(w, h);
     Input.Init(this.input);
+
+    this.cancelAnimationFrame =
+      window.cancelAnimationFrame.bind(window) ||
+      window.mozCancelAnimationFrame.bind(window);
+
+    this.requestAnimationFrame =
+      window.requestAnimationFrame.bind(window) ||
+      window.mozRequestAnimationFrame.bind(window) ||
+      window.webkitRequestAnimationFrame.bind(window) ||
+      window.msRequestAnimationFrame.bind(window);
   }
 
   // modifica el tamaño del canvas en el cual se renderiza el juego
@@ -53,10 +64,11 @@ export default class Game {
     if (roomName === this.lastRoom?._NAME) {
       this.currentRoom = this.lastRoom;
       this.lastRoom = save ? tempRoom : undefined;
-    }
-    else {
+    } else {
       try {
-        this.currentRoom = new (this.rooms.filter((rm) => rm.name === roomName)[0])(this);
+        this.currentRoom = new (this.rooms.filter(
+          (rm) => rm.name === roomName
+        )[0])(this);
         this.lastRoom = save ? tempRoom : undefined;
       } catch (error) {
         console.log("Was an error to change room");
@@ -102,12 +114,16 @@ export default class Game {
   // #region SETUP GAME
   // esta funcion inicia el loop principal del motor
   startGame = () => {
-    this.gameLoop = setInterval(this.main, Math.floor(1000 / this.ticks));
+    this.gameLoop =
+      this.gameLoop === undefined
+        ? this.requestAnimationFrame(this.main)
+        : this.gameLoop;
+    // this.gameLoop = setInterval(this.main, Math.floor(1000 / this.ticks));
   };
 
   // detiene el motor por completo
   stopGame = () => {
-    clearInterval(this.gameLoop);
+    this.stopedGame = true;
     this.gameLoop = undefined;
   };
 
@@ -126,12 +142,19 @@ export default class Game {
     Time.main();
     if (this.debug) {
       console.log(
-        `%cGAME RUNING ON ${this.ticks} TIKS, HOVER = ${this.hoverUI}`,
+        `%cGAME RUNING ON ${Time.deltaTime} TIKS, HOVER = ${this.hoverUI}`,
         "color: #ffed9c; padding: 1px 4px;"
       );
     }
-    if (Time.deltaTime > 10) return;
+    // if (Time.deltaTime > 10) return;
     if (this.currentRoom) this.currentRoom.main(this.ctx);
+
+    if (!this.stopedGame){
+      this.gameLoop = this.requestAnimationFrame(this.main);
+    }
+    else{
+      this.cancelAnimationFrame(this.gameLoop);
+    }
   };
   // #endregion
 }

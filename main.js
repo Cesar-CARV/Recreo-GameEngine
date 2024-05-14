@@ -6,8 +6,8 @@ import RoomTest2 from './Rooms/RoomTest2.js';
 const $game = document.querySelector("#game");
 const $gameInput = $game.querySelector("#game__input");
 const $gameCanvas = document.querySelector("#game__display");
-const GAME = new Game($game, $gameCanvas, $gameInput, 700, 500, 64);
-// GAME.debug = false; 
+const GAME = new Game($game, $gameCanvas, $gameInput, 700, 500);
+GAME.debug = false; 
 
 // -------------------- ROOMS --------------------- //
 GAME.addRoom(RoomTest1);
