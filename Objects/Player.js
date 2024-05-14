@@ -17,7 +17,7 @@ export default class Player extends Object {
     this.jump = -1200;
     
     // clock
-    this.clock = new Clock(GAME, 5, true);
+    this.clock = new Clock(GAME, 5, false);
 
     // animations
     this.animations = {
@@ -36,7 +36,7 @@ export default class Player extends Object {
     // sprite
     this.sprite = new Sprite(GAME, 0, 0, 48, 62, "./../Sprites/elf.png");
     // animator
-    this.animator = new SpriteAnimator(GAME, this.animations.idle, 1000 / 6);
+    this.animator = new SpriteAnimator(GAME, this.animations.idle, .2);
     this.animator.addChild(this.sprite, "playerSprite");
     // camara
     this.camara = new Camara(GAME, 0, 0, GAME.w, GAME.h);

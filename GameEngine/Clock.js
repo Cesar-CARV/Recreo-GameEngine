@@ -18,7 +18,6 @@ export default class Clock {
   };
 
   start = () => {
-    if (this.runing) return;
     this.runing = true;
   };
 
