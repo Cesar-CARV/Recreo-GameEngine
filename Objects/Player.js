@@ -75,7 +75,7 @@ export default class Player extends Object {
   };
 
   steps = () => {
-    this.clock.tick(() => console.log("Fin de el timer"));
+    this.clock.tick(() => console.log("Fin de el timer 5 sec despues de ser creado"));
 
     if (this.camara.scaleX < 1 && this.camara.scaleY < 1)
       this.camara.setScale(

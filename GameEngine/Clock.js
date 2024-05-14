@@ -39,6 +39,7 @@ export default class Clock {
     if (this.current >= this.time) {
       if (callback) callback();
       if (this.repeat) this.restart();
+      else this.pause();
     }
   };
 }
