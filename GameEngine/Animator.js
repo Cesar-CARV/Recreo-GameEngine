@@ -1,3 +1,4 @@
+import Clock from "./Clock.js";
 import Object from "./Object.js";
 
 class KeyFrame {
@@ -20,6 +21,7 @@ class SpriteAnimator extends Object {
         this.keyFrames = keyFrames;
         this.time = time;
         this.repeat = repeat;
+        // this.clock = new Clock(GAME, this.time, true)
     }
 
     play = () => {

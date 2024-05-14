@@ -17,7 +17,7 @@ export default class Player extends Object {
     this.jump = -1200;
     
     // clock
-    this.clock = new Clock(GAME, 10, false);
+    this.clock = new Clock(GAME, 5, true);
 
     // animations
     this.animations = {

@@ -13,9 +13,8 @@ export default class Clock {
 
   restart = () => {
     this.finished = false;
-    this.current = undefined;
-    this.pause();
-    this.start();
+    this.current = 0;
+    this.oldSec = -1;
   };
 
   start = () => {
@@ -36,11 +35,10 @@ export default class Clock {
       this.current += Time.deltaTime < 1 ? Time.deltaTime : 0;
       this.oldSec = DT
     }
-    
+
     if (this.current >= this.time) {
-      this.pause();
       if (callback) callback();
-      if (this.repeat) this.start();
+      if (this.repeat) this.restart();
     }
   };
 }
