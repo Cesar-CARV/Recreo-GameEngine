@@ -11,7 +11,6 @@ export default class Game {
     this.ctx.imageSmoothingEnabled = false;
     this.w = w;
     this.h = h;
-    // this.ticks = ticks;
     this.gamePaused = false;
     this.stopedGame = false;
     this.gameLoop = undefined;
@@ -86,10 +85,7 @@ export default class Game {
 
   // los parametros que resive esta funcion son las medidas de el area que se va a limpiar
   clipContextGraphic = (width, height) => {
-    // dibujar el fondo negro en el canvas
-    this.ctx.beginPath();
-    this.ctx.rect(0, 0, this.w, this.h);
-    this.ctx.clip();
+    this.ctx.save();
     this.ctx.fillStyle = "#000";
     this.ctx.fillRect(0, 0, this.w, this.h);
 
@@ -97,7 +93,7 @@ export default class Game {
     const centerX = this.w / 2 - this.currentRoom.sizeContextRoom.x / 2;
     const centerY = this.h / 2 - this.currentRoom.sizeContextRoom.y / 2;
 
-    this.ctx.beginPath();
+    // ESTA PARTE EN ESPECIAL ES LA QUE CAUSA EL CONSUMO DE CPU
     this.ctx.rect(centerX, centerY, width, height);
     this.ctx.clip();
 
@@ -106,6 +102,7 @@ export default class Game {
 
   // reinicia el ContextGraphic para que se muestre como normalmente lo haria
   resetContextGraphic = () => {
+    this.ctx.restore();
     // Reset current transformation matrix to the identity matrix
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
   };
@@ -138,23 +135,22 @@ export default class Game {
   };
 
   // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
-  main = () => {
+  main = (timestamp) => {
     Time.main();
     if (this.debug) {
       console.log(
-        `%cGAME RUNING ON ${Time.deltaTime} TIKS, HOVER = ${this.hoverUI}`,
+        `%cGAME RUNING ON ${this.FPS} TIKS, HOVER = ${this.hoverUI}`,
         "color: #ffed9c; padding: 1px 4px;"
       );
     }
     // if (Time.deltaTime > 10) return;
     if (this.currentRoom) this.currentRoom.main(this.ctx);
 
-    if (!this.stopedGame){
+    if (!this.stopedGame) {
       this.gameLoop = this.requestAnimationFrame(this.main);
-    }
-    else{
+    } else {
       this.cancelAnimationFrame(this.gameLoop);
     }
   };
-  // #endregion
 }
+// #endregion
