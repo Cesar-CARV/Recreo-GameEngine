@@ -51,8 +51,11 @@ export default class Room {
     this.backgrounds.forEach((bg) => bg.main(ctx));
     if (this.tileMapLayer1) this.tileMapLayer1.main(ctx);
     if (this.tileMapLayer2) this.tileMapLayer2.main(ctx);
-    if (this.tileMapLayer3) this.tileMapLayer3.main(ctx);
   };
+
+  drawOver = (ctx) => {
+    if (this.tileMapLayer3) this.tileMapLayer3.main(ctx);
+  }
 
   // Renderiza los objetos esto quiere decir que llama a la funcion principal de cada uno
   renderObejct = (obj, ctx) => {
@@ -233,6 +236,9 @@ export default class Room {
     window.Object.values(this._INSTANCES).forEach((instance) => {
       this.renderObejct(instance, ctx);
     });
+
+    // dibujar el los elementos de el nivel que estaran por encima de los demas
+    this.drawOver(ctx);
 
     this._GAME.resetContextGraphic();
 

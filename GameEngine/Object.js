@@ -88,7 +88,7 @@ export default class Object {
   // como recomendacion no modificar esta funcion ya que esta llama a las funciones internas del objeto
   // al ser renderizado
   // NOTA: si se llega a modificar esta funcion procurar seguir el mismo orden y de preferencia no borrar
-  //       los metodos originales.
+  // los metodos originales.
   main = (ctx) => {
     if (!this.#created) {
       this.onCreate();
