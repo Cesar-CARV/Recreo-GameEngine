@@ -199,10 +199,10 @@ export default class RoomTest1 extends Room {
     // background 1
     const room1Background = new Background(
       this._GAME,
-      -this._GAME.w / 2,
-      -this._GAME.h / 2,
-      this._GAME.w * 2,
-      this._GAME.h * 2,
+      0,
+      0,
+      this._GAME.w,
+      this._GAME.h,
       "./../Backgrounds/Fondo_01.png"
     );
     room1Background.static = true;

@@ -1,8 +1,11 @@
-import Object from "./Object.js";
+import Vector2 from "./Vector2.js";
 
-export default class Background extends Object {
-  constructor(game, x, y, w, h, imageURL = undefined, color = undefined) {
-    super(game, x, y, w, h);
+export default class Background {
+  constructor(GAME, x, y, w, h, imageURL = undefined, color = undefined) {
+    this._GAME = GAME;
+    this.position = new Vector2(x, y);
+    this.size = new Vector2(w, h);
+
     this._IMAGE = new Image();
     this._IMAGE.src = imageURL !== undefined ? imageURL : "";
     this.url = imageURL !== undefined;
@@ -39,5 +42,12 @@ export default class Background extends Object {
         this.size.y
       );
     }
+  };
+
+  steps = () => {};
+
+  main = (ctx) => {
+    this.steps();
+    this.draw(ctx);
   };
 }
