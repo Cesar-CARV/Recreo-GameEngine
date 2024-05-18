@@ -15,6 +15,9 @@ export default class Player extends Object {
     this.velocity = new Vector2(0, 0);
     this.gravity = 98;
     this.jump = -1200;
+
+    this.constructorProps = {x: "number", y: "number"};
+    this.editorPropertys = {gravity: "number", jump: "number"};
     
     // clock
     this.clock = new Clock(GAME, 5, false);

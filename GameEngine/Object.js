@@ -9,6 +9,13 @@ export default class Object {
     this._CHILDREN = {}; // hijos del objeto
     this.position = new Vector2(x, y); // posicion del objeto, nota: la posicion es relativa a el padre
     this.size = new Vector2(w, h);
+    // *constructorProps estes diccionario sirve para que el editor de niveles pueda funcionar
+    // *de manera correcta a la hora de crear los objetos
+    this.constructorProps = {x: "number", y: "number", w: "number", h: "number"};
+    
+    // *editorProps estes diccionario sirve para que el editor de niveles pueda
+    // *reconocer las props que quieres que se puedan editar desde el editor
+    this.editorPropertys = {};
   }
 
   // al crear 

@@ -1,6 +1,7 @@
 import Clock from "./Clock.js";
 import Object from "./Object.js";
 
+// TODO: Crear un archivo aparte solo para KeyFrame
 class KeyFrame {
   constructor(cutX, cutY, cutW, cutH, tileWidth, tileHeight) {
     this.cutX = cutX;
@@ -12,6 +13,7 @@ class KeyFrame {
   }
 }
 
+// TODO: La clase SpriteAnimator juntarla con la clase Sprite ya que van de la mano
 class SpriteAnimator extends Object {
   constructor(GAME, keyFrames, time = .2, repeat = true) {
     super(GAME, 0, 0, 0, 0);
