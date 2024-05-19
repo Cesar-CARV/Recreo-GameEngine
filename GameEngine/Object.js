@@ -19,7 +19,13 @@ export default class Object {
   // eliminarse a si mismo
   kamikaze = (callback = ()=> {}) => {
     if (callback) callback();
-    this._PARENT._CHILDREN = delete this._PARENT._CHILDREN[this._NAME];
+
+    if (this?._PARENT?._CHILDREN) {
+      this._PARENT._CHILDREN = delete this._PARENT._CHILDREN[this._NAME];
+    }
+    else {
+      this._GAME.currentRoom.removeInstance(false, this._NAME);
+    }
   };
 
   // actualizar poscion relativa

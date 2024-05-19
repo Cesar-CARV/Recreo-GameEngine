@@ -7,6 +7,7 @@ import BoxCollider from "../GameEngine/BoxCollider.js";
 import Time from "../GameEngine/Time.js";
 import Vector2 from "../GameEngine/Vector2.js";
 import Clock from "../GameEngine/Clock.js";
+import Solid from '../Objects/Solid.js';
 
 export default class Player extends Object {
   constructor(GAME, x, y) {
@@ -77,14 +78,16 @@ export default class Player extends Object {
 
     // detectar colisiones
     const onFloor = this.collider.onPlaceMeetingBox(
-      new Vector2(this.position.x, this.position.y + 1 + this.velocity.y)
+      new Vector2(this.position.x, this.position.y + 1 + this.velocity.y),
+      Solid
     );
 
     const onWall = this.collider.onPlaceMeetingBox(
       new Vector2(
         this.position.x + this.velocity.x + Math.sign(this.velocity.x),
         this.position.y
-      )
+      ),
+      Solid
     );
 
     // gravedad

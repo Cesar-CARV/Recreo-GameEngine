@@ -9,6 +9,7 @@ import Background from "../GameEngine/Background.js";
 import Tilemap from "../GameEngine/Tilemap.js";
 import Player from "../Objects/Player.js";
 import Coin from "../Objects/Coin.js";
+import Solid from "../Objects/Solid.js";
 
 export default class RoomTest1 extends Room {
   constructor(GAME) {
@@ -77,54 +78,21 @@ export default class RoomTest1 extends Room {
 
     // -------------------------------------------------------------
     // Floor
-    const floorCollider = new BoxCollider(
-      this._GAME,
-      0,
-      0,
-      this._GAME.w * 2,
-      50,
-      0,
-      [],
-      true
-    );
-    const floor = new Object(
-      this._GAME,
-      0,
-      this._GAME.h - 75,
-      this._GAME.w,
-      50
-    );
-    floor.addChild(floorCollider, "floorCollider");
+    const floor = new Solid(this._GAME, 0, this._GAME.h - 75, this._GAME.w * 2, 50);
 
     // -------------------------------------------------------------
     // Wall
-    const wallCollider = new BoxCollider(
-      this._GAME,
-      0,
-      0,
-      32,
-      100,
-      0,
-      [],
-      true
-    );
-    const wall = new Object(this._GAME, 175, this._GAME.h - 175, 32, 100);
-    wall.addChild(wallCollider, "wallCollider");
+    const wall = new Solid(this._GAME, 175, this._GAME.h - 175, 32, 100);
 
     // -------------------------------------------------------------
     // Wall2
-    const wall2Collider = new BoxCollider(
+    const wall2 = new Solid(
       this._GAME,
-      0,
-      0,
+      this._GAME.w * 2 - 30,
+      this._GAME.h - 175,
       30,
-      100,
-      0,
-      [],
-      true
+      100
     );
-    const wall2 = new Object(this._GAME, this._GAME.w * 2 - 30, this._GAME.h - 175, 30, 100);
-    wall2.addChild(wall2Collider, "wall2Collider");
 
     // -------------------------------------------------------------
     // UI
@@ -233,10 +201,10 @@ export default class RoomTest1 extends Room {
     this.addBackground(room1Background2);
     this.addBackground(room1Background3);
     this.addInstance(player, false, "player");
-    this.addInstance(new Coin(GAME, 100, 300), false, "coin1");
-    this.addInstance(new Coin(GAME, 150, 300), false, "coin2");
-    this.addInstance(new Coin(GAME, 200, 300), false, "coin3");
-    this.addInstance(new Coin(GAME, 250, 300), false, "coin4");
+    this.addInstance(new Coin(GAME, 300, 300), false, "coin1");
+    this.addInstance(new Coin(GAME, 350, 300), false, "coin2");
+    this.addInstance(new Coin(GAME, 400, 300), false, "coin3");
+    this.addInstance(new Coin(GAME, 450, 300), false, "coin4");
     this.addInstance(node1, false, "node1");
     this.addInstance(node2, false, "node2");
     this.addInstance(node3, false, "node3");

@@ -41,7 +41,6 @@ export default class Room {
 
   // elimina un objeto y sus hijos del nievel
   removeInstance = (UI = false, name) => {
-    console.log(this._INSTANCES[name]);
     if (UI) delete this._INSTANCESUI[name];
     else delete this._INSTANCES[name];
   };
