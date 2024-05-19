@@ -7,5 +7,4 @@ export default class Solid extends Object {
     this.collider = new BoxCollider(GAME, 0, 0, w, h, 0, [], false);
     this.addChild(this.collider, "collider");
   }
-
 }

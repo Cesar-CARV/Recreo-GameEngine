@@ -27,7 +27,7 @@ export default class Sprite extends Object {
     // animation properties
     this.animation = [];
     this.frame = 0;
-    this.frames = 0;
+    this.frames = -1;
     this.time = 0;
     this.repeat = true;
 
@@ -87,6 +87,15 @@ export default class Sprite extends Object {
     this.clock.pause();
   };
 
+  cutSprite = (cutX, cutY, cutW, cutH, tileWidth, tileHeight) => {
+    this.cutX = cutX;
+    this.cutY = cutY;
+    this.cutW = cutW;
+    this.cutH = cutH;
+    this.tileWidth = tileWidth;
+    this.tileHeight = tileHeight;
+  }
+
   setAnimation = (animation, time = 0.2, repeat = true) => {
     this.stop();
     this.clock.oldSec = -1;
@@ -125,16 +134,16 @@ export default class Sprite extends Object {
       }
 
       if (!this.repeat && this.frame >= this.frames) this.stop();
-      
-      // cambiar medidas de recorte segun el frame
-      if (this.frames === -1 || this._CHILDREN.length === 0) return;
-
-      this.cutX = this.animation[this.frame].cutX;
-      this.cutY = this.animation[this.frame].cutY;
-      this.cutW = this.animation[this.frame].cutW;
-      this.cutH = this.animation[this.frame].cutH;
-      this.tileWidth = this.animation[this.frame].tileWidth;
-      this.tileHeight = this.animation[this.frame].tileHeight;
     });
+
+    // cambiar medidas de recorte segun el frame
+    if (this.frames === -1) return;
+
+    this.cutX = this.animation[this.frame].cutX;
+    this.cutY = this.animation[this.frame].cutY;
+    this.cutW = this.animation[this.frame].cutW;
+    this.cutH = this.animation[this.frame].cutH;
+    this.tileWidth = this.animation[this.frame].tileWidth;
+    this.tileHeight = this.animation[this.frame].tileHeight;
   };
 }

@@ -157,8 +157,6 @@ export default class RoomTest1 extends Room {
     tileMap.addTile(this._GAME.w * 2 - 64, this._GAME.h - 75, 0, 0, 16, 16);
     tileMap.addTile(this._GAME.w * 2 - 32, this._GAME.h - 75, 16, 0, 16, 16);
 
-    console.log(tileMap);
-
     // -------------------------------------------------------------
     // Titulo
     const title = new UILabel(
