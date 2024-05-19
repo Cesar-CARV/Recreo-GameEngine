@@ -10,8 +10,8 @@ export default class Coin extends Object {
 
     this.sprite = new Sprite(
       GAME,
-      0,
-      0,
+      -15,
+      -15,
       30,
       30,
       "../Sprites/pickup_items_animated.png"
@@ -19,10 +19,10 @@ export default class Coin extends Object {
     // animations
     this.animations = {
       idle: [
-        new KeyFrame(0, 0, 16, 16, 30, 30),
-        new KeyFrame(16, 0, 16, 16, 30, 30),
-        new KeyFrame(32, 0, 16, 16, 30, 30),
-        new KeyFrame(48, 0, 16, 16, 30, 30),
+        new KeyFrame(0, 0, 16, 16, 60, 60),
+        new KeyFrame(16, 0, 16, 16, 60, 60),
+        new KeyFrame(32, 0, 16, 16, 60, 60),
+        new KeyFrame(48, 0, 16, 16, 60, 60),
       ],
     };
     this.sprite.setAnimation(this.animations.idle);
@@ -39,8 +39,9 @@ export default class Coin extends Object {
 
   steps = () => {
     const onArea = this.collider.onArea(Player);
-    
+
     if (onArea.res) {
+      this._GAME.playSound("./../Sounds/SFX_Jump_40.wav", .2);
       this.kamikaze(() => console.log("+1"));
     }
   };

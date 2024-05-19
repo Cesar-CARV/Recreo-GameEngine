@@ -82,14 +82,14 @@ export default class RoomTest1 extends Room {
 
     // -------------------------------------------------------------
     // Wall
-    const wall = new Solid(this._GAME, 175, this._GAME.h - 175, 32, 100);
+    const wall = new Solid(this._GAME, 160, this._GAME.h - 171, 32, 100);
 
     // -------------------------------------------------------------
     // Wall2
     const wall2 = new Solid(
       this._GAME,
       this._GAME.w * 2 - 30,
-      this._GAME.h - 175,
+      this._GAME.h - 171,
       30,
       100
     );
@@ -140,10 +140,24 @@ export default class RoomTest1 extends Room {
       32,
       32
     );
-    for (let i = 0; i < this._GAME.w / 32; i++) {
-      tileMap.addTile(32 * i, this._GAME.h - 60, 0, 0, 16, 16);
-      tileMap.addTile(32 * i, this._GAME.h - 28, 16, 0, 16, 16);
+    
+    for (let i = 0; i < (this._GAME.w * 2) / 32; i++) {
+      tileMap.addTile(32 * i, this._GAME.h - 75, 0, 0, 16, 16);
+      tileMap.addTile(32 * i, this._GAME.h - 44, 16, 0, 16, 16);
     }
+
+    tileMap.addTile(160, this._GAME.h - 171, 0, 0, 16, 16);
+    tileMap.addTile(160, this._GAME.h - 139, 16, 0, 16, 16);
+    tileMap.addTile(160, this._GAME.h - 107, 16, 0, 16, 16);
+    tileMap.addTile(160, this._GAME.h - 75, 16, 0, 16, 16);
+
+    tileMap.addTile(this._GAME.w * 2 - 32, this._GAME.h - 171, 0, 0, 16, 16);
+    tileMap.addTile(this._GAME.w * 2 - 32, this._GAME.h - 139, 16, 0, 16, 16);
+    tileMap.addTile(this._GAME.w * 2 - 32, this._GAME.h - 107, 16, 0, 16, 16);
+    tileMap.addTile(this._GAME.w * 2 - 64, this._GAME.h - 75, 0, 0, 16, 16);
+    tileMap.addTile(this._GAME.w * 2 - 32, this._GAME.h - 75, 16, 0, 16, 16);
+
+    console.log(tileMap);
 
     // -------------------------------------------------------------
     // Titulo
