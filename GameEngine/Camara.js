@@ -53,7 +53,7 @@ export default class Camara extends Object {
         x: this.scaleX > 1 ? (this.size.x - this.size.x / this.scaleX) / 2 : 0,
         y: this.scaleY > 1 ? (this.size.y - this.size.y / this.scaleY) / 2 : 0,
       };
-      console.log(normalizedSize);
+      
       // colision L
       if (this.absolutePosition.x + normalizedSize.x < this.LIMITS.l) {
         this._ROOM.positionContextRoom.x = this.LIMITS.l + normalizedSize.x;
