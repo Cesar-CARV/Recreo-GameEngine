@@ -8,6 +8,7 @@ import UILabel from "../GameEngine/UI.Label.js";
 import Background from "../GameEngine/Background.js";
 import Tilemap from "../GameEngine/Tilemap.js";
 import Player from "../Objects/Player.js";
+import Coin from "../Objects/Coin.js";
 
 export default class RoomTest1 extends Room {
   constructor(GAME) {
@@ -232,6 +233,10 @@ export default class RoomTest1 extends Room {
     this.addBackground(room1Background2);
     this.addBackground(room1Background3);
     this.addInstance(player, false, "player");
+    this.addInstance(new Coin(GAME, 100, 300), false, "coin1");
+    this.addInstance(new Coin(GAME, 150, 300), false, "coin2");
+    this.addInstance(new Coin(GAME, 200, 300), false, "coin3");
+    this.addInstance(new Coin(GAME, 250, 300), false, "coin4");
     this.addInstance(node1, false, "node1");
     this.addInstance(node2, false, "node2");
     this.addInstance(node3, false, "node3");

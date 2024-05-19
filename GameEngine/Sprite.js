@@ -125,15 +125,16 @@ export default class Sprite extends Object {
       }
 
       if (!this.repeat && this.frame >= this.frames) this.stop();
+      
+      // cambiar medidas de recorte segun el frame
+      if (this.frames === -1 || this._CHILDREN.length === 0) return;
+
+      this.cutX = this.animation[this.frame].cutX;
+      this.cutY = this.animation[this.frame].cutY;
+      this.cutW = this.animation[this.frame].cutW;
+      this.cutH = this.animation[this.frame].cutH;
+      this.tileWidth = this.animation[this.frame].tileWidth;
+      this.tileHeight = this.animation[this.frame].tileHeight;
     });
-
-    if (this.frames === -1 || this._CHILDREN.length === 0) return;
-
-    this.cutX = this.animation[this.frame].cutX;
-    this.cutY = this.animation[this.frame].cutY;
-    this.cutW = this.animation[this.frame].cutW;
-    this.cutH = this.animation[this.frame].cutH;
-    this.tileWidth = this.animation[this.frame].tileWidth;
-    this.tileHeight = this.animation[this.frame].tileHeight;
   };
 }
