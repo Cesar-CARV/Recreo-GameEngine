@@ -107,7 +107,7 @@ export default class RoomTest1 extends Room {
       [],
       true
     );
-    const wall = new Object(this._GAME, 150, this._GAME.h - 175, 32, 100);
+    const wall = new Object(this._GAME, 175, this._GAME.h - 175, 32, 100);
     wall.addChild(wallCollider, "wallCollider");
 
     // -------------------------------------------------------------
@@ -122,7 +122,7 @@ export default class RoomTest1 extends Room {
       [],
       true
     );
-    const wall2 = new Object(this._GAME, 240, this._GAME.h - 175, 30, 100);
+    const wall2 = new Object(this._GAME, this._GAME.w * 2 - 30, this._GAME.h - 175, 30, 100);
     wall2.addChild(wall2Collider, "wall2Collider");
 
     // -------------------------------------------------------------

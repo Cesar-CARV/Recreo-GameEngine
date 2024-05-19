@@ -49,21 +49,40 @@ export default class Camara extends Object {
         return;
       }
 
+      let normalizedSize = {
+        x: this.scaleX > 1 ? (this.size.x - this.size.x / this.scaleX) / 2 : 0,
+        y: this.scaleY > 1 ? (this.size.y - this.size.y / this.scaleY) / 2 : 0,
+      };
+      console.log(normalizedSize);
       // colision L
-      if (this.absolutePosition.x < this.LIMITS.l) {
-        this._ROOM.positionContextRoom.x = this.LIMITS.l;
+      if (this.absolutePosition.x + normalizedSize.x < this.LIMITS.l) {
+        this._ROOM.positionContextRoom.x = this.LIMITS.l + normalizedSize.x;
       }
       // colsion R
-      else if (this.absolutePosition.x + this.size.x > this.LIMITS.r) {
-        this._ROOM.positionContextRoom.x = -(this.LIMITS.r - this.size.x);
+      else if (
+        this.absolutePosition.x + this.size.x - normalizedSize.x >
+        this.LIMITS.r
+      ) {
+        this._ROOM.positionContextRoom.x = -(
+          this.LIMITS.r -
+          this.size.x +
+          normalizedSize.x
+        );
       }
       // colision T
-      if (this.absolutePosition.y < this.LIMITS.t) {
-        this._ROOM.positionContextRoom.y = this.LIMITS.t;
+      if (this.absolutePosition.y + normalizedSize.y < this.LIMITS.t) {
+        this._ROOM.positionContextRoom.y = this.LIMITS.t + normalizedSize.y;
       }
       // colsion B
-      else if (this.absolutePosition.y + this.size.y > this.LIMITS.b) {
-        this._ROOM.positionContextRoom.y = -(this.LIMITS.b - this.size.y);
+      else if (
+        this.absolutePosition.y + this.size.y - normalizedSize.y >
+        this.LIMITS.b
+      ) {
+        this._ROOM.positionContextRoom.y = -(
+          this.LIMITS.b -
+          this.size.y +
+          normalizedSize.y
+        );
       }
     }
   };
