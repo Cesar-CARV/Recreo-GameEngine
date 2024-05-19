@@ -11,6 +11,7 @@ export default class Game {
     this.ctx.imageSmoothingEnabled = false;
     this.w = w;
     this.h = h;
+    this.soundsStack = [];
     this.gamePaused = false;
     this.stopedGame = false;
     this.gameLoop = undefined;
@@ -77,11 +78,11 @@ export default class Game {
   };
   // #endregion
 
+  // #region GRAPHICS
+  // hace un scale de los graficos
   scaleContextGraphic = (x, y) => {
     this.ctx.scale(x, y);
   };
-
-  // #region CLIP
 
   // los parametros que resive esta funcion son las medidas de el area que se va a limpiar
   clipContextGraphic = (width, height) => {
@@ -108,7 +109,53 @@ export default class Game {
   };
   // #endregion
 
-  // #region SETUP GAME
+  // #region SOUNDS
+
+  findSound = (url) => {
+    const splitedUrl = url.split("/");
+    const formatUrl = `${splitedUrl[splitedUrl.length - 2]}/${
+      splitedUrl[splitedUrl.length - 1]
+    }`;
+    return this.soundsStack.find((s) => s.src.includes(formatUrl));
+  }
+
+  playSound = (url, volumen, speed = 1, loop = false) => {
+    const found = this.findSound(url);
+
+    if (found === undefined) {
+      const temSound = new Audio(url);
+      temSound.volume = volumen;
+      temSound.loop = loop;
+      temSound.playbackRate = speed;
+      temSound.addEventListener("ended", () => this.deleteSound(temSound.src));
+      temSound.play();
+      this.soundsStack.push(temSound);
+    } else if (found.paused) {
+      found.play();
+    } else {
+      found.pause();
+      found.currentTime = 0;
+      found.play();
+    }
+  };
+
+  pauseSound = (url) => {
+    const found = this.findSound(url);
+    
+    if (!found) return;
+    found.pause();
+  }
+
+  deleteSound = (url) => {
+    const found = this.findSound(url);
+
+    if (!found) return;
+    this.soundsStack = this.soundsStack.filter((s) => s !== found);
+  };
+
+  // #endregion
+
+  // #region SETUPGAME
   // esta funcion inicia el loop principal del motor
   startGame = () => {
     this.gameLoop =
@@ -127,11 +174,13 @@ export default class Game {
   // pausa el juego
   pauseGame = () => {
     this.gamePaused = true;
+    this.soundsStack.forEach(s => s.pause());
   };
 
   // des pausa el juego
   playGame = () => {
     this.gamePaused = false;
+    this.soundsStack.forEach(s => s.play());
   };
 
   // funcion principal del motor la cual renderiza el nivel y actualiza el delta time

@@ -98,6 +98,7 @@ export default class Player extends Object {
     // salto
     if (onFloor.res && Input.GetKeyPress("w")) {
       this.velocity.y = this.jump * Time.deltaTime;
+      this._GAME.playSound("./../Sounds/SFX_Jump_13.wav", .2);
     } else if (onFloor.res) {
       this.velocity.y = 0;
       this.position.y +=
