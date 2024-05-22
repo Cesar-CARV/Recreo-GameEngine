@@ -10,6 +10,8 @@ import Tilemap from "../GameEngine/Tilemap.js";
 import Player from "../Objects/Player.js";
 import Coin from "../Objects/Coin.js";
 import Solid from "../Objects/Solid.js";
+import Time from "../GameEngine/Time.js";
+
 
 export default class RoomTest1 extends Room {
   constructor(GAME) {
@@ -120,7 +122,7 @@ export default class RoomTest1 extends Room {
       60
     );
     UIContainer.draw = (ctx) => {
-      ctx.fillStyle = "#0003";
+      ctx.fillStyle = "#000";
       ctx.fillRect(
         UIContainer.position.x,
         UIContainer.position.y,
@@ -128,6 +130,7 @@ export default class RoomTest1 extends Room {
         UIContainer.size.y
       );
     };
+    // UIContainer.visible = false;
 
     UIContainer.addChild(stopButton, "stopButton");
     UIContainer.addChild(pauseButton, "pauseButton");

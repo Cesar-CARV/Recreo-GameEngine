@@ -74,11 +74,19 @@ export default class Room {
 
   // Renderiza los objetos de la UI esto quiere decir que llama a la funcion principal de cada uno
   renderUI = (objUI, ctx) => {
-    window.Object.values(objUI._CHILDREN).forEach((childUI) => {
-      this.renderUI(childUI, ctx);
-    });
-
+    // TODO: detectar si el objetoUI es visible, si no lo es que no se dibujen sus hijos
+    
+    // TODO: hacer que el padre se dibuje primero y luego los hijos para que el padre no se 
+    // TODO: superponga a los hijos
+    
     objUI.main(ctx);
+    
+    if (objUI.visible){
+      window.Object.values(objUI._CHILDREN).forEach((childUI) => {
+        this.renderUI(childUI, ctx);
+      });
+    }
+    
     objUI.restartPosition();
   };
 

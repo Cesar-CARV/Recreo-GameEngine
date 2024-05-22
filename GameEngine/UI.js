@@ -17,7 +17,7 @@ export default class UI extends Object {
   draw = (ctx) => {};
 
   checkMousePosition = () => {
-    // if (this.constructor.name === "UI") return;
+    if (this.constructor.name === "UI") return;
 
     if (
       Input.GetMouseCords().x >= this.position.x &&
