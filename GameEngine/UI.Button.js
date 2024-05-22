@@ -11,13 +11,42 @@ export default class UIButton extends UI {
     this.color = "#222";
     this.fill = true;
     this.border = false;
+    this.borderWeight = 1;
+    this.borderColor = "#000";
     this.align = "left";
     this.textMetrics = new Vector2(0, 0);
 
     this.backgroundColorHover = "#0ea5e9";
     this.colorHover = "#fff";
+    this.borderColorHover = "#000";
     this.backgroundColorPressed = "#0089C6";
     this.colorPressed = "#6BC8F2";
+    this.borderColorPressed = "#000";
+  }
+
+  drawBody = (ctx) => {
+    // boton body
+    if (this.hover && !this.pressed) {
+      ctx.fillStyle = this.backgroundColorHover;
+    } else if (this.hover && this.pressed) {
+      ctx.fillStyle = this.backgroundColorPressed;
+    } else {
+      ctx.fillStyle = this.backgroundColor;
+    }
+    ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
+
+    // boton border
+    if (!this.border) return;
+
+    if (this.hover && !this.pressed) {
+      ctx.strokeStyle = this.borderColorHover;
+    } else if (this.hover && this.pressed) {
+      ctx.strokeStyle = this.borderColorPressed;
+    } else {
+      ctx.strokeStyle = this.borderColor;
+    }
+    ctx.lineWidth = this.borderWeight;
+    ctx.strokeRect(this.position.x, this.position.y, this.size.x, this.size.y);
   }
 
   draw = (ctx) => {
@@ -30,15 +59,7 @@ export default class UIButton extends UI {
     this.textMetrics.x = Math.ceil(ctx.measureText(this.text).width);
     this.textMetrics.y = Math.ceil(ctx.measureText(this.text).hangingBaseline);
 
-    // boton
-    if (this.hover && !this.pressed) {
-      ctx.fillStyle = this.backgroundColorHover;
-    } else if (this.hover && this.pressed) {
-      ctx.fillStyle = this.backgroundColorPressed;
-    } else {
-      ctx.fillStyle = this.backgroundColor;
-    }
-    ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
+    this.drawBody(ctx);
 
     // texto
     if (this.hover && !this.pressed) {

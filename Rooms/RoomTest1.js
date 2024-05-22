@@ -109,6 +109,8 @@ export default class RoomTest1 extends Room {
 
     const pauseButton = new UIButton(this._GAME, 140, 10, 80, 40, "PAUSE");
     pauseButton.align = "center";
+    pauseButton.border = true;
+    pauseButton.borderWeight = 5;
     pauseButton.onClick = () => {
       this._GAME.gamePaused ? this._GAME.playGame() : this._GAME.pauseGame();
       pauseButton.text = this._GAME.gamePaused ? "PLAY" : "PAUSE";
@@ -122,7 +124,7 @@ export default class RoomTest1 extends Room {
       60
     );
     UIContainer.draw = (ctx) => {
-      ctx.fillStyle = "#000";
+      ctx.fillStyle = "#0003";
       ctx.fillRect(
         UIContainer.position.x,
         UIContainer.position.y,
