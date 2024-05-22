@@ -111,6 +111,9 @@ export default class RoomTest1 extends Room {
     pauseButton.align = "center";
     pauseButton.border = true;
     pauseButton.borderWeight = 5;
+    pauseButton.onMouseHover = () => {
+      console.log(pauseButton.pressed);
+    }
     pauseButton.onClick = () => {
       this._GAME.gamePaused ? this._GAME.playGame() : this._GAME.pauseGame();
       pauseButton.text = this._GAME.gamePaused ? "PLAY" : "PAUSE";

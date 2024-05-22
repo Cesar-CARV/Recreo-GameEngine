@@ -31,6 +31,7 @@ export default class UI extends Object {
       this.active = false;
       this.onBlur();
     } else if (this.hover) {
+      this.pressed = false;
       this.leave = true;
       this.hover = false;
       this._GAME.hoverUI = false;
@@ -70,7 +71,7 @@ export default class UI extends Object {
       }
       this.active = true;
     }
-    if (this.mouseOn && this.active && Input.GetMouseUp(0)) {
+    if (this.mouseOn && this.active && this.pressed && Input.GetMouseUp(0)) {
       this.onMouseUp();
       this.onClick();
       this.pressed = false;
