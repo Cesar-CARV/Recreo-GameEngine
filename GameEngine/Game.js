@@ -11,6 +11,9 @@ export default class Game {
     this.ctx.imageSmoothingEnabled = false;
     this.w = w;
     this.h = h;
+    // TODO: Crear un set llamdo sounds donde se guarden los sonidos creados para
+    // TODO: evitar que se haya una llamada al servidor cada que se reprodusca
+    // *soundsStack sera para saber que sonidos se estan reproduciendo y tambien sera un set
     this.soundsStack = [];
     this.gamePaused = false;
     this.stopedGame = false;

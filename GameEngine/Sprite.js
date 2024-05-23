@@ -34,6 +34,10 @@ export default class Sprite extends Object {
     this.clock = new Clock(GAME, this.time, this.repeat);
   }
 
+  onEnd = (callback) => {
+    if (callback) callback();
+  }
+
   draw = (ctx) => {
     if (!this.canDraw) return;
 
@@ -133,7 +137,10 @@ export default class Sprite extends Object {
         this.frame = this.frame < this.frames ? this.frame + 1 : this.frame;
       }
 
-      if (!this.repeat && this.frame >= this.frames) this.stop();
+      if (!this.repeat && this.frame >= this.frames) {
+        this.stop();
+        this.onEnd();
+      }
     });
 
     // cambiar medidas de recorte segun el frame
