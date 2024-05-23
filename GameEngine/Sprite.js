@@ -34,9 +34,7 @@ export default class Sprite extends Object {
     this.clock = new Clock(GAME, this.time, this.repeat);
   }
 
-  onEnd = (callback) => {
-    if (callback) callback();
-  }
+  onEnd = () => {}
 
   draw = (ctx) => {
     if (!this.canDraw) return;
@@ -140,6 +138,7 @@ export default class Sprite extends Object {
       if (!this.repeat && this.frame >= this.frames) {
         this.stop();
         this.onEnd();
+        this.onEnd = () => {}
       }
     });
 
