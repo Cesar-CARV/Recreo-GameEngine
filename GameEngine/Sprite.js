@@ -112,16 +112,14 @@ export default class Sprite extends Object {
   };
 
   changeAnimation = (animation, time = 0.2, repeat = true) => {
-    this.clock =
-      this.clock === undefined
-        ? new Clock(this._GAME, time, repeat)
-        : this.clock;
-    this.stop();
+    this.time = time;
     this.frame = 0;
     this.frames = animation.length - 1;
     this.animation = animation;
-    this.time = time;
     this.repeat = repeat;
+
+    this.stop();
+    this.clock = new Clock(this._GAME, time, true)
     this.play();
   };
 
@@ -138,7 +136,7 @@ export default class Sprite extends Object {
       if (!this.repeat && this.frame >= this.frames) {
         this.stop();
         this.onEnd();
-        this.onEnd = () => {}
+        // this.onEnd = () => {}
       }
     });
 
