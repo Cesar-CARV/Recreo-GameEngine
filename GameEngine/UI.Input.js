@@ -6,6 +6,7 @@ export default class UIInput extends UI {
   constructor(game, x, y, w, h, text = "", placeholder = "placeholder") {
     super(game, x, y, w, h);
 
+    this.container = false;
     this.text = text;
     this.maxTextLength = 50;
     this.placeholder = placeholder;

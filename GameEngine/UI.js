@@ -11,13 +11,14 @@ export default class UI extends Object {
     this.leave = false;
     this.hover = false;
     this.pressed = false;
+    this.container = true;
     this.lastMouseCord = { x: -10, y: -10 };
   }
 
   draw = (ctx) => {};
 
   checkMousePosition = () => {
-    if (this.constructor.name === "UI") return;
+    if (this.constructor.name === "UI" || this.container) return;
 
     if (
       Input.GetMouseCords().x >= this.position.x &&

@@ -5,6 +5,7 @@ export default class UILabel extends UI {
     constructor(game, x, y, w, h, text) {
         super(game, x, y, w, h);
 
+        this.container = false;
         this.text = text;
         this.font = "16px sans-serif";
         this.backgroundColor = "#0005";
