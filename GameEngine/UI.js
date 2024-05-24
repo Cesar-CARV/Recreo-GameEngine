@@ -2,6 +2,7 @@ import Input from "./Input.js";
 import Object from "./Object.js";
 
 export default class UI extends Object {
+  #created = false;
   constructor(game, x, y, w, h) {
     super(game, x, y, w, h);
     this.visible = true;
@@ -92,6 +93,10 @@ export default class UI extends Object {
   steps = () => {};
 
   main = (ctx) => {
+    if (!this.#created) {
+      this.onCreate();
+      this.#created = true;
+    }
     if (this.visible) {
       this.updatePosition();
       this.events();
