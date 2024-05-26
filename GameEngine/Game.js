@@ -98,7 +98,9 @@ export default class Game {
     const centerY = this.h / 2 - this.currentRoom.sizeContextRoom.y / 2;
 
     // ESTA PARTE EN ESPECIAL ES LA QUE CAUSA EL CONSUMO DE CPU
+    this.ctx.beginPath();
     this.ctx.rect(centerX, centerY, width, height);
+    this.ctx.closePath();
     this.ctx.clip();
 
     this.ctx.clearRect(centerX, centerY, width, height);

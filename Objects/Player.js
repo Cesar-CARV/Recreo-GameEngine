@@ -38,7 +38,7 @@ export default class Player extends Object {
     this.sprite = new Sprite(GAME, 0, 0, 48, 62, "./../Sprites/elf.png");
     this.sprite.setAnimation(this.animations.idle);
     // camara
-    this.camara = new Camara(GAME, 0, 0, GAME.w, GAME.h);
+    this.camara = new Camara(GAME, 0, 0, GAME.w / 2, GAME.h);
     this.camara.setScale(0.01, 0.01);
     // collider
     this.collider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
@@ -113,12 +113,12 @@ export default class Player extends Object {
       this.sprite.animation === this.animations.idle &&
       this.velocity.x !== 0
     ) {
-      this.sprite.changeAnimation(this.animations.run, 1000 / 6);
+      this.sprite.changeAnimation(this.animations.run);
     } else if (
       this.sprite.animation === this.animations.run &&
       this.velocity.x === 0
     ) {
-      this.sprite.changeAnimation(this.animations.idle, 1000 / 6);
+      this.sprite.changeAnimation(this.animations.idle);
     }
 
     if (this.velocity.x < 0) {
