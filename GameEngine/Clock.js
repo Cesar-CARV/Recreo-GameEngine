@@ -17,6 +17,12 @@ export default class Clock {
     this.oldSec = -1;
   };
 
+  reset = () => {
+    this.finished = false;
+    this.current = 0;
+    this.oldSec = -1;
+  }
+
   start = () => {
     this.runing = true;
   };
@@ -38,7 +44,10 @@ export default class Clock {
     if (this.current >= this.time) {
       if (callback) callback();
       if (this.repeat) this.restart();
-      else this.pause();
+      else {
+        this.pause();
+        this.finished = true;
+      }
     }
   };
 }
