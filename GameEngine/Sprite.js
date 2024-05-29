@@ -111,6 +111,16 @@ export default class Sprite extends Object {
     this.repeat = repeat;
   };
 
+  changeSprite = (url, w = undefined, h = undefined) => {
+    this.url = url;
+    this._IMAGE = new Image(this.size.x, this.size.y );
+    this._IMAGE.src = url;
+    this.canDraw = false;
+    this._IMAGE.onload = () => {
+      this.canDraw = true;
+    };
+  }
+
   changeAnimation = (animation, time = 0.2, repeat = true) => {
     this.time = time;
     this.frame = 0;

@@ -64,6 +64,10 @@ export default class Player extends Object {
   };
 
   steps = () => {
+    if (Input.GetKeyDown("r")) {
+      this.sprite.changeSprite("../Sprites/spriteTest.png");
+    }
+
     this.clock.tick(() => console.log("Fin de el timer 5 sec despues de ser creado"));
 
     if (this.camara.scaleX < 1 && this.camara.scaleY < 1)
