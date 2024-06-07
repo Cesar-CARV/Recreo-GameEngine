@@ -55,14 +55,19 @@ export default class Input {
     if (this.mousepress.has(e.button)) this.mousepress.delete(e.button);
   };
   static _OnMouseMove = (e) => {
+    const scaleX = this._GAME.viewport.x / this._GAME.$.clientWidth;
+    const scaleY = this._GAME.viewport.y / this._GAME.$.clientHeight;
+
     this.mouseCord = {
-      x: e.offsetX - e.target.style.left,
-      y: e.offsetY - e.target.style.top,
+      x: e.offsetX * scaleX,
+      y: e.offsetY * scaleY,
     };
   };
 
-  static Init(target) {
+  static Init(GAME, target) {
     if (!target) return;
+
+    Input._GAME = GAME;
 
     target.addEventListener("keydown", Input._OnKeyDown.bind(this));
     target.addEventListener("keyup", Input._OnKeyUp.bind(this));
@@ -80,7 +85,7 @@ export default class Input {
     });
   }
 }
-
+Input._GAME;
 Input.keydown = new Set();
 Input.keypress = new Set();
 Input.keyup = new Set();
