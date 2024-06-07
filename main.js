@@ -4,9 +4,8 @@ import RoomTest2 from './Rooms/RoomTest2.js';
 
 // -------------------- GAME SETTINGS --------------------- //
 const $game = document.querySelector("#game");
-const $gameInput = $game.querySelector("#game__input");
 const $gameCanvas = document.querySelector("#game__display");
-const GAME = new Game($game, $gameCanvas, $gameInput, 704, 500);
+const GAME = new Game($game, $gameCanvas);
 GAME.debug = false; 
 
 // -------------------- ROOMS --------------------- //
