@@ -7,7 +7,7 @@ import BoxCollider from "../GameEngine/BoxCollider.js";
 import Time from "../GameEngine/Time.js";
 import Vector2 from "../GameEngine/Vector2.js";
 import Clock from "../GameEngine/Clock.js";
-import Solid from '../Objects/Solid.js';
+import Solid from "../Objects/Solid.js";
 
 export default class Player extends Object {
   constructor(GAME, x, y) {
@@ -16,7 +16,7 @@ export default class Player extends Object {
     this.velocity = new Vector2(0, 0);
     this.gravity = 98;
     this.jump = -1200;
-    
+
     // clock
     this.clock = new Clock(GAME, 5, false);
 
@@ -38,7 +38,7 @@ export default class Player extends Object {
     this.sprite = new Sprite(GAME, 0, 0, 48, 62, "./../Sprites/elf.png");
     this.sprite.setAnimation(this.animations.idle);
     // camara
-    this.camara = new Camara(GAME, 0, 0, GAME.w / 2, GAME.h);
+    this.camara = new Camara(GAME, 0, 0, GAME.viewport.x, GAME.viewport.y);
     this.camara.setScale(0.01, 0.01);
     // collider
     this.collider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
@@ -53,12 +53,7 @@ export default class Player extends Object {
 
     this.sprite.play();
 
-    this.camara.setCamaraLimits(
-      0,
-      0,
-      this._GAME.currentRoom.w,
-      this._GAME.currentRoom.h
-    );
+    this.camara.setCamaraLimits(0, 0, 2000, 1000);
 
     if (!this.clock.runing) this.clock.start();
   };
