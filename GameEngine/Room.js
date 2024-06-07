@@ -1,13 +1,11 @@
 import Vector2 from "./Vector2.js";
 
 export default class Room {
-  constructor(GAME, w, h) {
+  constructor(GAME) {
     this._GAME = GAME;
     this._NAME = this.constructor.name;
-    this.w = w;
-    this.h = h;
     this.positionContextRoom = new Vector2(0, 0);
-    this.sizeContextRoom = new Vector2(this._GAME.w, this._GAME.h);
+    this.sizeContextRoom = new Vector2(this._GAME.viewport.x, this._GAME.viewport.y);
     this.scaleContextRoom = new Vector2(1, 1);
     this._INSTANCESUI = {};
     this._INSTANCES = {};
@@ -17,6 +15,7 @@ export default class Room {
     this.tileMapLayer3 = undefined;
   }
 
+  //#region INSTANCES
   // agregar un fondo a el nivel, el nivel puede tener varios fondos
   addBackground = (bg) => {
     this.backgrounds.push(bg);
@@ -44,7 +43,9 @@ export default class Room {
     if (UI) delete this._INSTANCESUI[name];
     else delete this._INSTANCES[name];
   };
+  //#endregion
 
+  //#region DRAW
   // dibuja los fondos y los tile maps
   draw = (ctx) => {
     this.backgrounds.forEach((bg) => bg.main(ctx));
@@ -55,7 +56,9 @@ export default class Room {
   drawOver = (ctx) => {
     if (this.tileMapLayer3) this.tileMapLayer3.main(ctx);
   }
+  //#endregion
 
+  //#region RENDER
   // Renderiza los objetos esto quiere decir que llama a la funcion principal de cada uno
   renderObejct = (obj, ctx) => {
     if (!this._GAME.gamePaused) {
@@ -84,6 +87,7 @@ export default class Room {
     
     objUI.restartPosition();
   };
+  //#endregion
 
   // #region FINDS
   // esta funcion busca un objeto por el nombre
@@ -202,6 +206,7 @@ export default class Room {
 
   // #endregion
 
+  //#region MAIN
   // renderiza los objetos hijos de este nivel
   // no modificar esta funcion ya que es por medio de esta que el motor renderiza renderiza el nivel
   main = (ctx) => {
@@ -220,12 +225,12 @@ export default class Room {
     // mover context
     const centerX =
       this.positionContextRoom.x +
-      (this._GAME.w / 2 -
+      (this._GAME.viewport.x / 2 -
         (this.sizeContextRoom.x / 2) * this.scaleContextRoom.x) /
         this.scaleContextRoom.x;
     const centerY =
       this.positionContextRoom.y +
-      (this._GAME.h / 2 -
+      (this._GAME.viewport.y / 2 -
         (this.sizeContextRoom.y / 2) * this.scaleContextRoom.y) /
         this.scaleContextRoom.y;
 
@@ -250,4 +255,5 @@ export default class Room {
       // instanceUI.main(ctx);
     });
   };
+  //#endregion
 }
