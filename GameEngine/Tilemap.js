@@ -1,8 +1,8 @@
 import Object from "./Object.js";
 
 export default class Tilemap extends Object {
-  constructor(game, url = undefined, tileWidth, tileHeight) {
-    super(game, 0, 0, 0, 0);
+  constructor(GAME, url = undefined, tileWidth, tileHeight) {
+    super(GAME, 0, 0, 0, 0);
     this._IMAGE = new Image();
     this._IMAGE.src = url;
     this.canDraw = false;
@@ -31,15 +31,15 @@ export default class Tilemap extends Object {
 
     if (this.tileImage === undefined) {
       let canvasTemp = document.createElement("canvas");
-      canvasTemp.setAttribute("width", this._GAME.currentRoom.w);
-      canvasTemp.setAttribute("height", this._GAME.currentRoom.h);
+      canvasTemp.setAttribute("width", this._GAME.viewport.x);
+      canvasTemp.setAttribute("height", this._GAME.viewport.y);
 
       let ctxTemp = canvasTemp.getContext("2d");
       ctxTemp.imageSmoothingEnabled = false;
       
       this.tileImage = new Image(
-        this._GAME.currentRoom.w,
-        this._GAME.currentRoom.h
+        this._GAME.viewport.x,
+        this._GAME.viewport.y
       );
 
       this.tiles.forEach((tile) => {
@@ -62,8 +62,8 @@ export default class Tilemap extends Object {
         this.tileImage, // image
         this.position.x, // image x
         this.position.y, // image y
-        this._GAME.currentRoom.w,
-        this._GAME.currentRoom.h
+        // this._GAME.currentRoom.w,
+        // this._GAME.currentRoom.h
       );
     }
   };
