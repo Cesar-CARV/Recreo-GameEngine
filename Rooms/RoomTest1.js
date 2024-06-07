@@ -15,12 +15,12 @@ import Time from "../GameEngine/Time.js";
 
 export default class RoomTest1 extends Room {
   constructor(GAME) {
-    super(GAME, GAME.w * 2, GAME.h * 2);
+    super(GAME);
 
     const player = new Player(
       this._GAME,
-      this._GAME.w / 2 - 25,
-      this._GAME.h / 2 - 25
+      300,
+      300
     );
 
     const node1 = new Object(this._GAME, 10, 0, 10, 10);
@@ -80,18 +80,18 @@ export default class RoomTest1 extends Room {
 
     // -------------------------------------------------------------
     // Floor
-    const floor = new Solid(this._GAME, 0, this._GAME.h - 75, this._GAME.w * 2, 50);
+    const floor = new Solid(this._GAME, 0, 550 - 75, 1000, 50);
 
     // -------------------------------------------------------------
     // Wall
-    const wall = new Solid(this._GAME, 160, this._GAME.h - 171, 32, 100);
+    const wall = new Solid(this._GAME, 160, 550 - 171, 32, 100);
 
     // -------------------------------------------------------------
     // Wall2
     const wall2 = new Solid(
       this._GAME,
-      this._GAME.w * 2 - 30,
-      this._GAME.h - 171,
+      1000,
+      550 - 171,
       30,
       100
     );
@@ -122,8 +122,8 @@ export default class RoomTest1 extends Room {
     const UIContainer = new UI(
       this._GAME,
       10,
-      this._GAME.h - 80,
-      this._GAME.w - 20,
+      this._GAME.viewport.y - 80,
+      this._GAME.viewport.x - 20,
       60
     );
     UIContainer.draw = (ctx) => {
@@ -149,21 +149,21 @@ export default class RoomTest1 extends Room {
       32
     );
     
-    for (let i = 0; i < (this._GAME.w * 2) / 32; i++) {
-      tileMap.addTile(32 * i, this._GAME.h - 75, 0, 0, 16, 16);
-      tileMap.addTile(32 * i, this._GAME.h - 44, 16, 0, 16, 16);
+    for (let i = 0; i < (this._GAME.viewport.x * 1) / 32; i++) {
+      tileMap.addTile(32 * i, 550 - 75, 0, 0, 16, 16);
+      tileMap.addTile(32 * i, 550 - 44, 16, 0, 16, 16);
     }
 
-    tileMap.addTile(160, this._GAME.h - 171, 0, 0, 16, 16);
-    tileMap.addTile(160, this._GAME.h - 139, 16, 0, 16, 16);
-    tileMap.addTile(160, this._GAME.h - 107, 16, 0, 16, 16);
-    tileMap.addTile(160, this._GAME.h - 75, 16, 0, 16, 16);
+    tileMap.addTile(160, 550 - 171, 0, 0, 16, 16);
+    tileMap.addTile(160, 550 - 139, 16, 0, 16, 16);
+    tileMap.addTile(160, 550 - 107, 16, 0, 16, 16);
+    tileMap.addTile(160, 550 - 75, 16, 0, 16, 16);
 
-    tileMap.addTile(this._GAME.w * 2 - 32, this._GAME.h - 171, 0, 0, 16, 16);
-    tileMap.addTile(this._GAME.w * 2 - 32, this._GAME.h - 139, 16, 0, 16, 16);
-    tileMap.addTile(this._GAME.w * 2 - 32, this._GAME.h - 107, 16, 0, 16, 16);
-    tileMap.addTile(this._GAME.w * 2 - 64, this._GAME.h - 75, 0, 0, 16, 16);
-    tileMap.addTile(this._GAME.w * 2 - 32, this._GAME.h - 75, 16, 0, 16, 16);
+    tileMap.addTile(1000 * 2 - 32, 550 - 171, 0, 0, 16, 16);
+    tileMap.addTile(1000 * 2 - 32, 550 - 139, 16, 0, 16, 16);
+    tileMap.addTile(1000 * 2 - 32, 550 - 107, 16, 0, 16, 16);
+    tileMap.addTile(1000 * 2 - 64, 550 - 75, 0, 0, 16, 16);
+    tileMap.addTile(1000 * 2 - 32, 550 - 75, 16, 0, 16, 16);
 
     // -------------------------------------------------------------
     // Titulo
@@ -171,7 +171,7 @@ export default class RoomTest1 extends Room {
       this._GAME,
       40,
       20,
-      this._GAME.w - 80,
+      this._GAME.viewport.x - 80,
       60,
       "ROOM TEST"
     );
@@ -190,8 +190,8 @@ export default class RoomTest1 extends Room {
       this._GAME,
       0,
       0,
-      this._GAME.w,
-      this._GAME.h,
+      this._GAME.viewport.x,
+      this._GAME.viewport.y,
       "./../Backgrounds/Fondo_01.png"
     );
     room1Background.static = true;
@@ -208,7 +208,7 @@ export default class RoomTest1 extends Room {
 
     const room1Background3 = new Background(
       this._GAME,
-      this._GAME.w * 2 - 100,
+      1000,
       0,
       100,
       100,
