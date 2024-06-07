@@ -1,16 +1,26 @@
 import Input from "./Input.js";
 import Time from "./Time.js";
+import Vector2 from "./Vector2.js";
 
 export default class Game {
   #oldTime = 0;
-  constructor(game, canvas, input, w, h) {
+  constructor(game, canvas, width = undefined, height = undefined) {
     this.$ = game;
     this.canvas = canvas;
-    this.input = input;
-    this.ctx = this.canvas.getContext("2d");
-    this.ctx.imageSmoothingEnabled = false;
-    this.w = w;
-    this.h = h;
+
+    // * RESPONSIVE
+    this.viewport = new Vector2(
+      width ? width : window.screen.width,
+      height ? height :window.screen.height
+    );
+    this.resize();
+    this.resize();
+
+    window.addEventListener("resize", () => {
+      this.resize();
+    });
+    // ---------------------------------------------------
+
     // TODO: Crear un set llamdo sounds donde se guarden los sonidos creados para
     // TODO: evitar que se haya una llamada al servidor cada que se reprodusca
     // *soundsStack sera para saber que sonidos se estan reproduciendo y tambien sera un set
@@ -24,9 +34,6 @@ export default class Game {
     this.hoverUI = false;
     this.debug = true;
 
-    this.resize(w, h);
-    Input.Init(this.input);
-
     this.cancelAnimationFrame =
       window.cancelAnimationFrame.bind(window) ||
       window.mozCancelAnimationFrame.bind(window);
@@ -36,19 +43,31 @@ export default class Game {
       window.mozRequestAnimationFrame.bind(window) ||
       window.webkitRequestAnimationFrame.bind(window) ||
       window.msRequestAnimationFrame.bind(window);
+
+    Input.Init(this, this.canvas);
   }
 
-  // modifica el tamaño del canvas en el cual se renderiza el juego
-  resize = (w, h) => {
-    this.canvas.width = w;
-    this.canvas.height = h;
+  // ajusta los cambios de aspecto segun el tamaño de el display
+  resize = () => {
+    const ratio = this.viewport.x / this.viewport.y;
+    const ratioX = (this.viewport.x * ratio) / 100;
+    const ratioY = (this.viewport.y * ratio) / 100;
+    if (
+      this.$.getBoundingClientRect().right / ratioX >
+      this.$.getBoundingClientRect().bottom / ratioY
+    ) {
+      this.$.style.width = "auto";
+      this.$.style.height = "100%";
+    } else {
+      this.$.style.width = "100%";
+      this.$.style.height = "auto";
+    }
 
-    this.input.style.width = w + 2.22 + "px";
-    this.input.style.height = h + 2.22 + "px";
+    this.canvas.width = this.viewport.x;
+    this.canvas.height = this.viewport.y;
 
-    this.$.style.width = w + "px";
-    this.$.style.height = h + "px";
-
+    this.aspectRatio = new Vector2(ratioX, ratioY);
+    this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
     this.ctx = this.canvas.getContext("2d");
     this.ctx.imageSmoothingEnabled = false;
   };
@@ -91,11 +110,13 @@ export default class Game {
   clipContextGraphic = (width, height) => {
     this.ctx.save();
     this.ctx.fillStyle = "#000";
-    this.ctx.fillRect(0, 0, this.w, this.h);
+    this.ctx.fillRect(0, 0, this.viewport.x, this.viewport.y);
 
     // limpiar el fondo negro donde se mostrara el contenido del nivel
-    const centerX = this.w / 2 - this.currentRoom.sizeContextRoom.x / 2;
-    const centerY = this.h / 2 - this.currentRoom.sizeContextRoom.y / 2;
+    const centerX =
+      this.viewport.x / 2 - this.currentRoom.sizeContextRoom.x / 2;
+    const centerY =
+      this.viewport.y / 2 - this.currentRoom.sizeContextRoom.y / 2;
 
     // ESTA PARTE EN ESPECIAL ES LA QUE CAUSA EL CONSUMO DE CPU
     this.ctx.beginPath();
@@ -122,7 +143,7 @@ export default class Game {
       splitedUrl[splitedUrl.length - 1]
     }`;
     return this.soundsStack.find((s) => s.src.includes(formatUrl));
-  }
+  };
 
   playSound = (url, volumen, speed = 1, loop = false) => {
     const found = this.findSound(url);
@@ -146,10 +167,10 @@ export default class Game {
 
   pauseSound = (url) => {
     const found = this.findSound(url);
-    
+
     if (!found) return;
     found.pause();
-  }
+  };
 
   deleteSound = (url) => {
     const found = this.findSound(url);
@@ -179,21 +200,22 @@ export default class Game {
   // pausa el juego
   pauseGame = () => {
     this.gamePaused = true;
-    this.soundsStack.forEach(s => s.pause());
+    this.soundsStack.forEach((s) => s.pause());
   };
 
   // des pausa el juego
   playGame = () => {
     this.gamePaused = false;
-    this.soundsStack.forEach(s => s.play());
+    this.soundsStack.forEach((s) => s.play());
   };
 
   // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
   main = (timestamp) => {
+
     Time.main();
     if (this.debug) {
       console.log(
-        `%cGAME RUNING ON ${this.FPS} TIKS, HOVER = ${this.hoverUI}`,
+        `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${Input.mouseCord.x}, Y:${Input.mouseCord.y}"`,
         "color: #ffed9c; padding: 1px 4px;"
       );
     }
