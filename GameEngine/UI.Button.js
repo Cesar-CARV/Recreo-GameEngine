@@ -14,7 +14,7 @@ export default class UIButton extends UI {
     this.border = false;
     this.borderWeight = 1;
     this.borderColor = "#000";
-    this.align = "left";
+    this.align = "center";
     this.textMetrics = new Vector2(0, 0);
 
     this.backgroundColorHover = "#0ea5e9";
