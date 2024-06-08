@@ -7,11 +7,10 @@ export default class Game {
   constructor(game, canvas, width = undefined, height = undefined) {
     this.$ = game;
     this.canvas = canvas;
-
     // * RESPONSIVE
     this.viewport = new Vector2(
-      width ? width : window.screen.width,
-      height ? height :window.screen.height
+     width ? width : window.screen.width,
+      height ? height : window.screen.height
     );
     this.resize();
     this.resize();
@@ -93,7 +92,7 @@ export default class Game {
         )[0])(this);
         this.lastRoom = save ? tempRoom : undefined;
       } catch (error) {
-        console.log("Was an error to change room");
+        console.log("Was an error to change room", error);
       }
     }
     this.resetContextGraphic();
@@ -211,7 +210,6 @@ export default class Game {
 
   // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
   main = (timestamp) => {
-
     Time.main();
     if (this.debug) {
       console.log(

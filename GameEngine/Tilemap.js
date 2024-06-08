@@ -1,8 +1,8 @@
 import Object from "./Object.js";
 
 export default class Tilemap extends Object {
-  constructor(GAME, url = undefined, tileWidth, tileHeight) {
-    super(GAME, 0, 0, 0, 0);
+  constructor(GAME, url = undefined, width, height, tileWidth, tileHeight) {
+    super(GAME, 0, 0, width, height);
     this._IMAGE = new Image();
     this._IMAGE.src = url;
     this.canDraw = false;
@@ -15,14 +15,18 @@ export default class Tilemap extends Object {
     this.tileImage = undefined;
   }
 
-  addTile = (x, y, ofSetX, ofSetY, cutW, cutH) => {
+  // * x -> posicion en el grid
+  // * y -> posicion en le grid
+  // * row -> row de recorte de la imagen
+  // * col -> col de recorte de la imagen
+  addTile = (x, y, row, col, cutW, cutH) => {
     this.tiles.push({
       x: x,
       y: y,
-      ofSetX: ofSetX,
-      ofSetY: ofSetY,
+      row: row,
+      col: col,
       cutW: cutW,
-      cutH: cutH,
+      cutH: cutH
     });
   };
 
@@ -31,26 +35,23 @@ export default class Tilemap extends Object {
 
     if (this.tileImage === undefined) {
       let canvasTemp = document.createElement("canvas");
-      canvasTemp.setAttribute("width", this._GAME.viewport.x);
-      canvasTemp.setAttribute("height", this._GAME.viewport.y);
+      canvasTemp.setAttribute("width", this.size.x);
+      canvasTemp.setAttribute("height", this.size.y);
 
       let ctxTemp = canvasTemp.getContext("2d");
       ctxTemp.imageSmoothingEnabled = false;
       
-      this.tileImage = new Image(
-        this._GAME.viewport.x,
-        this._GAME.viewport.y
-      );
+      this.tileImage = new Image();
 
       this.tiles.forEach((tile) => {
         ctxTemp.drawImage(
           this._IMAGE, // image
-          tile.ofSetX, // cut x
-          tile.ofSetY, // cut y
+          tile.row * tile.cutW, // cut x
+          tile.col * tile.cutH, // cut y
           tile.cutW, // cut w
           tile.cutH, // cut h
-          tile.x, // image x
-          tile.y, // image y
+          tile.x * this.tileWidth, // image x
+          tile.y * this.tileHeight, // image y
           this.tileWidth, // image w
           this.tileHeight // image h
         );
@@ -61,9 +62,7 @@ export default class Tilemap extends Object {
       ctx.drawImage(
         this.tileImage, // image
         this.position.x, // image x
-        this.position.y, // image y
-        // this._GAME.currentRoom.w,
-        // this._GAME.currentRoom.h
+        this.position.y // image y
       );
     }
   };

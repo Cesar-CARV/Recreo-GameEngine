@@ -80,18 +80,18 @@ export default class RoomTest1 extends Room {
 
     // -------------------------------------------------------------
     // Floor
-    const floor = new Solid(this._GAME, 0, 550 - 75, 1000, 50);
+    const floor = new Solid(this._GAME, 0, 550 - 70, 1000, 50);
 
     // -------------------------------------------------------------
     // Wall
-    const wall = new Solid(this._GAME, 160, 550 - 171, 32, 100);
+    const wall = new Solid(this._GAME, 160, 550 - 166, 32, 100);
 
     // -------------------------------------------------------------
     // Wall2
     const wall2 = new Solid(
       this._GAME,
-      1000,
-      550 - 171,
+      1000 - 8,
+      550 - 166,
       30,
       100
     );
@@ -145,25 +145,26 @@ export default class RoomTest1 extends Room {
     let tileMap = new Tilemap(
       this._GAME,
       "./../Tilemaps/tileMapTest.png",
+      this._GAME.viewport.x,
+      this._GAME.viewport.y,
       32,
       32
     );
     
-    for (let i = 0; i < (this._GAME.viewport.x * 1) / 32; i++) {
-      tileMap.addTile(32 * i, 550 - 75, 0, 0, 16, 16);
-      tileMap.addTile(32 * i, 550 - 44, 16, 0, 16, 16);
+    for (let i = 0; i < (this._GAME.viewport.x * 2) / 32; i++) {
+      tileMap.addTile(i, 15, 0, 0, 16, 16);
+      tileMap.addTile(i, 16, 1, 0, 16, 16);
     }
 
-    tileMap.addTile(160, 550 - 171, 0, 0, 16, 16);
-    tileMap.addTile(160, 550 - 139, 16, 0, 16, 16);
-    tileMap.addTile(160, 550 - 107, 16, 0, 16, 16);
-    tileMap.addTile(160, 550 - 75, 16, 0, 16, 16);
+    tileMap.addTile(5, 12, 0, 0, 16, 16);
+    tileMap.addTile(5, 13, 1, 0, 16, 16);
+    tileMap.addTile(5, 14, 1, 0, 16, 16);
+    tileMap.addTile(5, 15, 1, 0, 16, 16);
 
-    tileMap.addTile(1000 * 2 - 32, 550 - 171, 0, 0, 16, 16);
-    tileMap.addTile(1000 * 2 - 32, 550 - 139, 16, 0, 16, 16);
-    tileMap.addTile(1000 * 2 - 32, 550 - 107, 16, 0, 16, 16);
-    tileMap.addTile(1000 * 2 - 64, 550 - 75, 0, 0, 16, 16);
-    tileMap.addTile(1000 * 2 - 32, 550 - 75, 16, 0, 16, 16);
+    tileMap.addTile(31, 12, 0, 0, 16, 16);
+    tileMap.addTile(31, 13, 1, 0, 16, 16);
+    tileMap.addTile(31, 14, 1, 0, 16, 16);
+    tileMap.addTile(31, 15, 1, 0, 16, 16);
 
     // -------------------------------------------------------------
     // Titulo
