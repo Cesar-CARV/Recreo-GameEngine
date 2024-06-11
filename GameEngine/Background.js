@@ -31,7 +31,7 @@ export default class Background {
         this.size.y
       );
     }
-    if (this.color) {
+    else if (this.color) {
       ctx.fillStyle = this.color;
       ctx.fillRect(
         this.position.x +
