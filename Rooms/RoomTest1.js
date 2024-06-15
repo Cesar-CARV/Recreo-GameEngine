@@ -218,9 +218,9 @@ export default class RoomTest1 extends Room {
 
     this.tileMapLayer1 = tileMap;
 
-    this.addBackground(room1Background);
-    this.addBackground(room1Background2);
-    this.addBackground(room1Background3);
+    this.addBackground(room1Background, "room1Background");
+    this.addBackground(room1Background2, "room1Background2");
+    this.addBackground(room1Background3, "room1Background3");
     this.addInstance(player, false, "player");
     this.addInstance(new Coin(GAME, 300, 300), false, "coin1");
     this.addInstance(new Coin(GAME, 350, 300), false, "coin2");

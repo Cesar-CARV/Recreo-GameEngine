@@ -1,21 +1,3 @@
-# Ignora imagenes de fondo
-/Backgrounds/*
-
-# Ignora Objetos
-/Objects/*
-
-# Ignorar rooms
-/Rooms/*
-
-# Ignora Sonidos
-/Sounds/*
-
-# Ignora Sprites
-/Sprites/*
-
-# Inora Tilemaps
-/Tilemaps/*
-
 # Ignorar finalGame
 finalGame.js
 

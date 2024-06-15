@@ -2,6 +2,7 @@ import Vector2 from "./Vector2.js";
 
 export default class Background {
   constructor(GAME, x, y, w, h, imageURL = undefined, color = undefined) {
+    this._NAME = undefined;
     this._GAME = GAME;
     this.position = new Vector2(x, y);
     this.size = new Vector2(w, h);

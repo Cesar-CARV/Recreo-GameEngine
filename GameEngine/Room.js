@@ -5,11 +5,14 @@ export default class Room {
     this._GAME = GAME;
     this._NAME = this.constructor.name;
     this.positionContextRoom = new Vector2(0, 0);
-    this.sizeContextRoom = new Vector2(this._GAME.viewport.x, this._GAME.viewport.y);
+    this.sizeContextRoom = new Vector2(
+      this._GAME.viewport.x,
+      this._GAME.viewport.y
+    );
     this.scaleContextRoom = new Vector2(1, 1);
     this._INSTANCESUI = {};
     this._INSTANCES = {};
-    this.backgrounds = [];
+    this.backgrounds = {};
     this.tileMapLayer1 = undefined;
     this.tileMapLayer2 = undefined;
     this.tileMapLayer3 = undefined;
@@ -17,8 +20,9 @@ export default class Room {
 
   //#region INSTANCES
   // agregar un fondo a el nivel, el nivel puede tener varios fondos
-  addBackground = (bg) => {
-    this.backgrounds.push(bg);
+  addBackground = (bg, name) => {
+    bg._NAME = name;
+    this.backgrounds[name] = bg;
   };
 
   // agrega un objeto al nivel
@@ -48,14 +52,14 @@ export default class Room {
   //#region DRAW
   // dibuja los fondos y los tile maps
   draw = (ctx) => {
-    this.backgrounds.forEach((bg) => bg.main(ctx));
+    window.Object.values(this.backgrounds).forEach((bg) => bg.main(ctx));
     if (this.tileMapLayer1) this.tileMapLayer1.main(ctx);
     if (this.tileMapLayer2) this.tileMapLayer2.main(ctx);
   };
 
   drawOver = (ctx) => {
     if (this.tileMapLayer3) this.tileMapLayer3.main(ctx);
-  }
+  };
   //#endregion
 
   //#region RENDER
@@ -78,13 +82,13 @@ export default class Room {
   // Renderiza los objetos de la UI esto quiere decir que llama a la funcion principal de cada uno
   renderUI = (objUI, ctx) => {
     objUI.main(ctx);
-    
-    if (objUI.visible){
+
+    if (objUI.visible) {
       window.Object.values(objUI._CHILDREN).forEach((childUI) => {
         this.renderUI(childUI, ctx);
       });
     }
-    
+
     objUI.restartPosition();
   };
   //#endregion
