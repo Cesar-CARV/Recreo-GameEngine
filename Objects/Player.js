@@ -169,7 +169,7 @@ export default class Player extends Object {
 
     // destruir objeto con el metodo kamikaze
     if (Input.GetKeyDown("k")) {
-      const obj = GAME.currentRoom.findByName("subNodo2", false);
+      const obj = this._GAME.currentRoom.findByName("subNodo2", false);
       console.log(obj);
       if (obj) obj.kamikaze(() => console.log("HOLA"));
     }
