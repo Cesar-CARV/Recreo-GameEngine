@@ -80,7 +80,7 @@ export default class RoomTest1 extends Room {
 
     // -------------------------------------------------------------
     // Floor
-    const floor = new Solid(this._GAME, 0, 550 - 70, 1000, 50);
+    const floor = new Solid(this._GAME, 0, 550 - 70, 2000, 50);
 
     // -------------------------------------------------------------
     // Wall

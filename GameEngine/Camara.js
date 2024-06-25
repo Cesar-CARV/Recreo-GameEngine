@@ -7,11 +7,16 @@ export default class Camara extends Object {
     this.absolutePosition = new Vector2(x, y);
     this.MODES = { Center: "Center", Borders: "Borders" };
     this.mode = this.MODES.Center;
-    this.padding = 50;
+    this.paddingX = 100;
+    this.paddingY = 100;
     this.scaleX = 1;
     this.scaleY = 1;
     this._ROOM = undefined;
     this.LIMITS = { l: undefined, t: undefined, r: undefined, b: undefined };
+
+    // -----------------------
+    this.normalPaddingX;
+    this.normalPaddingY;
   }
 
   setScale = (x, y) => {
@@ -53,7 +58,7 @@ export default class Camara extends Object {
         x: this.scaleX > 1 ? (this.size.x - this.size.x / this.scaleX) / 2 : 0,
         y: this.scaleY > 1 ? (this.size.y - this.size.y / this.scaleY) / 2 : 0,
       };
-      
+
       // colision L
       if (this.absolutePosition.x + normalizedSize.x < this.LIMITS.l) {
         this._ROOM.positionContextRoom.x = this.LIMITS.l + normalizedSize.x;
@@ -89,35 +94,77 @@ export default class Camara extends Object {
 
   // actualiza la posicion de el objeto segun la posicion del padre
   updatePosition = () => {
-    this.position = this._PARENT
-      ? new Vector2(
-          this._PARENT.position.x +
-            this.position.x -
-            this.size.x / 2 +
-            this._PARENT.size.x / 2,
-          this._PARENT.position.y +
-            this.position.y -
-            this.size.y / 2 +
-            this._PARENT.size.y / 2
-        )
-      : this.position;
+    if (this.mode === this.MODES.Center) {
+      this.position = this._PARENT
+        ? new Vector2(
+            this._PARENT.position.x +
+              this.position.x -
+              this.size.x / 2 +
+              this._PARENT.size.x / 2,
+            this._PARENT.position.y +
+              this.position.y -
+              this.size.y / 2 +
+              this._PARENT.size.y / 2
+          )
+        : this.position;
+    } else if (this.mode === this.MODES.Borders) {
+      const hitRight = -Math.floor(
+        this.absolutePosition.x +
+          this.size.x -
+          this._PARENT.position.x -
+          (this._PARENT.size.x + this.paddingX)
+      );
+
+      const hitLeft = -Math.floor(
+        this._PARENT.position.x - this.absolutePosition.x - this.paddingX
+      );
+
+      const hitBottom = -Math.floor(
+        this.absolutePosition.y +
+          this.size.y -
+          this._PARENT.position.y -
+          (this._PARENT.size.y + this.paddingY)
+      );
+
+      const hitTop = -Math.floor(
+        this._PARENT.position.y - this.absolutePosition.y - this.paddingY
+      );
+
+
+      if (hitLeft > 0) this.normalPaddingX = -hitLeft;
+      else if (hitRight > 0) this.normalPaddingX = hitRight;
+      else this.normalPaddingX = 0;
+
+      if (hitTop > 0) this.normalPaddingY = -hitTop;
+      else if (hitBottom > 0) this.normalPaddingY = hitBottom;
+      else this.normalPaddingY = 0;
+
+      this.position = this._PARENT
+        ? new Vector2(
+            this.position.x + this.normalPaddingX,
+            this.position.y + this.normalPaddingY
+          )
+        : this.position;
+    }
 
     this.absolutePosition = this.position.Copy();
   };
 
   // reinicia la posicion del objeto para que no cresca exponecialmente al sumar la posicion del padre
   restartPosition = () => {
-    this.position = this._PARENT
-      ? new Vector2(
-          this.position.x -
-            this._PARENT.position.x +
-            this.size.x / 2 -
-            this._PARENT.size.x / 2,
-          this.position.y -
-            this._PARENT.position.y +
-            this.size.y / 2 -
-            this._PARENT.size.y / 2
-        )
-      : this.position;
+    if (this.mode === this.MODES.Center) {
+      this.position = this._PARENT
+        ? new Vector2(
+            this.position.x -
+              this._PARENT.position.x +
+              this.size.x / 2 -
+              this._PARENT.size.x / 2,
+            this.position.y -
+              this._PARENT.position.y +
+              this.size.y / 2 -
+              this._PARENT.size.y / 2
+          )
+        : this.position;
+    }
   };
 }
