@@ -9,7 +9,7 @@ export default class Game {
     this.canvas = canvas;
     // * RESPONSIVE
     this.viewport = new Vector2(
-     width ? width : window.screen.width,
+      width ? width : window.screen.width,
       height ? height : window.screen.height
     );
     this.resize();
@@ -187,6 +187,7 @@ export default class Game {
       this.gameLoop === undefined
         ? this.requestAnimationFrame(this.main)
         : this.gameLoop;
+
     // this.gameLoop = setInterval(this.main, Math.floor(1000 / this.ticks));
   };
 
@@ -210,10 +211,10 @@ export default class Game {
 
   // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
   main = (timestamp) => {
-    Time.main();
+    Time.main(timestamp);
     if (this.debug) {
       console.log(
-        `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${Input.mouseCord.x}, Y:${Input.mouseCord.y}"`,
+        `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${Input.mouseCord.x}, Y:${Input.mouseCord.y}", DeltaTime: ${Time.deltaTime}`,
         "color: #ffed9c; padding: 1px 4px;"
       );
     }

@@ -20,7 +20,7 @@ export default class RoomTest1 extends Room {
     const player = new Player(
       this._GAME,
       300,
-      300
+      350
     );
 
     const node1 = new Object(this._GAME, 10, 0, 10, 10);
