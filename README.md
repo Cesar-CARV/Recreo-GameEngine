@@ -1,6 +1,6 @@
-# :space_invader: OCIO GAME ENGINE
+# :space_invader: RECREO GAME ENGINE
 
-**Ocio** es un motor de videojuegos creado para el desarrollo de juegos simples con javascript
+**Recreo** es un motor de videojuegos creado para el desarrollo de juegos simples con javascript
 
 ### Getting Started
 Parar iniciar con el desarrollo de tu videojuego puedes descargar los archivos en el el apartado de codigo de el repositorio o clonar el repositorio con el siguiente codigo
