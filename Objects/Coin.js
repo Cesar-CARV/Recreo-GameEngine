@@ -14,18 +14,20 @@ export default class Coin extends Object {
       -15,
       30,
       30,
-      "../Sprites/pickup_items_animated.png"
+      "../Sprites/Coin.png"
     );
     // animations
     this.animations = {
       idle: [
-        new KeyFrame(0, 0, 16, 16, 60, 60),
-        new KeyFrame(16, 0, 16, 16, 60, 60),
-        new KeyFrame(32, 0, 16, 16, 60, 60),
-        new KeyFrame(48, 0, 16, 16, 60, 60),
+        new KeyFrame(0, 0, 32, 32, 60, 60),
+        new KeyFrame(32, 0, 32, 32, 60, 60),
+        new KeyFrame(64, 0, 32, 32, 60, 60),
+        new KeyFrame(96, 0, 32, 32, 60, 60),
+        new KeyFrame(128, 0, 32, 32, 60, 60),
+        new KeyFrame(160, 0, 32, 32, 60, 60),
       ],
     };
-    this.sprite.setAnimation(this.animations.idle);
+    this.sprite.setAnimation(this.animations.idle, .1);
 
     this.collider = new BoxCollider(GAME, 0, 0, 30, 30, 0, [], true);
 
