@@ -23,25 +23,28 @@ export default class Player extends Object {
     // animations
     this.animations = {
       idle: [
-        new KeyFrame(0, 0, 16, 16, 50, 50),
-        new KeyFrame(16, 0, 16, 16, 50, 50),
-        new KeyFrame(32, 0, 16, 16, 50, 50),
+        new KeyFrame(0, 0, 32, 32, 50, 50),
+        new KeyFrame(32, 0, 32, 32, 50, 50),
+        new KeyFrame(64, 0, 32, 32, 50, 50),
+        new KeyFrame(96, 0, 32, 32, 50, 50),
+        new KeyFrame(128, 0, 32, 32, 50, 50),
+        new KeyFrame(160, 0, 32, 32, 50, 50),
       ],
       run: [
-        new KeyFrame(0, 32, 16, 16, 50, 50),
-        new KeyFrame(16, 32, 16, 16, 50, 50),
-        new KeyFrame(32, 32, 16, 16, 50, 50),
-        new KeyFrame(48, 32, 16, 16, 50, 50),
+        new KeyFrame(0, 32, 32, 32, 50, 50),
+        new KeyFrame(32, 32, 32, 32, 50, 50),
+        new KeyFrame(64, 32, 32, 32, 50, 50),
+        new KeyFrame(96, 32, 32, 32, 50, 50),
       ],
     };
     // sprite
-    this.sprite = new Sprite(GAME, 0, 0, 48, 62, "./../Sprites/elf.png");
-    this.sprite.setAnimation(this.animations.idle);
+    this.sprite = new Sprite(GAME, 0, 0, 48, 62, "./../Sprites/Player.png");
+    this.sprite.setAnimation(this.animations.idle, .1);
     // camara
     this.camara = new Camara(GAME, 0, 0, GAME.viewport.x, GAME.viewport.y);
     this.camara.setScale(0.01, 0.01);
     this.camara.paddingX = 300;
-    this.camara.mode = this.camara.MODES.Borders;
+    // this.camara.mode = this.camara.MODES.Borders;
     // collider
     this.collider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
     // add children
@@ -67,7 +70,7 @@ export default class Player extends Object {
 
     this.clock.tick(() => console.log("Fin de el timer 5 sec despues de ser creado"));
 
-    if (this.camara.scaleX < 1 && this.camara.scaleY < 1)
+    if (this.camara.scaleX < 2 && this.camara.scaleY < 2)
       this.camara.setScale(
         this.camara.scaleX + 0.01,
         this.camara.scaleY + 0.01
@@ -114,12 +117,12 @@ export default class Player extends Object {
       this.sprite.animation === this.animations.idle &&
       this.velocity.x !== 0
     ) {
-      this.sprite.changeAnimation(this.animations.run);
+      this.sprite.changeAnimation(this.animations.run, .1);
     } else if (
       this.sprite.animation === this.animations.run &&
       this.velocity.x === 0
     ) {
-      this.sprite.changeAnimation(this.animations.idle);
+      this.sprite.changeAnimation(this.animations.idle, .1);
     }
 
     if (this.velocity.x < 0) {

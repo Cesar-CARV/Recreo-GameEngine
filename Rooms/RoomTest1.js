@@ -144,7 +144,7 @@ export default class RoomTest1 extends Room {
     // TileMap1
     let tileMap = new Tilemap(
       this._GAME,
-      "./../Tilemaps/tileMapTest.png",
+      "./../Tilemaps/TilemapGame.png",
       this._GAME.viewport.x,
       this._GAME.viewport.y,
       32,
@@ -152,19 +152,17 @@ export default class RoomTest1 extends Room {
     );
     
     for (let i = 0; i < (this._GAME.viewport.x * 2) / 32; i++) {
-      tileMap.addTile(i, 15, 0, 0, 16, 16);
-      tileMap.addTile(i, 16, 1, 0, 16, 16);
+      tileMap.addTile(i, 15, 1, 1, 16, 16);
+      tileMap.addTile(i, 16, 0, 1, 16, 16);
     }
 
-    tileMap.addTile(5, 12, 0, 0, 16, 16);
-    tileMap.addTile(5, 13, 1, 0, 16, 16);
-    tileMap.addTile(5, 14, 1, 0, 16, 16);
-    tileMap.addTile(5, 15, 1, 0, 16, 16);
+    tileMap.addTile(5, 12, 0, 2, 16, 16);
+    tileMap.addTile(5, 13, 0, 1, 16, 16);
+    tileMap.addTile(5, 14, 0, 1, 16, 16);
 
-    tileMap.addTile(31, 12, 0, 0, 16, 16);
-    tileMap.addTile(31, 13, 1, 0, 16, 16);
-    tileMap.addTile(31, 14, 1, 0, 16, 16);
-    tileMap.addTile(31, 15, 1, 0, 16, 16);
+    tileMap.addTile(31, 12, 0, 2, 16, 16);
+    tileMap.addTile(31, 13, 0, 1, 16, 16);
+    tileMap.addTile(31, 14, 0, 1, 16, 16);
 
     // -------------------------------------------------------------
     // Titulo
@@ -204,7 +202,7 @@ export default class RoomTest1 extends Room {
       0,
       100,
       100,
-      "./../Backgrounds/Fondo_01.png"
+      "./../Backgrounds/pixelBackground.png"
     );
 
     const room1Background3 = new Background(

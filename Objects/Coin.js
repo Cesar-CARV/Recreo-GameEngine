@@ -10,8 +10,8 @@ export default class Coin extends Object {
 
     this.sprite = new Sprite(
       GAME,
-      -15,
-      -15,
+      0,
+      0,
       30,
       30,
       "../Sprites/Coin.png"
@@ -19,12 +19,12 @@ export default class Coin extends Object {
     // animations
     this.animations = {
       idle: [
-        new KeyFrame(0, 0, 32, 32, 60, 60),
-        new KeyFrame(32, 0, 32, 32, 60, 60),
-        new KeyFrame(64, 0, 32, 32, 60, 60),
-        new KeyFrame(96, 0, 32, 32, 60, 60),
-        new KeyFrame(128, 0, 32, 32, 60, 60),
-        new KeyFrame(160, 0, 32, 32, 60, 60),
+        new KeyFrame(0, 0, 32, 32, 32, 32),
+        new KeyFrame(32, 0, 32, 32, 32, 32),
+        new KeyFrame(64, 0, 32, 32, 32, 32),
+        new KeyFrame(96, 0, 32, 32, 32, 32),
+        new KeyFrame(128, 0, 32, 32, 32, 32),
+        new KeyFrame(160, 0, 32, 32, 32, 32),
       ],
     };
     this.sprite.setAnimation(this.animations.idle, .1);
