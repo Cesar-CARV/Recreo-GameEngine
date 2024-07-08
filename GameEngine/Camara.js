@@ -2,6 +2,11 @@ import Object from "./Object.js";
 import Vector2 from "./Vector2.js";
 
 export default class Camara extends Object {
+  #borderPosition = new Vector2(0, 0);
+  #relativeSizeX = 0;
+  #relativeSizeY = 0;
+  #relativePaddingX = 0;
+  #relativePaddingY = 0;
   constructor(GAME, x, y, w, h) {
     super(GAME, x, y, w, h);
     this.absolutePosition = new Vector2(x, y);
@@ -13,11 +18,9 @@ export default class Camara extends Object {
     this.scaleY = 1;
     this._ROOM = undefined;
     this.LIMITS = { l: undefined, t: undefined, r: undefined, b: undefined };
-
-    // -----------------------
-    this.normalPaddingX;
-    this.normalPaddingY;
   }
+
+  onCreate = () => {};
 
   setScale = (x, y) => {
     this.scaleX = x;
@@ -108,43 +111,45 @@ export default class Camara extends Object {
           )
         : this.position;
     } else if (this.mode === this.MODES.Borders) {
-      const hitRight = -Math.floor(
-        this.absolutePosition.x +
-          this.size.x -
-          this._PARENT.position.x -
-          (this._PARENT.size.x + this.paddingX)
+      this.#relativeSizeX = Math.round(this.size.x / this.scaleX);
+      this.#relativeSizeY = Math.round(this.size.y / this.scaleY);
+      this.#relativePaddingX = Math.round(this.paddingX / this.scaleX);
+      this.#relativePaddingY = Math.round(this.paddingY / this.scaleY);
+
+      this.#borderPosition = new Vector2(
+        -((this.#relativeSizeX - this.size.x) / 2) + this.position.x,
+        -((this.#relativeSizeY - this.size.y) / 2) + this.position.y
       );
 
-      const hitLeft = -Math.floor(
-        this._PARENT.position.x - this.absolutePosition.x - this.paddingX
-      );
+      const left = this.#borderPosition.x + this.#relativePaddingX;
+      const right =
+        left +
+        this.#relativeSizeX -
+        this.#relativePaddingX * 2 -
+        this._PARENT.size.x;
 
-      const hitBottom = -Math.floor(
-        this.absolutePosition.y +
-          this.size.y -
-          this._PARENT.position.y -
-          (this._PARENT.size.y + this.paddingY)
-      );
+      const top = this.#borderPosition.y + this.#relativePaddingY;
+      const bottom =
+        top +
+        this.#relativeSizeY -
+        this.#relativePaddingY * 2 -
+        this._PARENT.size.y;
 
-      const hitTop = -Math.floor(
-        this._PARENT.position.y - this.absolutePosition.y - this.paddingY
-      );
+      if (this._PARENT.position.x < left) {
+        this.position.x -= left - this._PARENT.position.x;
+      }
 
+      if (this._PARENT.position.x > right) {
+        this.position.x += this._PARENT.position.x - right;
+      }
 
-      if (hitLeft > 0) this.normalPaddingX = -hitLeft;
-      else if (hitRight > 0) this.normalPaddingX = hitRight;
-      else this.normalPaddingX = 0;
+      if (this._PARENT.position.y < top) {
+        this.position.y -= top - this._PARENT.position.y;
+      }
 
-      if (hitTop > 0) this.normalPaddingY = -hitTop;
-      else if (hitBottom > 0) this.normalPaddingY = hitBottom;
-      else this.normalPaddingY = 0;
-
-      this.position = this._PARENT
-        ? new Vector2(
-            this.position.x + this.normalPaddingX,
-            this.position.y + this.normalPaddingY
-          )
-        : this.position;
+      if (this._PARENT.position.y > bottom) {
+        this.position.y += this._PARENT.position.y - bottom;
+      }
     }
 
     this.absolutePosition = this.position.Copy();

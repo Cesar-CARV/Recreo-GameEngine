@@ -43,8 +43,9 @@ export default class Player extends Object {
     // camara
     this.camara = new Camara(GAME, 0, 0, GAME.viewport.x, GAME.viewport.y);
     this.camara.setScale(0.01, 0.01);
-    this.camara.paddingX = 300;
-    // this.camara.mode = this.camara.MODES.Borders;
+    this.camara.paddingX = 100;
+    this.camara.paddingY = 100;
+    this.camara.mode = this.camara.MODES.Borders;
     // collider
     this.collider = new BoxCollider(GAME, 0, 0, 50, 50, 0, [], true);
     // add children
@@ -58,7 +59,7 @@ export default class Player extends Object {
 
     this.sprite.play();
 
-    this.camara.setCamaraLimits(0, 0, 3000, 1000);
+    this.camara.setCamaraLimits(0, 0, 3000, 1500);
 
     if (!this.clock.runing) this.clock.start();
   };
@@ -70,7 +71,7 @@ export default class Player extends Object {
 
     this.clock.tick(() => console.log("Fin de el timer 5 sec despues de ser creado"));
 
-    if (this.camara.scaleX < 2 && this.camara.scaleY < 2)
+    if (this.camara.scaleX < 3 && this.camara.scaleY < 3)
       this.camara.setScale(
         this.camara.scaleX + 0.01,
         this.camara.scaleY + 0.01
