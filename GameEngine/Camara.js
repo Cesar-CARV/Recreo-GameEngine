@@ -7,6 +7,14 @@ export default class Camara extends Object {
   #relativeSizeY = 0;
   #relativePaddingX = 0;
   #relativePaddingY = 0;
+  /**
+   * 
+   * @param {object} GAME 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {number} w 
+   * @param {number} h 
+   */
   constructor(GAME, x, y, w, h) {
     super(GAME, x, y, w, h);
     this.absolutePosition = new Vector2(x, y);
@@ -20,13 +28,23 @@ export default class Camara extends Object {
     this.LIMITS = { l: undefined, t: undefined, r: undefined, b: undefined };
   }
 
-  onCreate = () => {};
-
+  /**
+   * 
+   * @param {number} x 
+   * @param {number} y 
+   */
   setScale = (x, y) => {
     this.scaleX = x;
     this.scaleY = y;
   };
 
+  /**
+   * 
+   * @param {number} x limit left
+   * @param {number} y limit top
+   * @param {number} x2 limit right
+   * @param {number} y2 limit bottom
+   */
   setCamaraLimits = (x, y, x2, y2) => {
     this.LIMITS.l = x;
     this.LIMITS.t = y;
