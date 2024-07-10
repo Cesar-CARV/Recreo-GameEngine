@@ -4,6 +4,13 @@ import Vector2 from "./Vector2.js";
 
 export default class Game {
   #oldTime = 0;
+  /**
+   * 
+   * @param {HTMLElement} game 
+   * @param {HTMLCanvasElement} canvas 
+   * @param {number} height 
+   * @param {number} width 
+   */
   constructor(game, canvas, width = undefined, height = undefined) {
     this.$ = game;
     this.canvas = canvas;
@@ -72,12 +79,30 @@ export default class Game {
   };
 
   // #region ROOM
+  /**
+   * 
+   * @returns {string}
+   */
   getRoomNames = () => this.rooms.map((rm) => rm.name);
 
+  /**
+   * 
+   * @returns {object}
+   */
   getRoom = () => this.currentRoom;
 
+  /**
+   * 
+   * @param {object} room 
+   * @returns 
+   */
   addRoom = (room) => this.rooms.push(room);
 
+  /**
+   * 
+   * @param {string} roomName 
+   * @param {boolean} save 
+   */
   changeRoom = (roomName, save = false) => {
     this.hoverUI = false;
 
@@ -101,11 +126,21 @@ export default class Game {
 
   // #region GRAPHICS
   // hace un scale de los graficos
+  /**
+   * 
+   * @param {number} x 
+   * @param {number} y 
+   */
   scaleContextGraphic = (x, y) => {
     this.ctx.scale(x, y);
   };
 
   // los parametros que resive esta funcion son las medidas de el area que se va a limpiar
+  /**
+   * 
+   * @param {number} width 
+   * @param {number} height 
+   */
   clipContextGraphic = (width, height) => {
     this.ctx.save();
     this.ctx.fillStyle = "#000";
@@ -136,6 +171,11 @@ export default class Game {
 
   // #region SOUNDS
 
+  /**
+   * 
+   * @param {string} url 
+   * @returns {object}
+   */
   findSound = (url) => {
     const splitedUrl = url.split("/");
     const formatUrl = `${splitedUrl[splitedUrl.length - 2]}/${
@@ -144,6 +184,13 @@ export default class Game {
     return this.soundsStack.find((s) => s.src.includes(formatUrl));
   };
 
+  /**
+   * 
+   * @param {string} url 
+   * @param {number} volumen 
+   * @param {number} speed 
+   * @param {boolean} loop 
+   */
   playSound = (url, volumen, speed = 1, loop = false) => {
     const found = this.findSound(url);
 
@@ -164,6 +211,11 @@ export default class Game {
     }
   };
 
+  /**
+   * 
+   * @param {string} url 
+   * @returns 
+   */
   pauseSound = (url) => {
     const found = this.findSound(url);
 
@@ -171,6 +223,11 @@ export default class Game {
     found.pause();
   };
 
+  /**
+   * 
+   * @param {string} url 
+   * @returns 
+   */
   deleteSound = (url) => {
     const found = this.findSound(url);
 
@@ -187,8 +244,6 @@ export default class Game {
       this.gameLoop === undefined
         ? this.requestAnimationFrame(this.main)
         : this.gameLoop;
-
-    // this.gameLoop = setInterval(this.main, Math.floor(1000 / this.ticks));
   };
 
   // detiene el motor por completo
@@ -210,6 +265,10 @@ export default class Game {
   };
 
   // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
+  /**
+   * 
+   * @param {number} timestamp 
+   */
   main = (timestamp) => {
     Time.main(timestamp);
     if (this.debug) {
