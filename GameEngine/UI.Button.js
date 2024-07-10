@@ -2,8 +2,17 @@ import UI from "./UI.js";
 import Vector2 from "./Vector2.js";
 
 export default class UIButton extends UI {
-  constructor(game, x, y, w, h, text) {
-    super(game, x, y, w, h);
+  /**
+   * 
+   * @param {object} GAME 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {number} w 
+   * @param {number} h 
+   * @param {string} text 
+   */
+  constructor(GAME, x, y, w, h, text) {
+    super(GAME, x, y, w, h);
     
     this.container = false;
     this.text = text;
@@ -25,6 +34,11 @@ export default class UIButton extends UI {
     this.borderColorPressed = "#000";
   }
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   * @returns 
+   */
   drawBody = (ctx) => {
     // boton body
     if (this.hover && !this.pressed) {
@@ -50,6 +64,10 @@ export default class UIButton extends UI {
     ctx.strokeRect(this.position.x, this.position.y, this.size.x, this.size.y);
   }
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   draw = (ctx) => {
     ctx.save();
     ctx.beginPath();
