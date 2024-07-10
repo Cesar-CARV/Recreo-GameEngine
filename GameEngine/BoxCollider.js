@@ -2,6 +2,17 @@ import Object from "./Object.js";
 import Vector2 from "./Vector2.js";
 
 export default class BoxCollider extends Object {
+  /**
+   * 
+   * @param {object} GAME 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {number} w 
+   * @param {number} h 
+   * @param {number} layer 
+   * @param {object[]} exceptions 
+   * @param {boolean} show 
+   */
   constructor(GAME, x, y, w, h, layer, exceptions = [], show = false) {
     super(GAME, x, y, w, h);
     this.layer = layer;
@@ -41,8 +52,8 @@ export default class BoxCollider extends Object {
   /**
    *
    * @param {Function} condition
-   * @param {Object} node
-   * @param {Set} nodesVisited
+   * @param {object} node
+   * @param {Set<object>} nodesVisited
    * @returns
    */
   iterateTree = (condition, node = undefined, nodesVisited = new Set()) => {
@@ -87,6 +98,11 @@ export default class BoxCollider extends Object {
     return this.iterateTree(condition, instances[0], nodesVisited);
   };
 
+  /**
+   * 
+   * @param {object} node 
+   * @returns 
+   */
   collideRules = (node) => {
     // detecta si el nodo es del tipo BoxCollider y no es el mismo que el que llama el metodo
     if (node === this || !(node instanceof BoxCollider)) return false;
@@ -101,7 +117,7 @@ export default class BoxCollider extends Object {
   // detecta si un objeto del tipo BoxCollider entra en el Area
   /**
    * 
-   * @param {Object} targetType 
+   * @param {class} targetType 
    * @returns 
    */
   onArea = (targetType = Object) => {
@@ -122,7 +138,7 @@ export default class BoxCollider extends Object {
   /**
    *
    * @param {Vector2} position
-   * @param {Object} targetType
+   * @param {class} targetType
    */
   onPlaceMeeting = (position, targetType = Object) => {
     return this.iterateTree((node) => {
@@ -143,7 +159,7 @@ export default class BoxCollider extends Object {
   /**
    *
    * @param {Vector2} position
-   * @param {Object} targetType
+   * @param {class} targetType
    * @return {object}
    */
   onPlaceMeetingBox = (position, targetType = Object) => {
@@ -168,7 +184,7 @@ export default class BoxCollider extends Object {
    * @param {number} y
    * @param {number} x2
    * @param {number} y2
-   * @param {Object} targetType
+   * @param {class} targetType
    * @return {object}
    */
   onRectangleCollision = (x, y, x2, y2, targetType = Object) => {
