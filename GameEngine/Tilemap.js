@@ -1,6 +1,15 @@
 import Object from "./Object.js";
 
 export default class Tilemap extends Object {
+  /**
+   * 
+   * @param {object} GAME 
+   * @param {string} url 
+   * @param {number} width 
+   * @param {number} height 
+   * @param {number} tileWidth 
+   * @param {number} tileHeight 
+   */
   constructor(GAME, url = undefined, width, height, tileWidth, tileHeight) {
     super(GAME, 0, 0, width, height);
     this._IMAGE = new Image();
@@ -19,6 +28,15 @@ export default class Tilemap extends Object {
   // * y -> posicion en le grid
   // * row -> row de recorte de la imagen
   // * col -> col de recorte de la imagen
+  /**
+   * 
+   * @param {number} x Grid column
+   * @param {number} y Grid row
+   * @param {number} row Image row
+   * @param {number} col Image column
+   * @param {number} cutW Image cut widht
+   * @param {number} cutH Image cut height
+   */
   addTile = (x, y, row, col, cutW, cutH) => {
     this.tiles.push({
       x: x,
@@ -30,6 +48,11 @@ export default class Tilemap extends Object {
     });
   };
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   * @returns 
+   */
   draw = (ctx) => {
     if (!this.canDraw) return;
 
