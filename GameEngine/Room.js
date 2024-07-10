@@ -1,6 +1,10 @@
 import Vector2 from "./Vector2.js";
 
 export default class Room {
+  /**
+   * 
+   * @param {object} GAME 
+   */
   constructor(GAME) {
     this._GAME = GAME;
     this._NAME = this.constructor.name;
@@ -20,12 +24,23 @@ export default class Room {
 
   //#region INSTANCES
   // agregar un fondo a el nivel, el nivel puede tener varios fondos
+  /**
+   * 
+   * @param {object} bg 
+   * @param {string} name 
+   */
   addBackground = (bg, name) => {
     bg._NAME = name;
     this.backgrounds[name] = bg;
   };
 
   // agrega un objeto al nivel
+  /**
+   * 
+   * @param {object} inst 
+   * @param {boolean} UI 
+   * @param {string} name 
+   */
   addInstance = (inst, UI = false, name) => {
     if (UI && !this._INSTANCESUI[name]) {
       inst._NAME = name;
@@ -43,6 +58,11 @@ export default class Room {
   };
 
   // elimina un objeto y sus hijos del nievel
+  /**
+   * 
+   * @param {boolean} UI 
+   * @param {string} name 
+   */
   removeInstance = (UI = false, name) => {
     if (UI) delete this._INSTANCESUI[name];
     else delete this._INSTANCES[name];
@@ -51,12 +71,20 @@ export default class Room {
 
   //#region DRAW
   // dibuja los fondos y los tile maps
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   draw = (ctx) => {
     window.Object.values(this.backgrounds).forEach((bg) => bg.main(ctx));
     if (this.tileMapLayer1) this.tileMapLayer1.main(ctx);
     if (this.tileMapLayer2) this.tileMapLayer2.main(ctx);
   };
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   drawOver = (ctx) => {
     if (this.tileMapLayer3) this.tileMapLayer3.main(ctx);
   };
@@ -64,6 +92,11 @@ export default class Room {
 
   //#region RENDER
   // Renderiza los objetos esto quiere decir que llama a la funcion principal de cada uno
+  /**
+   * 
+   * @param {object} obj 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   renderObejct = (obj, ctx) => {
     if (!this._GAME.gamePaused) {
       obj.main(ctx);
@@ -80,6 +113,11 @@ export default class Room {
   };
 
   // Renderiza los objetos de la UI esto quiere decir que llama a la funcion principal de cada uno
+  /**
+   * 
+   * @param {object} objUI 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   renderUI = (objUI, ctx) => {
     objUI.main(ctx);
 
@@ -95,6 +133,14 @@ export default class Room {
 
   // #region FINDS
   // esta funcion busca un objeto por el nombre
+  /**
+   * 
+   * @param {string} name 
+   * @param {boolean} UI 
+   * @param {object} node 
+   * @param {Set<object>} nodesVisited 
+   * @returns {object}
+   */
   findByName = (
     name,
     UI = false,
@@ -144,6 +190,14 @@ export default class Room {
   };
 
   // esta funcion busca un objeto por un query de clave y valor, el valor queda
+  /**
+   * 
+   * @param {object[]} querys 
+   * @param {boolean} UI 
+   * @param {object} node 
+   * @param {Set<object>} nodesVisited 
+   * @returns {object}
+   */
   findByQuery = (
     querys = [],
     UI = false,
@@ -213,6 +267,10 @@ export default class Room {
   //#region MAIN
   // renderiza los objetos hijos de este nivel
   // no modificar esta funcion ya que es por medio de esta que el motor renderiza renderiza el nivel
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   main = (ctx) => {
     // clip context
     this._GAME.clipContextGraphic(
