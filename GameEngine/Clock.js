@@ -1,6 +1,12 @@
 import Time from "./Time.js";
 
 export default class Clock {
+  /**
+   * 
+   * @param {object} GAME 
+   * @param {number} time 
+   * @param {boolean} repeat 
+   */
   constructor(GAME, time, repeat) {
     this._GAME = GAME;
     this.time = time;
@@ -31,6 +37,11 @@ export default class Clock {
     this.runing = false;
   };
 
+  /**
+   * 
+   * @param {requestCallback} callback 
+   * @returns 
+   */
   tick = (callback) => {
     if (!this.runing) return;
 
