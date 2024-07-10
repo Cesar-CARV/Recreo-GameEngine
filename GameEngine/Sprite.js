@@ -2,6 +2,15 @@ import Object from "./Object.js";
 import Clock from "./Clock.js";
 
 export default class Sprite extends Object {
+  /**
+   * 
+   * @param {object} GAME 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {number} w 
+   * @param {number} h 
+   * @param {string} url 
+   */
   constructor(GAME, x, y, w, h, url) {
     super(GAME, x, y, w, h);
     this.url = url;
@@ -36,6 +45,11 @@ export default class Sprite extends Object {
 
   onEnd = () => {}
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   * @returns 
+   */
   draw = (ctx) => {
     if (!this.canDraw) return;
 
@@ -89,6 +103,15 @@ export default class Sprite extends Object {
     this.clock.pause();
   };
 
+  /**
+   * 
+   * @param {number} cutX 
+   * @param {number} cutY 
+   * @param {number} cutW 
+   * @param {number} cutH 
+   * @param {number} tileWidth 
+   * @param {number} tileHeight 
+   */
   cutSprite = (cutX, cutY, cutW, cutH, tileWidth, tileHeight) => {
     this.cutX = cutX;
     this.cutY = cutY;
@@ -98,6 +121,12 @@ export default class Sprite extends Object {
     this.tileHeight = tileHeight;
   }
 
+  /**
+   * 
+   * @param {object[]} animation KeyFrame list
+   * @param {number} time 
+   * @param {boolean} repeat 
+   */
   setAnimation = (animation, time = 0.2, repeat = true) => {
     this.stop();
     this.clock.oldSec = -1;
@@ -111,7 +140,11 @@ export default class Sprite extends Object {
     this.repeat = repeat;
   };
 
-  changeSprite = (url, w = undefined, h = undefined) => {
+  /**
+   * 
+   * @param {string} url 
+   */
+  changeSprite = (url) => {
     this.url = url;
     this._IMAGE = new Image(this.size.x, this.size.y );
     this._IMAGE.src = url;
@@ -121,6 +154,12 @@ export default class Sprite extends Object {
     };
   }
 
+  /**
+   * 
+   * @param {object[]} animation KeyFrame list
+   * @param {number} time 
+   * @param {boolean} repeat 
+   */
   changeAnimation = (animation, time = 0.2, repeat = true) => {
     this.time = time;
     this.frame = 0;
