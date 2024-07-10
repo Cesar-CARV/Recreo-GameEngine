@@ -1,6 +1,16 @@
 import Vector2 from "./Vector2.js";
 
 export default class Background {
+  /**
+   * 
+   * @param {object} GAME 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {number} w 
+   * @param {number} h 
+   * @param {string} imageURL 
+   * @param {string} color 
+   */
   constructor(GAME, x, y, w, h, imageURL = undefined, color = undefined) {
     this._NAME = undefined;
     this._GAME = GAME;
@@ -18,6 +28,11 @@ export default class Background {
     this.static = false;
   }
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   * @returns 
+   */
   draw = (ctx) => {
     if (!this.canDraw) return;
 
@@ -47,6 +62,10 @@ export default class Background {
 
   steps = () => {};
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   main = (ctx) => {
     this.steps();
     this.draw(ctx);
