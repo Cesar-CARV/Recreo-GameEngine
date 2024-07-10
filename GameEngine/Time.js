@@ -3,6 +3,10 @@ export default class Time {
     static oldTime = 0;
     static deltaTime = 0;
 
+    /**
+     * 
+     * @param {number} t 
+     */
     static main = (t) => {
         Time.time = t / 1000
         Time.deltaTime = Time.time - Time.oldTime;
