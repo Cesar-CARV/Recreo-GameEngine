@@ -86,6 +86,10 @@ export default class UIInput extends UI {
     this.pointer = 0;
   };
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   draw = (ctx) => {
     ctx.save();
     ctx.beginPath();

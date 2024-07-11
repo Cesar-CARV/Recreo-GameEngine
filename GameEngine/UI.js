@@ -3,6 +3,14 @@ import Object from "./Object.js";
 
 export default class UI extends Object {
   #created = false;
+  /**
+   * 
+   * @param {object} game 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {number} w 
+   * @param {number} h 
+   */
   constructor(game, x, y, w, h) {
     super(game, x, y, w, h);
     this.visible = true;
@@ -16,6 +24,10 @@ export default class UI extends Object {
     this.lastMouseCord = { x: -10, y: -10 };
   }
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   draw = (ctx) => {};
 
   checkMousePosition = () => {
@@ -92,6 +104,10 @@ export default class UI extends Object {
 
   steps = () => {};
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   */
   main = (ctx) => {
     if (!this.#created) {
       this.onCreate();
