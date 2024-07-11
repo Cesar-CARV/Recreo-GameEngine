@@ -10,15 +10,31 @@ export default class Vector2 {
     }
     
     static get Zero() { return new Vector2(0, 0); }
+    /**
+     * 
+     * @returns {Vector2}
+     */
     Magnitude() {
         return Math.sqrt(this.sqrMagnitude);
     }
+    /**
+     * 
+     * @returns {Vector2}
+     */
     SqrMagnitude() {
         return this.x * this.x + this.y * this.y;
     }
+    /**
+     * 
+     * @returns {Vector2}
+     */
     Normalized() {
         return this.Copy().Divide(this.magnitude);
     }
+    /**
+     * 
+     * @returns {Vector2}
+     */
     Copy() {
         return new Vector2(this.x, this.y);
     }
