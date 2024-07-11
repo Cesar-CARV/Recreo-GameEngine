@@ -3,8 +3,18 @@ import UI from "./UI.js";
 import Vector2 from "./Vector2.js";
 
 export default class UIInput extends UI {
-  constructor(game, x, y, w, h, text = "", placeholder = "placeholder") {
-    super(game, x, y, w, h);
+  /**
+   * 
+   * @param {object} GAME 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {number} w 
+   * @param {number} h 
+   * @param {string} text 
+   * @param {string} placeholder 
+   */
+  constructor(GAME, x, y, w, h, text = "", placeholder = "placeholder") {
+    super(GAME, x, y, w, h);
 
     this.container = false;
     this.text = text;
