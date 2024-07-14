@@ -1,4 +1,10 @@
 # Ignorar finalGame
-finalGame.js
-
-build.js
+/Backgrounds
+/Objects
+/Rooms
+/Sounds
+/Sprites
+/Tilemaps
+gameStyles.css
+index.html
+main.js
