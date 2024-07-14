@@ -1,10 +1,11 @@
 {
   "name": "recreo",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "**Recreo** es un motor de videojuegos creado para el desarrollo de juegos simples con javascript",
   "main": "GameEngine/index.js",
+  "browser": "./dist/recreo.js",
   "scripts": {
-    "build": "esbuild GameEngine/index.js --bundle --minify --outfile=dist/recreo.min.js"
+    "build": "esbuild GameEngine/index.js --bundle --outfile=dist/recreo.js"
   },
   "keywords": [
     "Game engine",
