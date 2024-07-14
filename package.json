@@ -1,0 +1,24 @@
+{
+  "name": "recreo",
+  "version": "0.0.7",
+  "description": "**Recreo** es un motor de videojuegos creado para el desarrollo de juegos simples con javascript",
+  "main": "GameEngine/index.js",
+  "scripts": {
+    "build": "esbuild GameEngine/index.js --bundle --minify --outfile=dist/recreo.min.js"
+  },
+  "keywords": [
+    "Game engine",
+    "javascript",
+    "html"
+  ],
+  "author": "cesar-carv",
+  "license": "MIT",
+  "homepage": "https://github.com/Cesar-CARV/Recreo-GameEngine",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cesar-CARV/Recreo-GameEngine"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0"
+  }
+}

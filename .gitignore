@@ -1,10 +1,2 @@
 # Ignorar finalGame
-/Backgrounds
-/Objects
-/Rooms
-/Sounds
-/Sprites
-/Tilemaps
-gameStyles.css
-index.html
-main.js
+/node_modules
