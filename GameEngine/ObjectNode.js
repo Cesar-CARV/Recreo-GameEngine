@@ -1,6 +1,6 @@
 import Vector2 from "./Vector2.js";
 
-export default class Object {
+export default class ObjectNode {
   #created = false;
   /**
    * 

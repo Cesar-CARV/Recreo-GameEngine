@@ -1,6 +1,6 @@
-import Object from "./Object.js";
+import ObjectNode from "./ObjectNode.js";
 
-export default class Tilemap extends Object {
+export default class Tilemap extends ObjectNode {
   /**
    * 
    * @param {object} GAME 

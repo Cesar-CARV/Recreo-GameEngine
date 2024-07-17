@@ -1,7 +1,7 @@
 import Input from "./Input.js";
-import Object from "./Object.js";
+import ObjectNode from "./ObjectNode.js";
 
-export default class UI extends Object {
+export default class UI extends ObjectNode {
   #created = false;
   /**
    * 

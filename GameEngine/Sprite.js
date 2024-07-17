@@ -1,7 +1,7 @@
-import Object from "./Object.js";
+import ObjectNode from "./ObjectNode.js";
 import Clock from "./Clock.js";
 
-export default class Sprite extends Object {
+export default class Sprite extends ObjectNode {
   /**
    * 
    * @param {object} GAME 
