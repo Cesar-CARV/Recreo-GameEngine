@@ -219,7 +219,7 @@ El metodo `addInstance` resive 3 parametros, `inst` el cual es la instancia/obje
 
 ## Creando GAME
 
-Una vez creado nuestras clases y niveles podremos nuestra instancia de `GAME`. Esta clase acepta 4 parametros los cuales son `game` que es el contenedor de el canvas, `canvas` el elemento encargado de renderizar el juego y otros dos parametros que aun estan en desarrollo los cuales son `width` y `height` los cuales determinan el tamaño en pixeles de el juego.
+Una vez creado nuestras clases y niveles podremos nuestra instancia de `GAME`. Esta clase acepta 4 parametros los cuales son `game` que es el contenedor de el canvas, `canvas` el elemento encargado de renderizar el juego, `width` y `height` los cuales determinan el tamaño en pixeles de el juego (estos ultimos dos parametros son opcionales).
 
 Para crear nuestra instancia tendremos que seleccionar nuestros elementos de el HTML para pasarlos como parametro a nuestro construcor.
 
