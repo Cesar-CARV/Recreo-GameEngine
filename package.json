@@ -1,6 +1,6 @@
 {
   "name": "recreo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "**Recreo** es un motor de videojuegos creado para el desarrollo de juegos simples con javascript",
   "main": "GameEngine/index.js",
   "scripts": {
