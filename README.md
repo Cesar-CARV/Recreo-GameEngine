@@ -2,6 +2,10 @@
 
 **Recreo** es un motor de videojuegos creado para el desarrollo de juegos simples con javascript
 
+>[Nota]
+>
+>El motor aun esta en desarrollo, para usarlo de forma segura esperar minimo a la version 1.0.0
+
 ## Getting Started
 Parar iniciar con el desarrollo de tu videojuego puedes descargar los archivos en el apartado de codigo de el repositorio o puedes utilizar el siguiente comando
 
@@ -89,7 +93,7 @@ body {
 Para irnos familiarizando un poco con el motor crearemos un pequeño cuadrado que se movera a con las teclas w,a,s,d ademas de un boton que pausara el juego, para esto tendremos que **importar** los archivos necesario de la siguiente manera:
 
 ```JavaScript
-import {Game, Room, Object, Vector2, Input, Time, UIButton} from 'recreo';
+import {Game, Room, ObjectNode, Vector2, Input, Time, UIButton} from 'recreo';
 ```
 
 en caso de que hayas utilizado el CDN seria de la siguiente manera:
@@ -97,7 +101,7 @@ en caso de que hayas utilizado el CDN seria de la siguiente manera:
 import {
   Room,
   Game,
-  Object,
+  ObjectNode,
   Input,
   Time,
   Vector2,
@@ -106,11 +110,11 @@ import {
 ```
 
 ## Crear nuestra primer clase player
-Ahora lo que haremos sera crear nuestra primera clase el cual sera nuestro pequeño personaje, para esto crearemos una clase que herede de `Object`.
+Ahora lo que haremos sera crear nuestra primera clase el cual sera nuestro pequeño personaje, para esto crearemos una clase que herede de `ObjectNode`.
 La clase Object resive 5 parametros los cuales son `GAME` que es la instancia de el juego, `x` que es su posicion en horizontal, `y` la posicion en vertical, `w` el ancho y `h` el alto 
 
 ```JavaScript
-class Player extends Object {
+class Player extends ObjectNode {
   constructor(GAME, x, y, w, h) {
     super(GAME, x, y, w, h);
   }
@@ -142,7 +146,7 @@ this.position = this.position.Sum(this.velocity);
 Al final nuestra clase quedaria de la siguiete manera
 
 ```JavaScript
-class Player extends Object {
+class Player extends ObjectNode {
   constructor(GAME, x, y, w, h) {
     super(GAME, x, y, w, h);
     this.velocity = new Vector2(0, 0);
@@ -180,10 +184,10 @@ class PauseButton extends UIButton {
 
   onClick = () => {
     if (this._GAME.gamePaused) {
-      GAME.playGame();
+      this._GAME.playGame();
       this.text = "PAUSE";
     } else {
-      GAME.pauseGame();
+      this._GAME.pauseGame();
       this.text = "PLAY";
     }
   };
@@ -201,9 +205,9 @@ class RoomTest1 extends Room {
   constructor(GAME) {
     super(GAME);
 
-    const player = new Player(GAME, 0, 0, 50, 50);
+    const player = new Player(this._GAME, 0, 0, 50, 50);
 
-    const button = new PauseButton(GAME, GAME.viewport.x - 110, 10);
+    const button = new PauseButton(this._GAME, this._GAME.viewport.x - 110, 10);
 
     this.addInstance(player, false, "player");
     this.addInstance(button, true, "button");
@@ -249,14 +253,14 @@ GAME.startGame();
 import {
   Room,
   Game,
-  Object,
+  ObjectNode,
   Input,
   Time,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.0.13/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.0.14/dist/recreo.js";
 
-class Player extends Object {
+class Player extends ObjectNode {
   constructor(GAME, x, y, w, h) {
     super(GAME, x, y, w, h);
     this.velocity = new Vector2(0, 0);
@@ -287,10 +291,10 @@ class PauseButton extends UIButton {
 
   onClick = () => {
     if (this._GAME.gamePaused) {
-      GAME.playGame();
+      this._GAME.playGame();
       this.text = "PAUSE";
     } else {
-      GAME.pauseGame();
+      this._GAME.pauseGame();
       this.text = "PLAY";
     }
   };
@@ -300,9 +304,9 @@ class RoomTest1 extends Room {
   constructor(GAME) {
     super(GAME);
 
-    const player = new Player(GAME, 0, 0, 50, 50);
+    const player = new Player(this._GAME, 0, 0, 50, 50);
 
-    const button = new PauseButton(GAME, GAME.viewport.x - 110, 10);
+    const button = new PauseButton(this._GAME, this._GAME.viewport.x - 110, 10);
 
     this.addInstance(player, false, "player");
     this.addInstance(button, true, "button");
