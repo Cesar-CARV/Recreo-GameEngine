@@ -12,7 +12,7 @@ export default class Clock {
     this.time = time;
     this.repeat = repeat;
     this.current = 0;
-    this.runing = false;
+    this.running = false;
     this.finished = false;
     this.oldSec = -1;
   }
@@ -23,18 +23,12 @@ export default class Clock {
     this.oldSec = -1;
   };
 
-  reset = () => {
-    this.finished = false;
-    this.current = 0;
-    this.oldSec = -1;
-  }
-
   start = () => {
-    this.runing = true;
+    this.running = true;
   };
 
   pause = () => {
-    this.runing = false;
+    this.running = false;
   };
 
   /**
@@ -43,7 +37,7 @@ export default class Clock {
    * @returns 
    */
   tick = (callback) => {
-    if (!this.runing) return;
+    if (!this.running) return;
 
     let DT = new Date().getMilliseconds();
 
