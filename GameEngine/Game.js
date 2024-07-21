@@ -16,6 +16,7 @@ export default class Game {
     this.width = width;
     this.height = height;
     this.canvas = canvas;
+    this.ctx = undefined;
     // * RESPONSIVE
     this.viewport = new Vector2(
       width ? width : window.screen.width,
@@ -86,8 +87,6 @@ export default class Game {
 
     this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
     this.ctx = this.canvas.getContext("2d");
-    this.ctx.imageSmoothingEnabled = this.smoothImage;
-    this.ctx.imageSmoothingQuality = "high";
   };
 
   // #region ROOM
@@ -290,6 +289,9 @@ export default class Game {
       );
     }
     // if (Time.deltaTime > 10) return;
+    this.ctx.imageSmoothingEnabled = this.smoothImage;
+    this.ctx.imageSmoothingQuality = "high";
+
     if (this.currentRoom) this.currentRoom.main(this.ctx);
 
     if (!this.stopedGame) {
