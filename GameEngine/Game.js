@@ -41,6 +41,7 @@ export default class Game {
     this.lastRoom = undefined;
     this.hoverUI = false;
     this.debug = true;
+    this.smoothImage = true;
 
     this.cancelAnimationFrame =
       window.cancelAnimationFrame.bind(window) ||
@@ -85,14 +86,14 @@ export default class Game {
 
     this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
     this.ctx = this.canvas.getContext("2d");
-    this.ctx.imageSmoothingEnabled = false;
+    this.ctx.imageSmoothingEnabled = this.smoothImage;
     this.ctx.imageSmoothingQuality = "high";
   };
 
   // #region ROOM
   /**
    *
-   * @returns {string}
+   * @returns {Array<string>}
    */
   getRoomNames = () => this.rooms.map((rm) => rm.name);
 
