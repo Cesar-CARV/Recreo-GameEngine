@@ -28,6 +28,11 @@ export default class Game {
     window.addEventListener("resize", () => {
       this.resize();
     });
+
+    // pausar en caso de cambiar de pestaña
+    window.addEventListener("blur", () => {
+      this.pauseGame();
+    })
     // ---------------------------------------------------
 
     // TODO: Crear un set llamdo sounds donde se guarden los sonidos creados para
