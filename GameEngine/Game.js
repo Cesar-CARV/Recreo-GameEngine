@@ -4,6 +4,7 @@ import Vector2 from "./Vector2.js";
 
 export default class Game {
   #oldTime = 0;
+  #gameBlur = false;
   /**
    *
    * @param {HTMLElement} game
@@ -30,9 +31,10 @@ export default class Game {
     });
 
     // pausar en caso de cambiar de pestaña
-    window.addEventListener("blur", () => {
-      this.pauseGame();
-    })
+    document.addEventListener("visibilitychange", () => {
+      console.log("AHHHHHHH");
+      this.#gameBlur = !this.#gameBlur;
+    });
     // ---------------------------------------------------
 
     // TODO: Crear un set llamdo sounds donde se guarden los sonidos creados para
@@ -297,7 +299,7 @@ export default class Game {
     this.ctx.imageSmoothingEnabled = this.smoothImage;
     this.ctx.imageSmoothingQuality = "high";
 
-    if (this.currentRoom) this.currentRoom.main(this.ctx);
+    if (this.currentRoom && !this.#gameBlur) this.currentRoom.main(this.ctx);
 
     if (!this.stopedGame) {
       this.gameLoop = this.requestAnimationFrame(this.main);
