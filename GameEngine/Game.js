@@ -4,6 +4,7 @@ import Vector2 from "./Vector2.js";
 
 export default class Game {
   #oldTime = 0;
+  #gameBlur = false;
   /**
    *
    * @param {HTMLElement} game
@@ -16,6 +17,7 @@ export default class Game {
     this.width = width;
     this.height = height;
     this.canvas = canvas;
+    this.ctx = undefined;
     // * RESPONSIVE
     this.viewport = new Vector2(
       width ? width : window.screen.width,
@@ -26,6 +28,12 @@ export default class Game {
 
     window.addEventListener("resize", () => {
       this.resize();
+    });
+
+    // pausar en caso de cambiar de pestaña
+    document.addEventListener("visibilitychange", () => {
+      console.log("AHHHHHHH");
+      this.#gameBlur = !this.#gameBlur;
     });
     // ---------------------------------------------------
 
@@ -41,6 +49,7 @@ export default class Game {
     this.lastRoom = undefined;
     this.hoverUI = false;
     this.debug = true;
+    this.smoothImage = true;
 
     this.cancelAnimationFrame =
       window.cancelAnimationFrame.bind(window) ||
@@ -85,14 +94,12 @@ export default class Game {
 
     this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
     this.ctx = this.canvas.getContext("2d");
-    this.ctx.imageSmoothingEnabled = false;
-    this.ctx.imageSmoothingQuality = "high";
   };
 
   // #region ROOM
   /**
    *
-   * @returns {string}
+   * @returns {Array<string>}
    */
   getRoomNames = () => this.rooms.map((rm) => rm.name);
 
@@ -289,7 +296,10 @@ export default class Game {
       );
     }
     // if (Time.deltaTime > 10) return;
-    if (this.currentRoom) this.currentRoom.main(this.ctx);
+    this.ctx.imageSmoothingEnabled = this.smoothImage;
+    this.ctx.imageSmoothingQuality = "high";
+
+    if (this.currentRoom && !this.#gameBlur) this.currentRoom.main(this.ctx);
 
     if (!this.stopedGame) {
       this.gameLoop = this.requestAnimationFrame(this.main);
