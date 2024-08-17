@@ -17,12 +17,16 @@ export default class Game {
     this.width = width;
     this.height = height;
     this.canvas = canvas;
+    this.responsive = true;
     this.ctx = undefined;
+
     // * RESPONSIVE
-    this.viewport = new Vector2(
-      width ? width : window.screen.width,
-      height ? height : window.screen.height
-    );
+    if (this.responsive) {
+      this.viewport = new Vector2(
+        width ? width : window.screen.width,
+        height ? height : window.screen.height
+      );
+    }
     this.resize();
     this.resize();
 
@@ -70,29 +74,46 @@ export default class Game {
     const ratioX = (this.viewport.x * ratio) / 100;
     const ratioY = (this.viewport.y * ratio) / 100;
 
-    if (this.width || this.height) {
-      this.$.style.width = this.width + "px";
-      this.$.style.height = this.height + "px";
-
-      this.canvas.style.width = this.width + "px";
-      this.canvas.style.height = this.height + "px";
-    } else {
-      if (
-        this.$.getBoundingClientRect().right / ratioX >
-        this.$.getBoundingClientRect().bottom / ratioY
-      ) {
-        this.$.style.width = "auto";
-        this.$.style.height = "100%";
+    if (this.responsive) {
+      if (this.width || this.height) {
+        this.$.style.width = this.width + "px";
+        this.$.style.height = this.height + "px";
+        this.canvas.style.width = this.width + "px";
+        this.canvas.style.height = this.height + "px";
       } else {
-        this.$.style.width = "100%";
-        this.$.style.height = "auto";
+        if (
+          this.$.getBoundingClientRect().right / ratioX >
+          this.$.getBoundingClientRect().bottom / ratioY
+        ) {
+          this.$.style.width = "auto";
+          this.$.style.height = "100%";
+        } else {
+          this.$.style.width = "100%";
+          this.$.style.height = "auto";
+        }
+      }
+    } else {
+      this.canvas.style.width = "100%";
+      this.canvas.style.height = "100%";
+
+      this.viewport = new Vector2(
+        this.canvas.clientWidth,
+        this.canvas.clientHeight
+      );
+      if (this.currentRoom) {
+        this.currentRoom.sizeContextRoom = new Vector2(
+          this.viewport.x,
+          this.viewport.y
+        );
       }
     }
 
     this.canvas.width = this.viewport.x;
     this.canvas.height = this.viewport.y;
 
-    this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
+    if (this.responsive) {
+      this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
+    }
     this.ctx = this.canvas.getContext("2d");
   };
 
@@ -288,6 +309,10 @@ export default class Game {
    * @param {number} timestamp
    */
   main = (timestamp) => {
+    if (Time.oldTime === 0) {
+      this.resize();
+    }
+
     Time.main(timestamp);
     if (this.debug) {
       console.log(
@@ -295,7 +320,7 @@ export default class Game {
         "color: #ffed9c; padding: 1px 4px;"
       );
     }
-    // if (Time.deltaTime > 10) return;
+
     this.ctx.imageSmoothingEnabled = this.smoothImage;
     this.ctx.imageSmoothingQuality = "high";
 

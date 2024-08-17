@@ -18,7 +18,7 @@ si no quieres descargar ningun archivo puedes utilizar el siguiente CDN en tu co
 ```JavaScript
 import {
   Game
-} from 'https://cdn.jsdelivr.net/npm/recreo@0.1.2/dist/recreo.js';
+} from 'https://cdn.jsdelivr.net/npm/recreo@0.1.4/dist/recreo.js';
 ```
 >[!NOTA]
 >
@@ -106,7 +106,7 @@ import {
   Time,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.1.2/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.1.4/dist/recreo.js";
 ```
 
 ## Crear nuestra primer clase player
@@ -258,7 +258,7 @@ import {
   Time,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.1.2/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.1.4/dist/recreo.js";
 
 class Player extends ObjectNode {
   constructor(GAME, x, y, w, h) {
