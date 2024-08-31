@@ -1,5 +1,4 @@
 import Input from "./Input.js";
-import Time from "./Time.js";
 import Vector2 from "./Vector2.js";
 
 export default class Game {
@@ -308,15 +307,17 @@ export default class Game {
    *
    * @param {number} timestamp
    */
-  main = (timestamp) => {
-    if (Time.oldTime === 0) {
+  main = (timestamp = 0) => {
+    if (this.#oldTime === 0) {
       this.resize();
     }
 
-    Time.main(timestamp);
+    // Time.main(timestamp);
+    const deltaTime = timestamp - this.#oldTime;
+
     if (this.debug) {
       console.log(
-        `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${Input.mouseCord.x}, Y:${Input.mouseCord.y}", DeltaTime: ${Time.deltaTime}`,
+        `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${Input.mouseCord.x}, Y:${Input.mouseCord.y}", DeltaTime: ${deltaTime}`,
         "color: #ffed9c; padding: 1px 4px;"
       );
     }
@@ -324,7 +325,7 @@ export default class Game {
     this.ctx.imageSmoothingEnabled = this.smoothImage;
     this.ctx.imageSmoothingQuality = "high";
 
-    if (this.currentRoom && !this.#gameBlur) this.currentRoom.main(this.ctx);
+    if (this.currentRoom && !this.#gameBlur) this.currentRoom.main(this.ctx, deltaTime);
 
     if (!this.stopedGame) {
       this.gameLoop = this.requestAnimationFrame(this.main);

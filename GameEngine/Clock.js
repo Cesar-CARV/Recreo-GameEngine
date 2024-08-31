@@ -1,5 +1,3 @@
-import Time from "./Time.js";
-
 export default class Clock {
   /**
    * 
@@ -36,13 +34,13 @@ export default class Clock {
    * @param {requestCallback} callback 
    * @returns 
    */
-  tick = (callback) => {
+  tick = (callback, deltaTime) => {
     if (!this.running) return;
 
     let DT = new Date().getMilliseconds();
 
     if (DT !== this.oldSec) {
-      this.current += Time.deltaTime < 1 ? Time.deltaTime : 0;
+      this.current += deltaTime < 1 ? deltaTime : 0;
       this.oldSec = DT
     }
 

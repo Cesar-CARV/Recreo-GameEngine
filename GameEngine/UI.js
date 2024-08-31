@@ -102,13 +102,13 @@ export default class UI extends ObjectNode {
     }
   };
 
-  steps = () => {};
+  steps = (deltaTime) => {};
 
   /**
    * 
    * @param {CanvasRenderingContext2D} ctx 
    */
-  main = (ctx) => {
+  main = (ctx, deltaTime) => {
     if (!this.#created) {
       this.onCreate();
       this.#created = true;
@@ -116,7 +116,7 @@ export default class UI extends ObjectNode {
     if (this.visible) {
       this.updatePosition();
       this.events();
-      this.steps();
+      this.steps(deltaTime);
       this.draw(ctx);
       //   this.restartPosition();
     }

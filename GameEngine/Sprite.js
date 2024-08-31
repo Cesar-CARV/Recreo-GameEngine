@@ -172,7 +172,7 @@ export default class Sprite extends ObjectNode {
     this.play();
   };
 
-  steps = () => {
+  steps = (deltaTime) => {
     if (!this.clock) return;
 
     this.clock.tick(() => {
@@ -187,7 +187,7 @@ export default class Sprite extends ObjectNode {
         this.onEnd();
         // this.onEnd = () => {}
       }
-    });
+    }, deltaTime);
 
     // cambiar medidas de recorte segun el frame
     if (this.frames === -1) return;

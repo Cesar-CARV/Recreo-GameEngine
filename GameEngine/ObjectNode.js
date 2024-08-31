@@ -131,13 +131,13 @@ export default class ObjectNode {
    * 
    * @param {CanvasRenderingContext2D} ctx 
    */
-  main = (ctx) => {
+  main = (ctx, deltaTime) => {
     if (!this.#created) {
       this.onCreate();
       this.#created = true;
     }
     this.updatePosition();
-    this.steps();
+    this.steps(deltaTime);
     this.draw(ctx);
     // this.restartPosition(); // esta linea se elemino para solucionar el bug de seguimiento de los padres
   };
