@@ -6,26 +6,29 @@
 >
 >El motor aun esta en desarrollo, para usarlo de forma segura esperar minimo a la version 1.0.0
 
+## Cambios hechos en la version 0.2.0
+Se hicieron cambios en el funcionamiento del `Time` y de `Input` para que se pueda tener mas de una instancia de la clase `GAME` en la misma pagina.
+
 ## Getting Started
-Parar iniciar con el desarrollo de tu videojuego puedes descargar los archivos en el apartado de codigo de el repositorio o puedes utilizar el siguiente comando
+Parar iniciar con el desarrollo de tu videojuego puedes utilizar el siguiente comando para instalar el motor en tu proyecto web.
 
 ```bash
 npm i recreo
 ```
 
-si no quieres descargar ningun archivo puedes utilizar el siguiente CDN en tu codigo para importar los archivos. Ejemplo:
+si no quieres descargar ningun archivo puedes utilizar el CDN en tu codigo para importar los archivos. Ejemplo:
 
 ```JavaScript
 import {
   Game
-} from 'https://cdn.jsdelivr.net/npm/recreo@0.1.5/dist/recreo.js';
+} from 'https://cdn.jsdelivr.net/npm/recreo@0.2.0/dist/recreo.js';
 ```
 >[!NOTA]
 >
 >Para poder probar tu juego es necesario que tengas un servideor de desarrollo, si utilizas visual studio code puedes utilizar ***Live server***
 
 ## Configuracion
-Una vez instalado todo lo necesario hay que agregar el siguiente codigo HTML a tu pagina o componente
+Una vez instalado todo lo necesario hay que agregar el siguiente codigo HTML a tu pagina o componente.
 
 ```HTML
 <!-- Game HMTL -->
@@ -37,9 +40,10 @@ Una vez instalado todo lo necesario hay que agregar el siguiente codigo HTML a t
 <!-- End Game HTML -->
 ```
 
-acompañado de los siguientes estilos
+acompañado de los siguientes estilos (opcionales)
 
 ```CSS
+/*OPCIONALES*/
 * {
   box-sizing: border-box;
   padding: 0;
@@ -59,12 +63,12 @@ body {
   height: 100vh;
   background-color: black;
 }
+/*FIN OPCIONALES*/
 
 #game {
   position: relative;
   overflow: hidden;
   width: 100%;
-  /* aspect-ratio: 1.6/1; */
 }
 
 #game__display {
@@ -77,7 +81,6 @@ body {
   top: 0;
   left: 0;
   border: solid 1px;
-  /* image-rendering: pixelated; */
   image-rendering: auto;
   background-color: #222;
 }
@@ -93,7 +96,7 @@ body {
 Para irnos familiarizando un poco con el motor crearemos un pequeño cuadrado que se movera a con las teclas w,a,s,d ademas de un boton que pausara el juego, para esto tendremos que **importar** los archivos necesario de la siguiente manera:
 
 ```JavaScript
-import {Game, Room, ObjectNode, Vector2, Input, Time, UIButton} from 'recreo';
+import {Game, Room, ObjectNode, Vector2, UIButton} from 'recreo';
 ```
 
 en caso de que hayas utilizado el CDN seria de la siguiente manera:
@@ -102,16 +105,14 @@ import {
   Room,
   Game,
   ObjectNode,
-  Input,
-  Time,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.1.5/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.2.0/dist/recreo.js";
 ```
 
 ## Crear nuestra primer clase player
 Ahora lo que haremos sera crear nuestra primera clase el cual sera nuestro pequeño personaje, para esto crearemos una clase que herede de `ObjectNode`.
-La clase Object resive 5 parametros los cuales son `GAME` que es la instancia de el juego, `x` que es su posicion en horizontal, `y` la posicion en vertical, `w` el ancho y `h` el alto 
+La clase ObjectNode resive 5 parametros los cuales son `GAME` que es la instancia de el juego, `x` que es su posicion en horizontal, `y` la posicion en vertical, `w` el ancho y `h` el alto .
 
 ```JavaScript
 class Player extends ObjectNode {
@@ -123,27 +124,27 @@ class Player extends ObjectNode {
 
 Dentro de nuestro contructor crearemos nuestra siguiente propiedad `this.velocity = new Vector2(0, 0);`.
 
-Como Queremos que nuestro personaje se dibuje en pantalla crearea el metodo draw el cual resive como parametro `ctx` el cual es el CanvasRenderingContext2D, dentro de el metodo escribiremos el siguiente codigo
+Como queremos que nuestro personaje se dibuje en pantalla utilizaremos el metodo `draw` el cual resive como parametro `ctx` (CanvasRenderingContext2D), dentro de el metodo escribiremos el siguiente codigo.
 
 ```JavaScript
 ctx.fillStyle = "#d57";
 ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
 ```
 
-despues crearemos el moviemieto de nuestro personaje el cual ira dentro de el metodo **steps** ya que este metodo se ejecuta cada iteracion de el juego. Para esto se hara uso de la clase `Input` con el metodo `GetKeyPress` el cual resive como parametro la tecla que queremos detectar
+despues crearemos el movimiento de nuestro personaje dentro de el metodo `steps` ya que este metodo recibe como parametro el deltaTime. Para esto se hara uso de el metodo `GetKeyPress` el cual se encuentra en `GAME` en la pripiedad `input` y para poder acceder a el utilizaremos nuestra propiedad `_GAME`. El metodo `GetKeyPress` resive como parametro la tecla que queremos detectar.
 
 ```JavaScript
 // velocidad horizontal
 this.velocity.x =
-  (Input.GetKeyPress("d") - Input.GetKeyPress("a")) * 400 * Time.deltaTime;
+  (this._GAME.input.GetKeyPress("d") - this._GAME.input.GetKeyPress("a")) * 400 * deltaTime;
 this.velocity.y =
-  (Input.GetKeyPress("s") - Input.GetKeyPress("w")) * 400 * Time.deltaTime;
+  (this._GAME.input.GetKeyPress("s") - this._GAME.input.GetKeyPress("w")) * 400 * deltaTime;
 
 // mover
 this.position = this.position.Sum(this.velocity);
 ```
 
-Al final nuestra clase quedaria de la siguiete manera
+Al final nuestra clase quedaria de la siguiete manera:
 
 ```JavaScript
 class Player extends ObjectNode {
@@ -157,13 +158,13 @@ class Player extends ObjectNode {
     ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
   };
 
-  steps = () => {
+  steps = (deltaTime) => {
     // velocidad horizontal
     this.velocity.x =
-      (Input.GetKeyPress("d") - Input.GetKeyPress("a")) * 400 * Time.deltaTime;
+      (this._GAME.input.GetKeyPress("d") - this._GAME.input.GetKeyPress("a")) * 400 * deltaTime;
     // velocidad vertical
     this.velocity.y =
-      (Input.GetKeyPress("s") - Input.GetKeyPress("w")) * 400 * Time.deltaTime;
+      (this._GAME.input.GetKeyPress("s") - this._GAME.input.GetKeyPress("w")) * 400 * deltaTime;
 
     // mover
     this.position = this.position.Sum(this.velocity);
@@ -196,9 +197,9 @@ class PauseButton extends UIButton {
 
 ## Creando nuestro primer nivel (Room)
 
-Ahora ya que creamos nuestas clases que utilizaremos necesitamos un nivel en el cual poder crear instancias de nuestras clases, para esta haremos una clase que herede de `Room` en este caso la llamaremos Room1, la clase `Room` solo recibe un parametro el cual es `GAME`.
+Ahora ya que creamos nuestras clases que utilizaremos necesitamos un nivel en el cual poder crear instancias de nuestras clases, para esto haremos una clase que herede de `Room` en este caso la llamaremos RoomTest1, la clase `Room` solo recibe un parametro el cual es `GAME`.
 
-Para crear las instancias de nuestras clases tendremos que hacerlo dentro de el constructor de la calse de la siguiente manera.
+Para crear las instancias de nuestras clases tendremos que hacerlo dentro de el constructor de la calse de la siguiente manera:
 
 ```JavaScript
 class RoomTest1 extends Room {
@@ -215,11 +216,11 @@ class RoomTest1 extends Room {
 }
 ```
 
-El metodo `addInstance` resive 3 parametros, `inst` el cual es la instancia/objeto que vamos a agregar, `UI` este parametro es para indicar si es un elemento de la interfaz y por ultimo `name` el cual es el nombre con el que se agregala a el listado de instancias de el nivel 
+El metodo `addInstance` resive 3 parametros, `inst` el cual es la instancia/objeto que vamos a agregar, `UI` este parametro es para indicar si es un elemento de la interfaz y por ultimo `name` el cual es el nombre con el que se agregara al listado de instancias de el nivel 
 
 ## Creando GAME
 
-Una vez creado nuestras clases y niveles podremos nuestra instancia de `GAME`. Esta clase acepta 4 parametros los cuales son `game` que es el contenedor de el canvas, `canvas` el elemento encargado de renderizar el juego, `width` y `height` los cuales determinan el tamaño en pixeles de el juego (estos ultimos dos parametros son opcionales).
+Una vez creado nuestras clases y niveles podremos crear nuestra instancia de `GAME`. Esta clase acepta 4 parametros los cuales son `game` que es el contenedor de el canvas, `canvas` el elemento encargado de renderizar el juego, `width` y `height` los cuales determinan el tamaño en pixeles de el juego (estos ultimos dos parametros son opcionales).
 
 Para crear nuestra instancia tendremos que seleccionar nuestros elementos de el HTML para pasarlos como parametro a nuestro construcor.
 
@@ -232,7 +233,7 @@ const GAME = new Game($game, $gameCanvas);
 Despues de esto añadiremos nuestros niveles a el juego
 con el metodo `addRoom` y lo seleccionaremos con el metodo `changeRoom`. Finalmente podremos arrancar nuestro juego con el metodo `startGame`
 
-Una vez hecho todo esto nos quedaria de la siguiete manera
+Una vez hecho todo esto nos quedaria de la siguiete manera:
 
 ```JavaScript
 // -------------------- GAME SETTINGS --------------------- //
@@ -254,11 +255,9 @@ import {
   Room,
   Game,
   ObjectNode,
-  Input,
-  Time,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.1.5/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.2.0/dist/recreo.js";
 
 class Player extends ObjectNode {
   constructor(GAME, x, y, w, h) {
@@ -271,13 +270,13 @@ class Player extends ObjectNode {
     ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
   };
 
-  steps = () => {
+  steps = (deltaTime) => {
     // velocidad horizontal
     this.velocity.x =
-      (Input.GetKeyPress("d") - Input.GetKeyPress("a")) * 400 * Time.deltaTime;
+      (this._GAME.input.GetKeyPress("d") - this._GAME.input.GetKeyPress("a")) * 400 * deltaTime;
       // velocidad vertical
     this.velocity.y =
-      (Input.GetKeyPress("s") - Input.GetKeyPress("w")) * 400 * Time.deltaTime;
+      (this._GAME.input.GetKeyPress("s") - this._GAME.input.GetKeyPress("w")) * 400 * deltaTime;
 
     // mover
     this.position = this.position.Sum(this.velocity);
