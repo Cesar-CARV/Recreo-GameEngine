@@ -64,7 +64,7 @@ export default class Game {
       window.webkitRequestAnimationFrame.bind(window) ||
       window.msRequestAnimationFrame.bind(window);
 
-    Input.Init(this, this.canvas);
+    this.input = new Input(this, this.canvas);
   }
 
   // ajusta los cambios de aspecto segun el tamaño de el display
@@ -307,17 +307,25 @@ export default class Game {
    *
    * @param {number} timestamp
    */
-  main = (timestamp = 0) => {
+  main = (timestamp) => {
     if (this.#oldTime === 0) {
       this.resize();
     }
 
+    //! ARREGLAR DELTA TIME
+
     // Time.main(timestamp);
-    const deltaTime = timestamp - this.#oldTime;
+    const deltaTime = timestamp / 1000 - this.#oldTime;
+    console.log(this.#oldTime, "old");
+    this.#oldTime = deltaTime;
+    console.log(this.#oldTime, "new");
+    console.log(timestamp);
 
     if (this.debug) {
       console.log(
-        `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${Input.mouseCord.x}, Y:${Input.mouseCord.y}", DeltaTime: ${deltaTime}`,
+        `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${
+          this.input.mouseCord.x
+        }, Y:${this.input.mouseCord.y}", DeltaTime: ${deltaTime} ${this.#oldTime}`,
         "color: #ffed9c; padding: 1px 4px;"
       );
     }
@@ -325,7 +333,8 @@ export default class Game {
     this.ctx.imageSmoothingEnabled = this.smoothImage;
     this.ctx.imageSmoothingQuality = "high";
 
-    if (this.currentRoom && !this.#gameBlur) this.currentRoom.main(this.ctx, deltaTime);
+    if (this.currentRoom && !this.#gameBlur)
+      this.currentRoom.main(this.ctx, deltaTime);
 
     if (!this.stopedGame) {
       this.gameLoop = this.requestAnimationFrame(this.main);
