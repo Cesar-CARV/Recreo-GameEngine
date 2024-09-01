@@ -29,7 +29,7 @@ export default class Game {
         height ? height : window.screen.height
       );
     }
-    this.resize();
+    // this.resize();
     this.resize();
 
     window.addEventListener("resize", () => {
@@ -38,7 +38,6 @@ export default class Game {
 
     // pausar en caso de cambiar de pestaña
     document.addEventListener("visibilitychange", () => {
-      console.log("AHHHHHHH");
       this.#gameBlur = !this.#gameBlur;
     });
     // ---------------------------------------------------
