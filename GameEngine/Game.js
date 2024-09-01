@@ -3,7 +3,10 @@ import Vector2 from "./Vector2.js";
 
 export default class Game {
   #oldTime = 0;
+  #time = new Date().valueOf() / 1000;
+  #deltaTime = 0;
   #gameBlur = false;
+  
   /**
    *
    * @param {HTMLElement} game
@@ -302,6 +305,18 @@ export default class Game {
     this.soundsStack.forEach((s) => s.play());
   };
 
+  //#region TIME
+  /**
+   * 
+   * @param {number} t 
+   */
+  computedTime = (t) => {
+    this.#time = t / 1000;
+    this.#deltaTime = this.#time - this.#oldTime;
+    this.#oldTime = this.#time;
+  };
+  //#endregion
+
   // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
   /**
    *
@@ -312,20 +327,13 @@ export default class Game {
       this.resize();
     }
 
-    //! ARREGLAR DELTA TIME
-
-    // Time.main(timestamp);
-    const deltaTime = timestamp / 1000 - this.#oldTime;
-    console.log(this.#oldTime, "old");
-    this.#oldTime = deltaTime;
-    console.log(this.#oldTime, "new");
-    console.log(timestamp);
+    this.computedTime(timestamp);
 
     if (this.debug) {
       console.log(
         `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${
           this.input.mouseCord.x
-        }, Y:${this.input.mouseCord.y}", DeltaTime: ${deltaTime} ${this.#oldTime}`,
+        }, Y:${this.input.mouseCord.y}", DeltaTime: ${this.#deltaTime}`,
         "color: #ffed9c; padding: 1px 4px;"
       );
     }
@@ -334,7 +342,7 @@ export default class Game {
     this.ctx.imageSmoothingQuality = "high";
 
     if (this.currentRoom && !this.#gameBlur)
-      this.currentRoom.main(this.ctx, deltaTime);
+      this.currentRoom.main(this.ctx, this.#deltaTime);
 
     if (!this.stopedGame) {
       this.gameLoop = this.requestAnimationFrame(this.main);
