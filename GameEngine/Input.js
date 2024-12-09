@@ -33,6 +33,13 @@ export default class Input {
     });
   }
 
+  ClearKeys = () => {
+    this.keyup.clear();
+    this.mouseup.clear();
+    this.keydown.clear();
+    this.mousedown.clear();
+  };
+
   /**
    *
    * @param {string} key
@@ -40,7 +47,7 @@ export default class Input {
    */
   GetKeyDown = (key) => {
     let down = this.keydown.has(key);
-    this.keydown.delete(key);
+    // this.keydown.delete(key);
     return down;
   };
 
@@ -60,7 +67,6 @@ export default class Input {
    */
   GetKeyUp = (key) => {
     let up = this.keyup.has(key);
-    this.keyup.delete(key);
     return up;
   };
   /**
@@ -70,7 +76,7 @@ export default class Input {
    */
   GetMouseDown = (button) => {
     let down = this.mousedown.has(button);
-    this.mousedown.delete(button);
+    // this.mousedown.delete(button);
     return down;
   };
 
@@ -90,7 +96,6 @@ export default class Input {
    */
   GetMouseUp = (button) => {
     let up = this.mouseup.has(button);
-    this.mouseup.delete(button);
     return up;
   };
 
