@@ -1,29 +1,44 @@
 import Input from "./Input.js";
-import Time from "./Time.js";
 import Vector2 from "./Vector2.js";
 
 export default class Game {
   #oldTime = 0;
+  #time = new Date().valueOf() / 1000;
+  #deltaTime = 0;
+  #gameBlur = false;
+  
   /**
-   * 
-   * @param {HTMLElement} game 
-   * @param {HTMLCanvasElement} canvas 
-   * @param {number} height 
-   * @param {number} width 
+   *
+   * @param {HTMLElement} game
+   * @param {HTMLCanvasElement} canvas
+   * @param {number} height
+   * @param {number} width
    */
   constructor(game, canvas, width = undefined, height = undefined) {
     this.$ = game;
+    this.width = width;
+    this.height = height;
     this.canvas = canvas;
+    this.responsive = true;
+    this.ctx = undefined;
+
     // * RESPONSIVE
-    this.viewport = new Vector2(
-      width ? width : window.screen.width,
-      height ? height : window.screen.height
-    );
-    this.resize();
+    if (this.responsive) {
+      this.viewport = new Vector2(
+        width ? width : window.screen.width,
+        height ? height : window.screen.height
+      );
+    }
+    // this.resize();
     this.resize();
 
     window.addEventListener("resize", () => {
       this.resize();
+    });
+
+    // pausar en caso de cambiar de pestaña
+    document.addEventListener("visibilitychange", () => {
+      this.#gameBlur = !this.#gameBlur;
     });
     // ---------------------------------------------------
 
@@ -39,6 +54,7 @@ export default class Game {
     this.lastRoom = undefined;
     this.hoverUI = false;
     this.debug = true;
+    this.smoothImage = true;
 
     this.cancelAnimationFrame =
       window.cancelAnimationFrame.bind(window) ||
@@ -50,7 +66,7 @@ export default class Game {
       window.webkitRequestAnimationFrame.bind(window) ||
       window.msRequestAnimationFrame.bind(window);
 
-    Input.Init(this, this.canvas);
+    this.input = new Input(this, this.canvas);
   }
 
   // ajusta los cambios de aspecto segun el tamaño de el display
@@ -58,50 +74,74 @@ export default class Game {
     const ratio = this.viewport.x / this.viewport.y;
     const ratioX = (this.viewport.x * ratio) / 100;
     const ratioY = (this.viewport.y * ratio) / 100;
-    if (
-      this.$.getBoundingClientRect().right / ratioX >
-      this.$.getBoundingClientRect().bottom / ratioY
-    ) {
-      this.$.style.width = "auto";
-      this.$.style.height = "100%";
+
+    if (this.responsive) {
+      if (this.width || this.height) {
+        this.$.style.width = this.width + "px";
+        this.$.style.height = this.height + "px";
+        this.canvas.style.width = this.width + "px";
+        this.canvas.style.height = this.height + "px";
+      } else {
+        if (
+          this.$.getBoundingClientRect().right / ratioX >
+          this.$.getBoundingClientRect().bottom / ratioY
+        ) {
+          this.$.style.width = "auto";
+          this.$.style.height = "100%";
+        } else {
+          this.$.style.width = "100%";
+          this.$.style.height = "auto";
+        }
+      }
     } else {
-      this.$.style.width = "100%";
-      this.$.style.height = "auto";
+      this.canvas.style.width = "100%";
+      this.canvas.style.height = "100%";
+
+      this.viewport = new Vector2(
+        this.canvas.clientWidth,
+        this.canvas.clientHeight
+      );
+      if (this.currentRoom) {
+        this.currentRoom.sizeContextRoom = new Vector2(
+          this.viewport.x,
+          this.viewport.y
+        );
+      }
     }
 
     this.canvas.width = this.viewport.x;
     this.canvas.height = this.viewport.y;
 
-    this.aspectRatio = new Vector2(ratioX, ratioY);
-    this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
+    if (this.responsive) {
+      this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
+    }
     this.ctx = this.canvas.getContext("2d");
-    this.ctx.imageSmoothingEnabled = false;
   };
 
   // #region ROOM
   /**
-   * 
-   * @returns {string}
+   *
+   * @returns {Array<string>}
    */
   getRoomNames = () => this.rooms.map((rm) => rm.name);
 
   /**
-   * 
+   *
    * @returns {object}
    */
   getRoom = () => this.currentRoom;
 
   /**
-   * 
-   * @param {object} room 
-   * @returns 
+   *
+   * @param {object} room
+   * @returns
    */
   addRoom = (room) => this.rooms.push(room);
 
   /**
-   * 
-   * @param {string} roomName 
-   * @param {boolean} save 
+   *
+   * @param {string} roomName
+   * @param {boolean} save
    */
   changeRoom = (roomName, save = false) => {
     this.hoverUI = false;
@@ -127,9 +167,9 @@ export default class Game {
   // #region GRAPHICS
   // hace un scale de los graficos
   /**
-   * 
-   * @param {number} x 
-   * @param {number} y 
+   *
+   * @param {number} x
+   * @param {number} y
    */
   scaleContextGraphic = (x, y) => {
     this.ctx.scale(x, y);
@@ -137,9 +177,9 @@ export default class Game {
 
   // los parametros que resive esta funcion son las medidas de el area que se va a limpiar
   /**
-   * 
-   * @param {number} width 
-   * @param {number} height 
+   *
+   * @param {number} width
+   * @param {number} height
    */
   clipContextGraphic = (width, height) => {
     this.ctx.save();
@@ -172,8 +212,8 @@ export default class Game {
   // #region SOUNDS
 
   /**
-   * 
-   * @param {string} url 
+   *
+   * @param {string} url
    * @returns {object}
    */
   findSound = (url) => {
@@ -185,11 +225,11 @@ export default class Game {
   };
 
   /**
-   * 
-   * @param {string} url 
-   * @param {number} volumen 
-   * @param {number} speed 
-   * @param {boolean} loop 
+   *
+   * @param {string} url
+   * @param {number} volumen
+   * @param {number} speed
+   * @param {boolean} loop
    */
   playSound = (url, volumen, speed = 1, loop = false) => {
     const found = this.findSound(url);
@@ -212,9 +252,9 @@ export default class Game {
   };
 
   /**
-   * 
-   * @param {string} url 
-   * @returns 
+   *
+   * @param {string} url
+   * @returns
    */
   pauseSound = (url) => {
     const found = this.findSound(url);
@@ -224,9 +264,9 @@ export default class Game {
   };
 
   /**
-   * 
-   * @param {string} url 
-   * @returns 
+   *
+   * @param {string} url
+   * @returns
    */
   deleteSound = (url) => {
     const found = this.findSound(url);
@@ -264,21 +304,46 @@ export default class Game {
     this.soundsStack.forEach((s) => s.play());
   };
 
-  // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
+  //#region TIME
   /**
    * 
-   * @param {number} timestamp 
+   * @param {number} t 
+   */
+  computedTime = (t) => {
+    this.#time = t / 1000;
+    this.#deltaTime = this.#time - this.#oldTime;
+    this.#oldTime = this.#time;
+  };
+  //#endregion
+
+  // funcion principal del motor la cual renderiza el nivel y actualiza el delta time
+  /**
+   *
+   * @param {number} timestamp
    */
   main = (timestamp) => {
-    Time.main(timestamp);
+    if (this.#oldTime === 0) {
+      this.resize();
+    }
+
+    this.computedTime(timestamp);
+
     if (this.debug) {
       console.log(
-        `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${Input.mouseCord.x}, Y:${Input.mouseCord.y}", DeltaTime: ${Time.deltaTime}`,
+        `%cGAME HOVER = ${this.hoverUI}, mouse:"X:${
+          this.input.mouseCord.x
+        }, Y:${this.input.mouseCord.y}", DeltaTime: ${this.#deltaTime}`,
         "color: #ffed9c; padding: 1px 4px;"
       );
     }
-    // if (Time.deltaTime > 10) return;
-    if (this.currentRoom) this.currentRoom.main(this.ctx);
+
+    this.ctx.imageSmoothingEnabled = this.smoothImage;
+    this.ctx.imageSmoothingQuality = "high";
+
+    if (this.currentRoom && !this.#gameBlur){
+      this.currentRoom.main(this.ctx, this.#deltaTime);
+      this.input.ClearKeys();
+    }
 
     if (!this.stopedGame) {
       this.gameLoop = this.requestAnimationFrame(this.main);

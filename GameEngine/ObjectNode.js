@@ -1,6 +1,6 @@
 import Vector2 from "./Vector2.js";
 
-export default class Object {
+export default class ObjectNode {
   #created = false;
   /**
    * 
@@ -131,13 +131,13 @@ export default class Object {
    * 
    * @param {CanvasRenderingContext2D} ctx 
    */
-  main = (ctx) => {
+  main = (ctx, deltaTime) => {
     if (!this.#created) {
       this.onCreate();
       this.#created = true;
     }
     this.updatePosition();
-    this.steps();
+    this.steps(deltaTime);
     this.draw(ctx);
     // this.restartPosition(); // esta linea se elemino para solucionar el bug de seguimiento de los padres
   };

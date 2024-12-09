@@ -1,7 +1,7 @@
-import Object from "./Object.js";
+import ObjectNode from "./ObjectNode.js";
 import Vector2 from "./Vector2.js";
 
-export default class BoxCollider extends Object {
+export default class BoxCollider extends ObjectNode {
   /**
    * 
    * @param {object} GAME 
@@ -120,7 +120,7 @@ export default class BoxCollider extends Object {
    * @param {class} targetType 
    * @returns 
    */
-  onArea = (targetType = Object) => {
+  onArea = (targetType = ObjectNode) => {
     return this.iterateTree((node) => {
       if (!this.collideRules(node)) return false;
       if (!(node._PARENT instanceof targetType)) return false;
@@ -140,7 +140,7 @@ export default class BoxCollider extends Object {
    * @param {Vector2} position
    * @param {class} targetType
    */
-  onPlaceMeeting = (position, targetType = Object) => {
+  onPlaceMeeting = (position, targetType = ObjectNode) => {
     return this.iterateTree((node) => {
       if (!this.collideRules(node)) return false;
       if (!(node._PARENT instanceof targetType)) return false;
@@ -162,7 +162,7 @@ export default class BoxCollider extends Object {
    * @param {class} targetType
    * @return {object}
    */
-  onPlaceMeetingBox = (position, targetType = Object) => {
+  onPlaceMeetingBox = (position, targetType = ObjectNode) => {
       return this.iterateTree((node) => {
           if (!this.collideRules(node)) return false;
       if (!(node._PARENT instanceof targetType)) return false;
@@ -187,7 +187,7 @@ export default class BoxCollider extends Object {
    * @param {class} targetType
    * @return {object}
    */
-  onRectangleCollision = (x, y, x2, y2, targetType = Object) => {
+  onRectangleCollision = (x, y, x2, y2, targetType = ObjectNode) => {
     return this.iterateTree((node) => {
       if (!this.collideRules(node)) return false;
       if (!(node._PARENT instanceof targetType)) return false;

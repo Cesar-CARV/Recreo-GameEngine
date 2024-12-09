@@ -97,16 +97,16 @@ export default class Room {
    * @param {object} obj 
    * @param {CanvasRenderingContext2D} ctx 
    */
-  renderObejct = (obj, ctx) => {
+  renderObejct = (obj, ctx, deltaTime) => {
     if (!this._GAME.gamePaused) {
-      obj.main(ctx);
+      obj.main(ctx, deltaTime);
     } else {
       obj.updatePosition();
       obj.draw(ctx);
     }
 
     window.Object.values(obj._CHILDREN).forEach((child) => {
-      this.renderObejct(child, ctx);
+      this.renderObejct(child, ctx, deltaTime);
     });
 
     obj.restartPosition();
@@ -118,12 +118,12 @@ export default class Room {
    * @param {object} objUI 
    * @param {CanvasRenderingContext2D} ctx 
    */
-  renderUI = (objUI, ctx) => {
-    objUI.main(ctx);
+  renderUI = (objUI, ctx, deltaTime) => {
+    objUI.main(ctx, deltaTime);
 
     if (objUI.visible) {
       window.Object.values(objUI._CHILDREN).forEach((childUI) => {
-        this.renderUI(childUI, ctx);
+        this.renderUI(childUI, ctx, deltaTime);
       });
     }
 
@@ -271,7 +271,7 @@ export default class Room {
    * 
    * @param {CanvasRenderingContext2D} ctx 
    */
-  main = (ctx) => {
+  main = (ctx, deltaTime) => {
     // clip context
     this._GAME.clipContextGraphic(
       this.sizeContextRoom.x,
@@ -303,7 +303,7 @@ export default class Room {
 
     // renderizar objetos
     window.Object.values(this._INSTANCES).forEach((instance) => {
-      this.renderObejct(instance, ctx);
+      this.renderObejct(instance, ctx, deltaTime);
     });
 
     // dibujar el los elementos de el nivel que estaran por encima de los demas
@@ -313,7 +313,7 @@ export default class Room {
 
     // renderizar los objetos que pertenecen a la interfaz grafica
     window.Object.values(this._INSTANCESUI).forEach((instanceUI) => {
-      this.renderUI(instanceUI, ctx);
+      this.renderUI(instanceUI, ctx, deltaTime);
       // instanceUI.main(ctx);
     });
   };

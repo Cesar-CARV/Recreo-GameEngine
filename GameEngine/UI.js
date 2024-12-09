@@ -1,7 +1,7 @@
 import Input from "./Input.js";
-import Object from "./Object.js";
+import ObjectNode from "./ObjectNode.js";
 
-export default class UI extends Object {
+export default class UI extends ObjectNode {
   #created = false;
   /**
    * 
@@ -34,14 +34,14 @@ export default class UI extends Object {
     if (this.constructor.name === "UI" || this.container) return;
 
     if (
-      Input.GetMouseCords().x >= this.position.x &&
-      Input.GetMouseCords().x <= this.position.x + this.size.x &&
-      Input.GetMouseCords().y >= this.position.y &&
-      Input.GetMouseCords().y <= this.position.y + this.size.y
+      this._GAME.input.GetMouseCords().x >= this.position.x &&
+      this._GAME.input.GetMouseCords().x <= this.position.x + this.size.x &&
+      this._GAME.input.GetMouseCords().y >= this.position.y &&
+      this._GAME.input.GetMouseCords().y <= this.position.y + this.size.y
     ) {
       this.hover = true;
       this._GAME.hoverUI = true;
-    } else if (this.active && Input.GetMouseDown(0)) {
+    } else if (this.active && this._GAME.input.GetMouseDown(0)) {
       this.active = false;
       this.onBlur();
     } else if (this.hover) {
@@ -77,7 +77,7 @@ export default class UI extends Object {
       this.leave = false;
       this.mouseOn = false; /* this.active = false;*/
     }
-    if (this.mouseOn && Input.GetMouseDown(0)) {
+    if (this.mouseOn && this._GAME.input.GetMouseDown(0)) {
       this.onMouseDown();
       this.pressed = true;
       if (!this.active) {
@@ -85,30 +85,30 @@ export default class UI extends Object {
       }
       this.active = true;
     }
-    if (this.mouseOn && this.active && this.pressed && Input.GetMouseUp(0)) {
+    if (this.mouseOn && this.active && this.pressed && this._GAME.input.GetMouseUp(0)) {
       this.onMouseUp();
       this.onClick();
       this.pressed = false;
     }
-    if (this.mouseOn && this.lastMouseCord !== Input.GetMouseCords()) {
+    if (this.mouseOn && this.lastMouseCord !== this._GAME.input.GetMouseCords()) {
       this.onMouseMove();
-      this.lastMouseCord = Input.GetMouseCords();
+      this.lastMouseCord = this._GAME.input.GetMouseCords();
     }
-    if (this.active && Input.keydown.size !== 0) {
+    if (this.active && this._GAME.input.keydown.size !== 0) {
       this.onKeyDown();
     }
-    if (this.active && Input.keyup.size !== 0) {
+    if (this.active && this._GAME.input.keyup.size !== 0) {
       this.onKeyUp();
     }
   };
 
-  steps = () => {};
+  steps = (deltaTime) => {};
 
   /**
    * 
    * @param {CanvasRenderingContext2D} ctx 
    */
-  main = (ctx) => {
+  main = (ctx, deltaTime) => {
     if (!this.#created) {
       this.onCreate();
       this.#created = true;
@@ -116,7 +116,7 @@ export default class UI extends Object {
     if (this.visible) {
       this.updatePosition();
       this.events();
-      this.steps();
+      this.steps(deltaTime);
       this.draw(ctx);
       //   this.restartPosition();
     }

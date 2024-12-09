@@ -1,5 +1,3 @@
-import Time from "./Time.js";
-
 export default class Clock {
   /**
    * 
@@ -12,7 +10,7 @@ export default class Clock {
     this.time = time;
     this.repeat = repeat;
     this.current = 0;
-    this.runing = false;
+    this.running = false;
     this.finished = false;
     this.oldSec = -1;
   }
@@ -23,18 +21,12 @@ export default class Clock {
     this.oldSec = -1;
   };
 
-  reset = () => {
-    this.finished = false;
-    this.current = 0;
-    this.oldSec = -1;
-  }
-
   start = () => {
-    this.runing = true;
+    this.running = true;
   };
 
   pause = () => {
-    this.runing = false;
+    this.running = false;
   };
 
   /**
@@ -42,13 +34,13 @@ export default class Clock {
    * @param {requestCallback} callback 
    * @returns 
    */
-  tick = (callback) => {
-    if (!this.runing) return;
+  tick = (callback, deltaTime) => {
+    if (!this.running) return;
 
     let DT = new Date().getMilliseconds();
 
     if (DT !== this.oldSec) {
-      this.current += Time.deltaTime < 1 ? Time.deltaTime : 0;
+      this.current += deltaTime < 1 ? deltaTime : 0;
       this.oldSec = DT
     }
 

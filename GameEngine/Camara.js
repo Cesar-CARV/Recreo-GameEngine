@@ -1,7 +1,7 @@
-import Object from "./Object.js";
+import ObjectNode from "./ObjectNode.js";
 import Vector2 from "./Vector2.js";
 
-export default class Camara extends Object {
+export default class Camara extends ObjectNode {
   #borderPosition = new Vector2(0, 0);
   #relativeSizeX = 0;
   #relativeSizeY = 0;
