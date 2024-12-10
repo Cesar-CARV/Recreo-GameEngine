@@ -6,6 +6,9 @@
 >
 >El motor aun esta en desarrollo, para usarlo de forma segura esperar minimo a la version 1.0.0
 
+## Cambios hechos en la version 0.2.1
+Se soluciono un bug al utilizar la clase input con los metodos de recuperacion de teclas y botones
+
 ## Cambios hechos en la version 0.2.0
 Se hicieron cambios en el funcionamiento del `Time` y de `Input` para que se pueda tener mas de una instancia de la clase `GAME` en la misma pagina.
 
@@ -21,7 +24,7 @@ si no quieres descargar ningun archivo puedes utilizar el CDN en tu codigo para 
 ```JavaScript
 import {
   Game
-} from 'https://cdn.jsdelivr.net/npm/recreo@0.2.0/dist/recreo.js';
+} from 'https://cdn.jsdelivr.net/npm/recreo@0.2.1/dist/recreo.js';
 ```
 >[!NOTA]
 >
@@ -107,7 +110,7 @@ import {
   ObjectNode,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.2.0/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.2.1/dist/recreo.js";
 ```
 
 ## Crear nuestra primer clase player
@@ -257,7 +260,7 @@ import {
   ObjectNode,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.2.0/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.2.1/dist/recreo.js";
 
 class Player extends ObjectNode {
   constructor(GAME, x, y, w, h) {

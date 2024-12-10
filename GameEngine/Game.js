@@ -340,8 +340,10 @@ export default class Game {
     this.ctx.imageSmoothingEnabled = this.smoothImage;
     this.ctx.imageSmoothingQuality = "high";
 
-    if (this.currentRoom && !this.#gameBlur)
+    if (this.currentRoom && !this.#gameBlur){
       this.currentRoom.main(this.ctx, this.#deltaTime);
+      this.input.ClearKeys();
+    }
 
     if (!this.stopedGame) {
       this.gameLoop = this.requestAnimationFrame(this.main);
