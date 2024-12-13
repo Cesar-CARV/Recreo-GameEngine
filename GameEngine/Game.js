@@ -6,7 +6,15 @@ export default class Game {
   #time = new Date().valueOf() / 1000;
   #deltaTime = 0;
   #gameBlur = false;
-  
+  #width = undefined;
+  #height = undefined;
+  #resizingTypes = {
+    SCREEN: "SCREEN",
+    FILL: "FILL",
+    BOX: "BOX",
+  };
+  #resizing = this.#resizingTypes.FILL;
+
   /**
    *
    * @param {HTMLElement} game
@@ -16,21 +24,12 @@ export default class Game {
    */
   constructor(game, canvas, width = undefined, height = undefined) {
     this.$ = game;
-    this.width = width;
-    this.height = height;
+    this.#width = width;
+    this.#height = height;
     this.canvas = canvas;
-    this.responsive = true;
     this.ctx = undefined;
 
-    // * RESPONSIVE
-    if (this.responsive) {
-      this.viewport = new Vector2(
-        width ? width : window.screen.width,
-        height ? height : window.screen.height
-      );
-    }
-    // this.resize();
-    this.resize();
+    this.setSizing(this.#resizingTypes.SCREEN, width, height);
 
     window.addEventListener("resize", () => {
       this.resize();
@@ -69,52 +68,87 @@ export default class Game {
     this.input = new Input(this, this.canvas);
   }
 
+  /**
+   *
+   * @param {"SCREEN" | "FILL" | "BOX"} type
+   * @param {"number"} width
+   * @param {"number"} height
+   */
+  setSizing = (type, width = 0, height = 0) => {
+    this.#resizing = this.#resizingTypes[type];
+
+    switch (this.#resizing) {
+      case this.#resizingTypes.SCREEN:
+        this.viewport = new Vector2(window.screen.width, window.screen.height);
+        break;
+      case this.#resizingTypes.FILL:
+        this.viewport = new Vector2(
+          this.$.getBoundingClientRect().width,
+          this.$.getBoundingClientRect().height
+        );
+        break;
+      case this.#resizingTypes.BOX:
+        this.#width = width;
+        this.#height = height;
+        this.viewport = new Vector2(width, height);
+        break;
+    }
+
+    this.resize();
+  };
+
   // ajusta los cambios de aspecto segun el tamaño de el display
   resize = () => {
-    const ratio = this.viewport.x / this.viewport.y;
-    const ratioX = (this.viewport.x * ratio) / 100;
-    const ratioY = (this.viewport.y * ratio) / 100;
+    if (this.#resizing === this.#resizingTypes.SCREEN) {
+      const ratio = this.viewport.x / this.viewport.y;
+      const ratioX = (this.viewport.x * ratio) / 100;
+      const ratioY = (this.viewport.y * ratio) / 100;
 
-    if (this.responsive) {
-      if (this.width || this.height) {
-        this.$.style.width = this.width + "px";
-        this.$.style.height = this.height + "px";
-        this.canvas.style.width = this.width + "px";
-        this.canvas.style.height = this.height + "px";
+      if (
+        this.$.getBoundingClientRect().right / ratioX >
+        this.$.getBoundingClientRect().bottom / ratioY
+      ) {
+        this.$.style.width = "auto";
+        this.$.style.height = "100%";
       } else {
-        if (
-          this.$.getBoundingClientRect().right / ratioX >
-          this.$.getBoundingClientRect().bottom / ratioY
-        ) {
-          this.$.style.width = "auto";
-          this.$.style.height = "100%";
-        } else {
-          this.$.style.width = "100%";
-          this.$.style.height = "auto";
-        }
+        this.$.style.width = "100%";
+        this.$.style.height = "auto";
       }
-    } else {
+
+      this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
+    } else if (this.#resizing === this.#resizingTypes.FILL) {
       this.canvas.style.width = "100%";
       this.canvas.style.height = "100%";
+      this.$.style.aspectRatio = "auto";
+      this.$.style.width = "100%";
+      this.$.style.height = "100%";
 
       this.viewport = new Vector2(
         this.canvas.clientWidth,
         this.canvas.clientHeight
       );
+
       if (this.currentRoom) {
         this.currentRoom.sizeContextRoom = new Vector2(
           this.viewport.x,
           this.viewport.y
         );
       }
+      // ---
+    } else if (this.#resizing === this.#resizingTypes.BOX) {
+      if (!this.#width || !this.#height) {
+        console.log("Width and Height are required!");
+        return;
+      }
+      this.$.style.width = this.#width + "px";
+      this.$.style.height = this.#height + "px";
+      this.canvas.style.width = this.#width + "px";
+      this.canvas.style.height = this.#height + "px";
     }
 
     this.canvas.width = this.viewport.x;
     this.canvas.height = this.viewport.y;
 
-    if (this.responsive) {
-      this.$.style.aspectRatio = `${ratioX} / ${ratioY}`;
-    }
     this.ctx = this.canvas.getContext("2d");
   };
 
@@ -306,8 +340,8 @@ export default class Game {
 
   //#region TIME
   /**
-   * 
-   * @param {number} t 
+   *
+   * @param {number} t
    */
   computedTime = (t) => {
     this.#time = t / 1000;
@@ -340,7 +374,7 @@ export default class Game {
     this.ctx.imageSmoothingEnabled = this.smoothImage;
     this.ctx.imageSmoothingQuality = "high";
 
-    if (this.currentRoom && !this.#gameBlur){
+    if (this.currentRoom && !this.#gameBlur) {
       this.currentRoom.main(this.ctx, this.#deltaTime);
       this.input.ClearKeys();
     }
