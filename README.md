@@ -2,17 +2,24 @@
 
 **Recreo** es un motor de videojuegos creado para el desarrollo de juegos simples con javascript
 
->[Nota]
+> [Nota]
 >
->El motor aun esta en desarrollo, para usarlo de forma segura esperar minimo a la version 1.0.0
+> El motor aun esta en desarrollo, para usarlo de forma segura esperar minimo a la version 1.0.0
 
-## Cambios hechos en la version 0.2.1
-Se soluciono un bug al utilizar la clase input con los metodos de recuperacion de teclas y botones
+## Cambios hechos en la version 0.2.2
 
-## Cambios hechos en la version 0.2.0
-Se hicieron cambios en el funcionamiento del `Time` y de `Input` para que se pueda tener mas de una instancia de la clase `GAME` en la misma pagina.
+Se cambio el funcionamineto del `resizeing` del `GAME` el cual ahora incluye las opcines de `SCREEN`, `FILL` y `BOX`. Para cambiar
+el tipo de `resizeing` se implemento el metodo `setSizing` la cual acepta 3 parametros, el tipo, el ancho y el alto, estos dos ultimos son opcionales a menos que el tipo sea `BOX`.
+
+- `SCREEN`: Mantiene la relacion de aspecto del monitor que se este utilizando en el quipo.
+- `FILL`: Se adapta al tamaño del contenedor sin mantener la relacion de aspecto con el monitor
+- `BOX`: Este tipo hace que el `GAME` mantenga un tamaño espesifico el cual se establece en la funcion `setSizing`
+
+IMPORTANTE:  
+Se elimino la propiedad `responsive` de la clase `GAME`.
 
 ## Getting Started
+
 Parar iniciar con el desarrollo de tu videojuego puedes utilizar el siguiente comando para instalar el motor en tu proyecto web.
 
 ```bash
@@ -24,13 +31,15 @@ si no quieres descargar ningun archivo puedes utilizar el CDN en tu codigo para 
 ```JavaScript
 import {
   Game
-} from 'https://cdn.jsdelivr.net/npm/recreo@0.2.1/dist/recreo.js';
+} from 'https://cdn.jsdelivr.net/npm/recreo@0.2.2/dist/recreo.js';
 ```
->[!NOTA]
+
+> [!NOTA]
 >
->Para poder probar tu juego es necesario que tengas un servideor de desarrollo, si utilizas visual studio code puedes utilizar ***Live server***
+> Para poder probar tu juego es necesario que tengas un servideor de desarrollo, si utilizas visual studio code puedes utilizar **_Live server_**
 
 ## Configuracion
+
 Una vez instalado todo lo necesario hay que agregar el siguiente codigo HTML a tu pagina o componente.
 
 ```HTML
@@ -103,6 +112,7 @@ import {Game, Room, ObjectNode, Vector2, UIButton} from 'recreo';
 ```
 
 en caso de que hayas utilizado el CDN seria de la siguiente manera:
+
 ```JavaScript
 import {
   Room,
@@ -110,10 +120,11 @@ import {
   ObjectNode,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.2.1/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.2.2/dist/recreo.js";
 ```
 
 ## Crear nuestra primer clase player
+
 Ahora lo que haremos sera crear nuestra primera clase el cual sera nuestro pequeño personaje, para esto crearemos una clase que herede de `ObjectNode`.
 La clase ObjectNode resive 5 parametros los cuales son `GAME` que es la instancia de el juego, `x` que es su posicion en horizontal, `y` la posicion en vertical, `w` el ancho y `h` el alto .
 
@@ -174,6 +185,7 @@ class Player extends ObjectNode {
   };
 }
 ```
+
 ## Creando el boton de pausa
 
 Para el boton de pausa seguiremos el mismo pincipio que con la clase anterior, crearemos una clase que herede de `UIButton` el cual resive como parametros `GAME` que es la instancia de el juego, `x` que es su posicion en horizontal, `y` la posicion en vertical, `w` el ancho, `h` el alto y por ultimo `text` el cual sera el texto que mostrara el boton.
@@ -219,7 +231,7 @@ class RoomTest1 extends Room {
 }
 ```
 
-El metodo `addInstance` resive 3 parametros, `inst` el cual es la instancia/objeto que vamos a agregar, `UI` este parametro es para indicar si es un elemento de la interfaz y por ultimo `name` el cual es el nombre con el que se agregara al listado de instancias de el nivel 
+El metodo `addInstance` resive 3 parametros, `inst` el cual es la instancia/objeto que vamos a agregar, `UI` este parametro es para indicar si es un elemento de la interfaz y por ultimo `name` el cual es el nombre con el que se agregara al listado de instancias de el nivel
 
 ## Creando GAME
 
@@ -260,7 +272,7 @@ import {
   ObjectNode,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.2.1/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.2.2/dist/recreo.js";
 
 class Player extends ObjectNode {
   constructor(GAME, x, y, w, h) {
