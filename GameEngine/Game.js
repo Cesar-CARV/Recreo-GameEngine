@@ -152,6 +152,13 @@ export default class Game {
     this.ctx = this.canvas.getContext("2d");
   };
 
+  // Check if device is a mobile
+  isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  };
+
   // #region ROOM
   /**
    *

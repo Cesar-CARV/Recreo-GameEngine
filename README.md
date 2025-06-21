@@ -6,6 +6,81 @@
 >
 > El motor aun esta en desarrollo, para usarlo de forma segura esperar minimo a la version 1.0.0
 
+## Cambios hechos en la version 0.3.0
+
+### Touch
+Se agregaron los siguientes metodos a la clase Input:
+- `GetTouches()`
+- `GetTouchesDown()`
+- `GetTouchOnArea(x, y, x2, y2)`
+- `GetTouchDownOnArea(x, y, x2, y2)`
+- `GetTouchUpOnArea(x, y, x2, y2)`
+
+Estos metodos se utilizan para detectar las pulsaciones del usuario en dispositivos moviles los cuales regresan un array de objetos los cuales representan cada una de las pulsaciones del usuario.
+
+Los ultimos 3 metodos reciben como parametros las coordenadas del area en la cual se buscaran las pulsaciones del usuario.
+
+```
+t = touch
+(x, y) ______________________
+      |                      |
+      |        t             |
+      |               t      |
+      |______________________|(x2, y2)
+```
+
+Ejemplo del array devuelto por los metodos anteriores:
+```JavaScript
+[
+  {
+    id: 0,
+    x: 10,
+    y: 10,
+    radius: 11,
+  },
+  {
+    id: 1,
+    x: 50,
+    y: 80,
+    radius: 11,
+  },
+];
+
+```
+Los metodos `GetTouchesDown()` y `GetTouchDownOnArea(x, y, x2, y2)` devuelve un array de las pulsaciones hechas cada frame al igual que el metodo `GetMouseDown()`.
+
+El metodo `GetTouchUpOnArea(x, y, x2, y2)` devuelve un array de las pulsaciones que se dejan de hacer cada frame al igual que el metodo `GetMouseUp()`.
+
+### isMobile
+Se agrego un metodo a la clase `Game` el cual solo devuelde true o false si el dispositivo en el cual se esta renderizando el juego es movil.
+
+### UI
+Se adapto la clase `UI` para detectar pulsaciones en dispositivos moviles, los metodos adaptados fueron:
+- `onMouseDown()`
+- `onFocus()`
+- `onMouseUp()`
+- `onClick()`
+- `onBlur()`
+
+Para utilizar estos metodos en movil no se tiene que hacer ningun cambio, este los detecta como si fueran eventos del mouse.
+
+### CSS
+Se hizo un ligero cambio en los estilos de la clase `.game-container` para adaptarse mejor a dispositivos moviles.
+
+```CSS
+/* Ahora */
+.game-container {
+ /*...*/
+ height: 100dvh;
+}
+
+/* Antes */
+.game-container {
+ /*...*/
+ height: 100vh;
+}
+```
+
 ## Cambios hechos en la version 0.2.2
 
 Se cambio el funcionamineto del `resizeing` del `GAME` el cual ahora incluye las opcines de `SCREEN`, `FILL` y `BOX`. Para cambiar
@@ -31,7 +106,7 @@ si no quieres descargar ningun archivo puedes utilizar el CDN en tu codigo para 
 ```JavaScript
 import {
   Game
-} from 'https://cdn.jsdelivr.net/npm/recreo@0.2.2/dist/recreo.js';
+} from 'https://cdn.jsdelivr.net/npm/recreo@0.3.0/dist/recreo.js';
 ```
 
 > [!NOTA]
@@ -72,7 +147,7 @@ body {
   align-items: center;
   overflow: hidden;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   background-color: black;
 }
 /*FIN OPCIONALES*/
@@ -120,7 +195,7 @@ import {
   ObjectNode,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.2.2/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.3.0/dist/recreo.js";
 ```
 
 ## Crear nuestra primer clase player
@@ -272,7 +347,7 @@ import {
   ObjectNode,
   Vector2,
   UIButton,
-} from "https://cdn.jsdelivr.net/npm/recreo@0.2.2/dist/recreo.js";
+} from "https://cdn.jsdelivr.net/npm/recreo@0.3.0/dist/recreo.js";
 
 class Player extends ObjectNode {
   constructor(GAME, x, y, w, h) {
